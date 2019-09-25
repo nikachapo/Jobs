@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "259431725220",
+    "firebase_url": "https://jobs-aa45d.firebaseio.com",
+    "project_id": "jobs-aa45d",
+    "storage_bucket": "jobs-aa45d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:259431725220:android:9c49724fb74a95e8d78e31",
+        "android_client_info": {
+          "package_name": "com.example.jobs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "259431725220-2b5v35p28m9nv3mv3e891m0tm0jetubu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jobs",
+            "certificate_hash": "513a069fa154ff9e0d2a3982e700fe637ea7b244"
+          }
+        },
+        {
+          "client_id": "259431725220-i7kkj3sgmburrdkrhe6v6ijglog12vmc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjZaYty0r0K1t7R_JnxBPkQckSt_KPyks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259431725220-i7kkj3sgmburrdkrhe6v6ijglog12vmc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
