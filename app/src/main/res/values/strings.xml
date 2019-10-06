@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Jobs</string>
+    <string name="sign_out">Sign out</string>
+    <string name="person">პიროვნება</string>
+    <string name="company">კომპანია</string>
+    <string name="welcome_text">შედი ან დარეგისტრირდი როგორც:</string>
+    <string-array name="vacancy_category_spinner_array">
+        <item>ყველა კატეგორია</item>
+        <item>ადმინისტრაცია/მენეჯმენტი</item>
+        <item>გაყიდვები</item>
+        <item>ფინანსები</item>
+        <item>მარკეტინგი</item>
+        <item>ლოჯისტიკა</item>
+        <item>IT/საინფორმაციო ტექნოლოგიები</item>
+        <item>იურიდიული</item>
+        <item>სამედიცინო</item>
+        <item>სხვა</item>
+    </string-array>
+
+
 </resources>

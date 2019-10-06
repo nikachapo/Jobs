@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#5007CE"
+    tools:context="com.example.jobs.LogInActivity">
+
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/welcome_text"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="78dp"
+        android:layout_marginEnd="0dp"
+        android:text="@string/welcome_text"
+        android:textColor="@android:color/white"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="103dp" />
+
+    <RadioGroup
+        android:layout_centerHorizontal="true"
+        android:id="@+id/radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/welcome_text"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radio_person"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/person"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
+
+        <RadioButton
+            android:id="@+id/radio_company"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/company"
+            android:textColor="@android:color/white"
+            android:textSize="30sp" />
+    </RadioGroup>
+
+</RelativeLayout>
