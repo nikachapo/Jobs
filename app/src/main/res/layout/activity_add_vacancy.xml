@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".AddVacancyActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                android:padding="5dp"
+                android:id="@+id/vacancy_name_textInputEditText"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="ვაკანსიის დასახელება"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                android:padding="5dp"
+                android:id="@+id/vacancy_body_textInputEditText"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:gravity="top"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:hint="განცხადება"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                android:padding="5dp"
+                android:id="@+id/vacancy_city_textInputEditText"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="ქალაქი"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ასაკი"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="20sp"/>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/age_from_edittext"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:hint="18"
+                    android:inputType="numberDecimal"
+                    android:maxEms="2"
+                    android:textSize="15sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textSize="15sp"
+                    android:text="-დან"
+                    android:gravity="center_vertical"/>
+
+                <EditText
+                    android:id="@+id/age_to_edittext"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:hint="30"
+                    android:inputType="numberDecimal"
+                    android:linksClickable="false"
+                    android:maxEms="2"
+                    android:textSize="15sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textSize="15sp"
+                    android:text="-მდე"
+                    android:gravity="center_vertical"/>
+
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ხელფასი"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="20sp"/>
+            <LinearLayout
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/salaty_from_edittext"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:hint="0"
+                    android:inputType="numberDecimal"
+                    android:maxEms="5"
+                    android:textSize="15sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textSize="15sp"
+                    android:text="-დან"
+                    android:gravity="center_vertical"/>
+
+                <EditText
+                    android:id="@+id/salaty_to_edittext"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:hint="500"
+                    android:inputType="numberDecimal"
+                    android:maxEms="8"
+                    android:minEms="2"
+                    android:textSize="15sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:textSize="15sp"
+                    android:text="-მდე"
+                    android:gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="კატეგორია"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textSize="20sp"/>
+
+            <Spinner
+                android:id="@+id/vacancy_category_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:entries="@array/vacancy_category_spinner_array"/>
+
+            <TextView
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="მოთხოვნები"
+                android:gravity="center"
+                android:textSize="20sp"/>
+            <TextView
+                android:id="@+id/vacancy_requirements_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="15sp"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:id="@+id/vacancy_requirements_edittext"
+                    android:hint="მოთხოვნები"
+                    android:layout_weight="1"
+                    />
+                <Button
+                    android:id="@+id/add_requirements_to_textview_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:text="+"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_vacancy"
+                android:text="Add vacancy"
+                android:textAllCaps="false"/>
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>
