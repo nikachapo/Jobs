@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="15dp">
+    <Button
+        android:id="@+id/close_bottom_sheet"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="X"
+        android:textSize="20sp"/>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/sheet_profile_image"
+            android:layout_gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/sheet_vacancy_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#043472"
+
+            android:textSize="20sp"
+            android:text="თბილისი"
+            />
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/sheet_vacancy_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="ინფორმაციული ტექნოლოგიები"
+            />
+        <TextView
+            android:id="@+id/sheet_vacancy_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:text="ვაკანსია"
+            />
+        <TextView
+            android:padding="15dp"
+            android:id="@+id/sheet_vacancy_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="ჯავა დეველოპერი"
+            />
+
+
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/sheet_vacancy_age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="18-25 წლამდე"
+            />
+
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/sheet_vacancy_requirements"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="ჯავა დეველოპერად მუშაობის დიდი გამოცდილება"
+            />
+        <TextView
+            android:id="@+id/sheet_vacancy_salary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:padding="10dp"
+            android:text="500-1000$"
+            android:textColor="#000"
+            android:textSize="20sp" />
+
+
+
+
+    </LinearLayout>
+</ScrollView>
+
+
+
+
+</LinearLayout>

@@ -72,7 +72,7 @@ public class LogInActivity extends AppCompatActivity {
                 checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
                 if (checkedRadioButtonId == -1) {
                     //no item selected
-                   makeToast("Choose one");
+                    makeToast("Choose one");
                 } else {
                     signIn();
                 }
@@ -87,7 +87,8 @@ public class LogInActivity extends AppCompatActivity {
 
         GoogleSignInAccount lastSignedInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (lastSignedInAccount != null) {
-            startActivity(new Intent(LogInActivity.this, UserProfile.class));
+            startActivity(new Intent(LogInActivity.this, MainActivity.class));
+            finish();
         }
 
     }
@@ -109,7 +110,7 @@ public class LogInActivity extends AppCompatActivity {
                 final GoogleSignInAccount account = task.getResult(ApiException.class);
                 assert account != null;
                 firebaseAuthWithGoogle(account);
-                Intent intent = new Intent(getApplicationContext(), UserProfile.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 switch (checkedRadioButtonId) {
                     case R.id.radio_person:
                         //person radio is selected
@@ -128,7 +129,7 @@ public class LogInActivity extends AppCompatActivity {
                                             account.getEmail(), account.getDisplayName(),
                                             Objects.requireNonNull(account.getPhotoUrl()).toString(),
                                             account.getId(), USERS_TABLE_NAME);
-                                   makeToast("New User Added");
+                                    makeToast("New User Added");
                                 }
                             }
 
