@@ -1,7 +1,7 @@
 package com.example.jobs;
 
 
-import android.content.Context;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Picasso;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -26,7 +24,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
     private String requirements;
     private String salary;
 
-    public BottomSheet(String profilePictureURL, String city, String vacancyCategory, String vacancyName, String vacancyBody, String age, String requirements, String salary) {
+    public BottomSheet(String profilePictureURL, String city, String vacancyCategory,
+                       String vacancyName, String vacancyBody, String age,
+                       String requirements, String salary) {
         this.profilePictureURL = profilePictureURL;
         this.city = city;
         this.vacancyCategory = vacancyCategory;
@@ -41,17 +41,15 @@ public class BottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
-
-       Button close = v.findViewById(R.id.close_bottom_sheet);
-       ImageView profilePicture = v.findViewById(R.id.sheet_profile_image);
+        Button close = v.findViewById(R.id.close_bottom_sheet);
+        ImageView profilePicture = v.findViewById(R.id.sheet_profile_image);
         TextView cityTextView = v.findViewById(R.id.sheet_vacancy_city);
         TextView vacancyCategoryTextView = v.findViewById(R.id.sheet_vacancy_category);
-        TextView  vacancyNameTextView = v.findViewById(R.id.sheet_vacancy_name);
-        TextView
-                vacancyBodyTextView = v.findViewById(R.id.sheet_vacancy_body);
-        TextView  ageTextView = v.findViewById(R.id.sheet_vacancy_age);
-        TextView   requirementsTextView = v.findViewById(R.id.sheet_vacancy_requirements);
-        TextView   salaryTextView = v.findViewById(R.id.sheet_vacancy_salary);
+        TextView vacancyNameTextView = v.findViewById(R.id.sheet_vacancy_name);
+        TextView vacancyBodyTextView = v.findViewById(R.id.sheet_vacancy_body);
+        TextView ageTextView = v.findViewById(R.id.sheet_vacancy_age);
+        TextView requirementsTextView = v.findViewById(R.id.sheet_vacancy_requirements);
+        TextView salaryTextView = v.findViewById(R.id.sheet_vacancy_salary);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,4 +74,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
         return v;
     }
+
+
 }
+

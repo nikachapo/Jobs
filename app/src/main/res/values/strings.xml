@@ -3,8 +3,10 @@
     <string name="sign_out">Sign out</string>
     <string name="person">პიროვნება</string>
     <string name="company">კომპანია</string>
-    <string name="welcome_text">შედი ან დარეგისტრირდი როგორც:</string>
+    <string name="welcome_text">შედით ან დარეგისტრირდით
+        როგორც:</string>
     <string name="add_vacancy">Add vacancy</string>
+
     <string-array name="vacancy_category_spinner_array">
         <item>ყველა კატეგორია</item>
         <item>ადმინისტრაცია/მენეჯმენტი</item>
