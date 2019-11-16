@@ -1,37 +1,43 @@
 package com.example.jobs;
 
 
-
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 public class BottomSheet extends BottomSheetDialogFragment {
-    private String profilePictureURL;
-    private String city;
-    private String vacancyCategory;
-    private String vacancyName;
-    private String vacancyBody;
-    private String age;
-    private String requirements;
-    private String salary;
+    private String profilePictureURL,
+            city,
+            vacancyCategory,
+            vacancyName,
+            vacancyBody,
+            age,
+            requirements,
+            salary,
+            ownerID;
 
-    public BottomSheet(String profilePictureURL, String city, String vacancyCategory,
+    public BottomSheet(String ownerID, String profilePictureURL, String city, String vacancyCategory,
                        String vacancyName, String vacancyBody, String age,
                        String requirements, String salary) {
+        this.ownerID = ownerID;
         this.profilePictureURL = profilePictureURL;
         this.city = city;
         this.vacancyCategory = vacancyCategory;
@@ -44,8 +50,10 @@ public class BottomSheet extends BottomSheetDialogFragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        final View v = inflater.inflate(R.layout.bottom_sheet_layout, container, false);
         Button close = v.findViewById(R.id.close_bottom_sheet);
         final ImageView profilePicture = v.findViewById(R.id.sheet_profile_image);
         TextView cityTextView = v.findViewById(R.id.sheet_vacancy_city);
@@ -64,9 +72,23 @@ public class BottomSheet extends BottomSheetDialogFragment {
         });
 
 
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent bottomSheetToCompanyProfile = new Intent(getActivity(), CompanyProfileActivity.class);
+                bottomSheetToCompanyProfile.putExtra("imageurl", profilePictureURL);
+                bottomSheetToCompanyProfile.putExtra("ownerID", ownerID);
+                ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(
+                        getActivity(), Pair.create(v.findViewById(R.id.sheet_profile_image),"imagetrans"));
+                startActivity(bottomSheetToCompanyProfile, activityOptions.toBundle());
+                dismiss();
+
+            }
+        });
+
         Picasso.with(getContext()).load(this.profilePictureURL)
 
-                .resize(200, 200)
+                .resize(150, 150)
                 .into(profilePicture, new Callback() {
                     @Override
                     public void onSuccess() {
@@ -76,6 +98,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
                         imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
                         profilePicture.setImageDrawable(imageDrawable);
                     }
+
                     @Override
                     public void onError() {
                         profilePicture.setImageResource(R.drawable.ic_default_company_image);

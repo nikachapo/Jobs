@@ -51,17 +51,19 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+
         radioGroup = findViewById(R.id.radio_group);
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
+
 
         mAuth = FirebaseAuth.getInstance();
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +72,7 @@ public class LogInActivity extends AppCompatActivity {
                 checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
                 if (checkedRadioButtonId == -1) {
                     //no item selected
-                    makeToast("აირჩიეთ ერთ-ერთი");
+                    makeToast("Choose one");
                 } else {
                     signIn();
                 }
@@ -112,14 +114,30 @@ public class LogInActivity extends AppCompatActivity {
                 switch (checkedRadioButtonId) {
                     case R.id.radio_person:
                         //person radio is selected
+
                         DatabaseReference usersUidRef = mRef
                                 .child(USERS_TABLE_NAME)
                                 .child(Objects.requireNonNull(account.getId()));
 
-                        usersUidRef.
-                                addListenerForSingleValueEvent(
-                                        addNewUserValueEventListener(USERS_TABLE_NAME,
-                                                "შეიქმნა ახალი მომხმარებელი",account));
+                        ValueEventListener usersEventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (!dataSnapshot.exists()) {
+                                    //create new user
+                                    PersonUser personUser = new PersonUser();
+                                    personUser.writePersonUser(mRef,
+                                            account.getEmail(), account.getDisplayName(),
+                                            Objects.requireNonNull(account.getPhotoUrl()).toString(),
+                                            account.getId(), USERS_TABLE_NAME);
+                                    makeToast("New User Added");
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        };
+                        usersUidRef.addListenerForSingleValueEvent(usersEventListener);
                         break;
 
                     case R.id.radio_company:
@@ -128,16 +146,32 @@ public class LogInActivity extends AppCompatActivity {
                                 .child(COMPANIES_TABLE_NAME)
                                 .child(Objects.requireNonNull(account.getId()));
 
-                        companiesUidRef.addListenerForSingleValueEvent(
-                                addNewUserValueEventListener(COMPANIES_TABLE_NAME,
-                                "შეიქმნა ახალი კომპანია",account));
+                        ValueEventListener companiesEventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (!dataSnapshot.exists()) {
+                                    //create new user
+                                    CompanyUser companyUser= new CompanyUser();
+                                    companyUser.writeCompanyUser(mRef, account.getEmail(),
+                                            account.getDisplayName(),
+                                            Objects.requireNonNull(account.getPhotoUrl()).toString(),
+                                            account.getId(), COMPANIES_TABLE_NAME);
+                                    makeToast("New Company Added");
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        };
+                        companiesUidRef.addListenerForSingleValueEvent(companiesEventListener);
+
                         break;
                 }
                 startActivity(intent);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("MAin", "Google sign in failed", e);
-                makeToast("შესვლის პრობლემა");
 
             }
         }
@@ -169,32 +203,13 @@ public class LogInActivity extends AppCompatActivity {
                 });
     }
 
-    private ValueEventListener addNewUserValueEventListener(final String tableName, final String toastMessage, final GoogleSignInAccount account){
-
-        ValueEventListener companiesEventListener = new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    //create new user
-                    CompanyUser companyUser= new CompanyUser();
-                    companyUser.writeCompanyUser(mRef, account.getEmail(),
-                            account.getDisplayName(),
-                            Objects.requireNonNull(account.getPhotoUrl()).toString(),
-                            account.getId(), tableName);
-                    makeToast(toastMessage);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        };
-        return companiesEventListener;
-    }
 
     private void makeToast(String text){
         Toast.makeText(LogInActivity.this, text, Toast.LENGTH_SHORT).show();
     }
+
+//    private boolean checkIfEmailExists(String uID){
+//
+//    }
 
 }

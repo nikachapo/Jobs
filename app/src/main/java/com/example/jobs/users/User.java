@@ -22,9 +22,10 @@ public class User {
 
     }
 
-    protected void writeNewUser(DatabaseReference mDatabase,
+    public void writeNewUser(DatabaseReference mDatabase,
                                     String userEmail,String name,
                                     String userProfilePictureURL, String uID,String usersTableName) {
+
         User user = new User(name,userProfilePictureURL,uID,userEmail );
 
         mDatabase.child(usersTableName).child(uID).setValue(user);

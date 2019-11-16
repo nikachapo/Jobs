@@ -18,6 +18,11 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url 'https://dl.bintray.com/spark/maven'
+    }
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -34,5 +39,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'me.spark:submitbutton:1.0.1'
+
 }
 apply plugin: 'com.google.gms.google-services'

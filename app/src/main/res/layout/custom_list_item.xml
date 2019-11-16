@@ -2,52 +2,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/list_item_background"
     android:orientation="horizontal"
-    android:background="@drawable/main_activity_background">
+    android:elevation="5dp">
 
-   <ImageView
-       android:textColor="#000"
-       android:id="@+id/company_image"
-       android:layout_width="100dp"
-       android:layout_height="100dp"
-       android:padding="10dp"
+    <ImageView
 
-       >
+        android:id="@+id/company_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:padding="10dp"
+        android:textColor="#000"
 
-   </ImageView>
+        >
+
+    </ImageView>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <TextView
-            android:layout_margin="5dp"
+            android:id="@+id/company_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:layout_margin="5dp"
             android:text="კომპანია"
             android:textColor="#000"
-            android:textStyle="bold"
-            android:id="@+id/company_name"
-            />
-        <TextView
-            android:textColor="#000"
-            android:layout_margin="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:text="ვაკანსია"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/vacancy_name"
-            />
-        <TextView
-            android:textColor="#000"
-            android:layout_margin="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:text="03/12-04/12"
+            android:layout_margin="5dp"
+            android:text="ვაკანსია"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <TextView
             android:id="@+id/date_range"
-            />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="03/12-04/12"
+            android:textColor="#000"
+            android:textSize="15sp" />
     </LinearLayout>
 
 </LinearLayout>
