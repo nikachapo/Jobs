@@ -18,27 +18,28 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 
 public class Vacancy implements Serializable {
-        private static final String VACANCIES_TABLE_NAME = "Vacancies";
-        private static final String COMPANIES_TABLE_NAME = "Companies";
-        public String
-                ownerProfileURL,
-                vacancyID,
-                ownerID,
-                vacancyHeader,
-                vacancyBody,
-                vacancyCity,
-                requiredAge,
-                vacancySalary,
-                vacancyCategory,
-                requirements;
-        public String currentTimeStamp = getCurrentTimeStamp();
+    private static final String VACANCIES_TABLE_NAME = "Vacancies";
+    private static final String COMPANIES_TABLE_NAME = "Companies";
+    public String
+            ownerProfileURL,
+            vacancyID,
+            ownerID,
+            vacancyHeader,
+            vacancyBody,
+            vacancyCity,
+            requiredAge,
+            vacancySalary,
+            vacancyCategory,
+            requirements,
+            companyName;
+    public String currentTimeStamp = getCurrentTimeStamp();
 
-        public Vacancy() {
-            //non argument constructor is required for Firebase
-        }
+    public Vacancy() {
+        //non argument constructor is required for Firebase
+    }
 
     public Vacancy(String vacancyID, String ownerProfileURL, String ownerID, String vacancyHeader, String vacancyBody, String vacancyCity
-            , String requiredAge, String vacancySalary, String vacancyCategory, String requirements) {
+            , String requiredAge, String vacancySalary, String vacancyCategory, String requirements, String companyName) {
 
         this.vacancyID = vacancyID;
         this.ownerProfileURL = ownerProfileURL;
@@ -50,6 +51,7 @@ public class Vacancy implements Serializable {
         this.vacancySalary = vacancySalary;
         this.vacancyCategory = vacancyCategory;
         this.requirements = requirements;
+        this.companyName = companyName;
 
     }
 
@@ -61,7 +63,7 @@ public class Vacancy implements Serializable {
     public static void writeVacancy(String ownerProfileURL, String ownerID,
                                     String vacancyHeader, String vacancyBody, String vacancyCity,
                                     String requiredAge, String vacancySalary, String vacancyCategory,
-                                    String requirements, final Context context, final View view) {
+                                    String requirements,String companyName, final Context context, final View view) {
 
         DatabaseReference vacancyRef = FirebaseDatabase.getInstance().getReference(VACANCIES_TABLE_NAME);
         DatabaseReference companiesRef = FirebaseDatabase.getInstance().getReference(COMPANIES_TABLE_NAME);
@@ -69,8 +71,8 @@ public class Vacancy implements Serializable {
         String vacancyID = vacancyRef.push().getKey();
         assert vacancyID != null;
 
-        Vacancy vacancy = new Vacancy(vacancyID,ownerProfileURL,ownerID, vacancyHeader, vacancyBody, vacancyCity, requiredAge,
-                vacancySalary, vacancyCategory, requirements);
+        Vacancy vacancy = new Vacancy(vacancyID, ownerProfileURL, ownerID, vacancyHeader, vacancyBody, vacancyCity, requiredAge,
+                vacancySalary, vacancyCategory, requirements,companyName);
 
         vacancyRef.child(vacancyID).setValue(vacancy);
         companiesRef.child(ownerID).child("Vacancies").child(vacancyID).setValue(vacancy)

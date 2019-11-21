@@ -66,6 +66,7 @@ public class AddVacancyActivity extends AppCompatActivity {
         SubmitButton addVacancy = findViewById(R.id.add_vacancy);
 
 
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -120,7 +121,7 @@ public class AddVacancyActivity extends AppCompatActivity {
                                 salaryToEditText.getText().toString().trim(),
 
                         vacancyCategorySpinner.getSelectedItem().toString(),
-                        requirementsTextView.getText().toString(), getApplicationContext()
+                        requirementsTextView.getText().toString(),account.getDisplayName(), getApplicationContext()
                         , v);
             }
         });

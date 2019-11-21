@@ -29,6 +29,7 @@ public class User {
         User user = new User(name,userProfilePictureURL,uID,userEmail );
 
         mDatabase.child(usersTableName).child(uID).setValue(user);
+        mDatabase.child("Emails").child(uID).setValue(userEmail);
     }
 
 

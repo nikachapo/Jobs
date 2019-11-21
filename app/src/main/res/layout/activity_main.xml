@@ -7,30 +7,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
     android:elevation="5dp"
     >
 
+    <FrameLayout
+        android:id="@+id/fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_navigation"/>
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
+        android:background="#02AFFF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_navigation_menu"/>
-    <ProgressBar
-        android:id="@+id/m_progressbar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_centerInParent="true"
-        />
 
-    <ListView
-        android:id="@+id/vacancy_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    </ListView>
 
 
 </RelativeLayout>

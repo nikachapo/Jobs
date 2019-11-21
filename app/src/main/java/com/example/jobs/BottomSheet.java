@@ -32,11 +32,12 @@ public class BottomSheet extends BottomSheetDialogFragment {
             age,
             requirements,
             salary,
-            ownerID;
+            ownerID,
+            companyName;
 
     public BottomSheet(String ownerID, String profilePictureURL, String city, String vacancyCategory,
                        String vacancyName, String vacancyBody, String age,
-                       String requirements, String salary) {
+                       String requirements, String salary, String companyName) {
         this.ownerID = ownerID;
         this.profilePictureURL = profilePictureURL;
         this.city = city;
@@ -46,6 +47,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         this.age = age;
         this.requirements = requirements;
         this.salary = salary;
+        this.companyName = companyName;
     }
 
     @Nullable
@@ -78,6 +80,8 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 Intent bottomSheetToCompanyProfile = new Intent(getActivity(), CompanyProfileActivity.class);
                 bottomSheetToCompanyProfile.putExtra("imageurl", profilePictureURL);
                 bottomSheetToCompanyProfile.putExtra("ownerID", ownerID);
+                bottomSheetToCompanyProfile.putExtra("companyName", companyName);
+
                 ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(
                         getActivity(), Pair.create(v.findViewById(R.id.sheet_profile_image),"imagetrans"));
                 startActivity(bottomSheetToCompanyProfile, activityOptions.toBundle());

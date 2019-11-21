@@ -7,22 +7,33 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/find_job_main_icon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".CompanyProfileActivity">
+        <activity android:name=".profile_configuration_activities.CompanyProfileConfigurationActivity">
 
         </activity>
+
+        <activity android:name=".profile_configuration_activities.UserProfileConfigurationActivity" />
+
+
+        <activity android:name=".CompanyProfileActivity" />
+
         <activity
-            android:name=".AddVacancyActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:name=".AddVacancyActivity" />
+
+
         <activity android:name=".MainActivity" />
+
+
         <activity
             android:name=".UserProfile"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+
         <activity
             android:name=".LogInActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -32,6 +43,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
     </application>
 
 </manifest>

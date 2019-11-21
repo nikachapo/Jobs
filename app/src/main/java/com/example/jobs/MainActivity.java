@@ -1,70 +1,120 @@
 package com.example.jobs;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ActivityOptions;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Explode;
-import android.util.Pair;
-import android.view.LayoutInflater;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.view.SubMenu;
+import android.widget.PopupMenu;
 
-import com.example.jobs.adapters.VacancyAdapter;
-import com.example.jobs.vacancy.Vacancy;
+import com.example.jobs.fragments.CompanyProfileFragment;
+import com.example.jobs.fragments.UserProfileFragment;
+import com.example.jobs.fragments.VacancyListFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
-    private ProgressBar progressBar;
-    private DatabaseReference vacanciesRef = FirebaseDatabase.getInstance().getReference();
-    private VacancyAdapter vacancyAdapter;
+    GoogleSignInClient mGoogleSignInClient;
+    private DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference companiesUidRef;
+    private boolean userIsCompany = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ListView vacanciesListView = findViewById(R.id.vacancy_listview);
-        progressBar = findViewById(R.id.m_progressbar);
+        Fragment vacancyListFragment = new VacancyListFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_frame, vacancyListFragment).commit();
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-
-        updateListViewData(vacanciesListView);
-
-
-        vacanciesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//      Check if current user is CompanyUser.
+//      If it is addVacancy button will become visible.
+        assert account != null;
+        companiesUidRef = mRef
+                .child("Companies")
+                .child(Objects.requireNonNull(account.getId()));
+        companiesUidRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Vacancy vacancy = (Vacancy) adapterView.getAdapter().getItem(i);
-                BottomSheet bottomSheet = new BottomSheet(vacancy.ownerID,vacancy.ownerProfileURL,
-                        vacancy.vacancyCity, vacancy.vacancyCategory, vacancy.vacancyHeader, vacancy.vacancyBody,
-                        vacancy.requiredAge, vacancy.requirements, vacancy.vacancySalary);
-                bottomSheet.show(getSupportFragmentManager(), vacancy.vacancyHeader);
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    userIsCompany = true;
+                    invalidateOptionsMenu();
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment selectedFragment = null;
+
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_home:
+                        selectedFragment = new VacancyListFragment();
+                        break;
+                    case R.id.nav_profile:
+                        if (userIsCompany) {
+                            selectedFragment = new CompanyProfileFragment();
+                        } else {
+                            selectedFragment = new UserProfileFragment();
+                        }
+                        break;
+                    case R.id.nav_menu:
+                        startActivity(new Intent(MainActivity.this, UserProfile.class));
+                        break;
+                }
+
+                assert selectedFragment != null;
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .replace(R.id.fragment_frame, selectedFragment).commit();
+
+                return true;
             }
         });
 
     }
 
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.action_bar_menu, menu);
+        MenuItem addVacancy = menu.findItem(R.id.action_add_vacancy);
+        if (!userIsCompany) {
+            addVacancy.setVisible(false);
+        }
+        return true;
     }
 
     @Override
@@ -79,39 +129,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void updateListViewData(final ListView listView) {
 
-        vacancyAdapter = new VacancyAdapter(getApplicationContext(), R.layout.custom_list_item, getAllVacancies(listView));
-        listView.setAdapter(vacancyAdapter);
-
-
-    }
-
-    private ArrayList<Vacancy> getAllVacancies(final ListView listView) {
-        final ArrayList<Vacancy> vacancies = new ArrayList<>();
-        vacanciesRef.child("Vacancies").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-
-                if (vacancies.size() == 0) {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Vacancy vacancy = postSnapshot.getValue(Vacancy.class);
-                        assert vacancy != null;
-                        vacancies.add(vacancy);
-                    }
-                    vacancyAdapter = new VacancyAdapter(getApplicationContext(),
-                            R.layout.custom_list_item, vacancies);
-                    listView.setAdapter(vacancyAdapter);
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                progressBar.setVisibility(View.GONE);
-            }
-        });
-        return vacancies;
-    }
 }

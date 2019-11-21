@@ -1,66 +1,56 @@
 package com.example.jobs;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
+import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-
-import com.example.jobs.users.CompanyUser;
-import com.example.jobs.vacancy.Vacancy;
-import com.squareup.picasso.Callback;
+import com.example.jobs.fragments.VacancyListFragment;
 import com.squareup.picasso.Picasso;
 
 public class CompanyProfileActivity extends AppCompatActivity {
-    private ImageView imageView;
-    private ListView vacancyListView;
-    private ProgressBar bar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_profile);
 
-        imageView = findViewById(R.id.img);
-        vacancyListView = findViewById(R.id.company_vacancy_listview);
-        bar = findViewById(R.id.progress_bar);
-        Intent intent = getIntent();
+        ImageView imageView = findViewById(R.id.img);
 
+        Intent intent = getIntent();
         String imageURL = intent.getStringExtra("imageurl");
         String uID = intent.getStringExtra("ownerID");
+        String companyName = intent.getStringExtra("companyName");
 
-        vacancyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Vacancy vacancy = (Vacancy) adapterView.getAdapter().getItem(i);
-                BottomSheet bottomSheet = new BottomSheet(vacancy.ownerID,vacancy.ownerProfileURL,
-                        vacancy.vacancyCity, vacancy.vacancyCategory, vacancy.vacancyHeader, vacancy.vacancyBody,
-                        vacancy.requiredAge, vacancy.requirements, vacancy.vacancySalary);
-                bottomSheet.show(getSupportFragmentManager(), vacancy.vacancyHeader);
+        setTitle(companyName);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
-            }
-        });
+
+
 
         Picasso.with(this).load(imageURL).fit().centerCrop().into(imageView);
 
-        CompanyUser companyUser = new CompanyUser();
-        companyUser.getAllCompanyVacancies(vacancyListView,uID,bar,this);
-
-
+        Fragment vacancyListFragment = new VacancyListFragment(uID);
+        getSupportFragmentManager().beginTransaction().replace(R.id.vacancy_listview_fragment_frame,vacancyListFragment).commit();
 
 
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return true;
+    }
+
+
+    @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         finish();
     }
     @Override

@@ -41,5 +41,8 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'me.spark:submitbutton:1.0.1'
 
+    //Recyclerview
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

@@ -1,49 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CompanyProfileActivity"
     android:background="@drawable/main_activity_background"
-    android:padding="10dp">
+    android:padding="5dp"
+    tools:context=".CompanyProfileActivity">
 
     <ImageView
-
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:transitionName="imagetrans"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.004" />
+         />
 
-    <ListView
-        android:id="@+id/company_vacancy_listview"
+    <FrameLayout
+        android:id="@+id/vacancy_listview_fragment_frame"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img"
-        app:layout_constraintVertical_bias="1.0">
+        android:paddingBottom="0dp"
+        android:layout_below="@+id/img">
 
-    </ListView>
+    </FrameLayout>
 
-    <ProgressBar
-        android:padding="15dp"
-        android:id="@+id/progress_bar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/company_vacancy_listview"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

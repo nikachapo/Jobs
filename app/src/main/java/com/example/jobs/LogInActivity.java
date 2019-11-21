@@ -116,7 +116,7 @@ public class LogInActivity extends AppCompatActivity {
                         //person radio is selected
 
                         DatabaseReference usersUidRef = mRef
-                                .child(USERS_TABLE_NAME)
+                                .child("Emails")
                                 .child(Objects.requireNonNull(account.getId()));
 
                         ValueEventListener usersEventListener = new ValueEventListener() {
@@ -130,7 +130,8 @@ public class LogInActivity extends AppCompatActivity {
                                             Objects.requireNonNull(account.getPhotoUrl()).toString(),
                                             account.getId(), USERS_TABLE_NAME);
                                     makeToast("New User Added");
-                                }
+                                }else
+                                    makeToast("Email already exists");
                             }
 
                             @Override
@@ -143,7 +144,7 @@ public class LogInActivity extends AppCompatActivity {
                     case R.id.radio_company:
                         //Company radio is selected
                         DatabaseReference companiesUidRef = mRef
-                                .child(COMPANIES_TABLE_NAME)
+                                .child("Emails")
                                 .child(Objects.requireNonNull(account.getId()));
 
                         ValueEventListener companiesEventListener = new ValueEventListener() {
@@ -157,7 +158,8 @@ public class LogInActivity extends AppCompatActivity {
                                             Objects.requireNonNull(account.getPhotoUrl()).toString(),
                                             account.getId(), COMPANIES_TABLE_NAME);
                                     makeToast("New Company Added");
-                                }
+                                }else
+                                    makeToast("Email already exists");
                             }
 
                             @Override

@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
@@ -7,38 +8,46 @@
     tools:context="com.example.jobs.LogInActivity">
 
 
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:layout_marginBottom="60dp"
+        android:src="@drawable/find_job_main_icon"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
     <TextView
-        android:gravity="center"
         android:id="@+id/welcome_text"
         android:layout_width="match_parent"
         android:layout_height="170dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="78dp"
-        android:layout_marginEnd="0dp"
+
+        android:gravity="center"
         android:text="@string/welcome_text"
         android:textColor="@android:color/white"
         android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="103dp" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.4" />
 
     <RadioGroup
-        android:layout_centerHorizontal="true"
-        android:id="@+id/radio_group"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/welcome_text"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical">
+        android:id="@+id/radio_group"
+        android:layout_width="208dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text"
+        app:layout_constraintVertical_bias="0.0">
 
         <RadioButton
             android:id="@+id/radio_person"
@@ -55,6 +64,16 @@
             android:text="@string/company"
             android:textColor="@android:color/white"
             android:textSize="30sp" />
+
     </RadioGroup>
 
-</RelativeLayout>
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
