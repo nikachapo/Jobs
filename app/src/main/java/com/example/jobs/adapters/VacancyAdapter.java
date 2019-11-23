@@ -1,23 +1,23 @@
 package com.example.jobs.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-
+import com.example.jobs.BottomSheet;
+import com.example.jobs.CompanyProfileActivity;
+import com.example.jobs.MainActivity;
 import com.example.jobs.R;
 import com.example.jobs.vacancy.Vacancy;
 import com.squareup.picasso.Callback;
@@ -25,91 +25,141 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class VacancyAdapter extends ArrayAdapter<Vacancy> {
-    private Context mContext;
-    private int mResource;
-    public VacancyAdapter(@NonNull Context context, int resource, @NonNull ArrayList<Vacancy> objects) {
-        super(context, resource, objects);
-        mContext = context;
-        mResource = resource;
+
+
+public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.VacanciesViewHolder>{
+
+
+    private ArrayList<Vacancy> vacancies;
+    private Context context;
+//    private int lastPosition = -1;
+    public VacancyAdapter(Context context, ArrayList<Vacancy> vacancies) {
+        this.context = context;
+        this.vacancies = vacancies;
+
     }
 
-    @SuppressLint("ViewHolder")
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public VacancyAdapter.VacanciesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.custom_list_item,parent,false);
+        TextView vacancyNameTextView = view.findViewById(R.id.company_name);
+        TextView vacancyBodyTextView =  view.findViewById(R.id.vacancy_name);
+        TextView vacancyDateRangeTextView =view.findViewById(R.id.date_range);
+        ImageView vacancyOwnerLogoImageView =view.findViewById(R.id.company_image);
+        ConstraintLayout vacancyDetailsLayout = view.findViewById(R.id.vacancy_details_layout);
 
-        Vacancy vacancy = getItem(position);
-        assert vacancy != null;
-        String vacancyName = vacancy.vacancyHeader;
-        String vacancyBody = vacancy.vacancyBody;
-        String vacancyDate = vacancy.currentTimeStamp;
-        String vacancyCity = vacancy.vacancyCity;
-        final String companyLogo = vacancy.ownerProfileURL;
+        return new VacanciesViewHolder(view, vacancyNameTextView,
+                vacancyBodyTextView, vacancyDateRangeTextView, vacancyOwnerLogoImageView, vacancyDetailsLayout);
+    }
 
-        //create view result
-        final View result;
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onBindViewHolder(@NonNull final VacanciesViewHolder holder, int position) {
+        final Vacancy vacancy = vacancies.get(position);
 
-        //create item holder
-        ListItemsViewHolder itemsViewHolder = new ListItemsViewHolder();
-
-        if(convertView == null){
-            LayoutInflater inflater = LayoutInflater.from(mContext);
-            convertView = inflater.inflate(mResource,parent,false);
-            itemsViewHolder.vacancyNameTextView =  convertView.findViewById(R.id.company_name);
-            itemsViewHolder.vacancyBodyTextView =  convertView.findViewById(R.id.vacancy_name);
-            itemsViewHolder.vacancyDateRangeTextView =  convertView.findViewById(R.id.date_range);
-            itemsViewHolder.vacancyOwnerLogoImageView =  convertView.findViewById(R.id.company_image);
-
-            result = convertView;
-            convertView.setTag(itemsViewHolder);
-
-        }else {
-            itemsViewHolder = (ListItemsViewHolder) convertView.getTag();
-            result = convertView;
-        }
+        //Item Animation
+        holder.vacancyOwnerLogoImageView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.scale));
+        holder.vacancyDetailLayout.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_animation));
 
 
-        itemsViewHolder.vacancyNameTextView.setText(vacancyName);
-
-        if(vacancyBody.length() > 40){
-            itemsViewHolder.vacancyBodyTextView.setText(vacancyBody.substring(0,38)+"...");
-        }else
-            itemsViewHolder.vacancyBodyTextView.setText(vacancyBody);
-
-        itemsViewHolder.vacancyDateRangeTextView.setText(vacancyDate);
-        final View finalConvertView = convertView;
-        final ListItemsViewHolder finalItemsViewHolder = itemsViewHolder;
-        Picasso.with(getContext()).load(companyLogo)
-
-                .resize(100, 100)
-                .into(itemsViewHolder.vacancyOwnerLogoImageView, new Callback() {
+        Picasso.with(context).load(vacancy.ownerProfileURL)
+                .resize(70, 70)
+                .into(holder.vacancyOwnerLogoImageView, new Callback() {
                     @Override
                     public void onSuccess() {
-                        Bitmap imageBitmap = ((BitmapDrawable) finalItemsViewHolder.vacancyOwnerLogoImageView.getDrawable()).getBitmap();
-                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(finalConvertView.getResources(), imageBitmap);
+                        Bitmap imageBitmap = ((BitmapDrawable) holder.vacancyOwnerLogoImageView.getDrawable()).getBitmap();
+                        RoundedBitmapDrawable imageDrawable = RoundedBitmapDrawableFactory.create(context.getResources(), imageBitmap);
                         imageDrawable.setCircular(true);
                         imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
-                        finalItemsViewHolder.vacancyOwnerLogoImageView.setImageDrawable(imageDrawable);
+                        holder.vacancyOwnerLogoImageView.setImageDrawable(imageDrawable);
                     }
                     @Override
                     public void onError() {
-                        finalItemsViewHolder.vacancyOwnerLogoImageView.setImageResource(R.drawable.ic_default_company_image);
+                        holder.vacancyOwnerLogoImageView.setImageResource(R.drawable.ic_default_company_image);
                     }
                 });
+        holder.vacancyNameTextView.setText(vacancy.vacancyHeader);
 
-        Animation animation = AnimationUtils.loadAnimation(mContext,R.anim.scale);
-        result.startAnimation(animation);
-        return convertView;
+        if (vacancy.vacancyBody.length() > 40) {
+            holder.vacancyBodyTextView.setText(vacancy.vacancyBody.substring(0, 30) + "...");
+        } else
+            holder.vacancyBodyTextView.setText(vacancy.vacancyBody);
+
+        holder.vacancyDateRangeTextView.setText(vacancy.currentTimeStamp);
+
+        holder.vacancyOwnerLogoImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context.getApplicationContext(),CompanyProfileActivity.class);
+                intent.putExtra("imageurl", vacancy.ownerProfileURL);
+                intent.putExtra("ownerID", vacancy.ownerID);
+                intent.putExtra("companyName", vacancy.companyName);
+
+                context.startActivity(intent);
+                Activity activity = (Activity) context;
+                activity.overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+            }
+        });
+
+
+        holder.vacancyDetailLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BottomSheet bottomSheet = new BottomSheet(vacancy.ownerID, vacancy.ownerProfileURL,
+                        vacancy.vacancyCity, vacancy.vacancyCategory, vacancy.vacancyHeader, vacancy.vacancyBody,
+                        vacancy.requiredAge, vacancy.requirements, vacancy.vacancySalary, vacancy.companyName);
+                bottomSheet.show(((AppCompatActivity) context).getSupportFragmentManager(), vacancy.vacancyHeader);
+
+            }
+        });
+
+
+//        setAnimation(holder.itemView,position);
     }
 
-    static class ListItemsViewHolder{
+    @Override
+    public int getItemCount() {
+        return vacancies.size();
+    }
+
+    static class VacanciesViewHolder extends RecyclerView.ViewHolder{
         TextView vacancyNameTextView ;
-        TextView vacancyBodyTextView ;
+        TextView vacancyBodyTextView;
         TextView vacancyDateRangeTextView;
-        ImageView vacancyOwnerLogoImageView ;
-
+        ImageView vacancyOwnerLogoImageView;
+        ConstraintLayout vacancyDetailLayout;
+        VacanciesViewHolder(View itemView, TextView vacancyNameTextView,
+                            TextView vacancyBodyTextView,
+                            TextView vacancyDateRangeTextView,
+                            ImageView vacancyOwnerLogoImageView,
+                            ConstraintLayout vacancyDetailLayout) {
+            super(itemView);
+            this.vacancyNameTextView = vacancyNameTextView;
+            this.vacancyBodyTextView = vacancyBodyTextView;
+            this.vacancyDateRangeTextView = vacancyDateRangeTextView;
+            this.vacancyOwnerLogoImageView = vacancyOwnerLogoImageView;
+            this.vacancyDetailLayout = vacancyDetailLayout;
+        }
     }
-
+//    private void setAnimation(ConstraintLayout vacancyDetailsLayout, int position)
+//    {
+//        // If the bound view wasn't previously displayed on screen, it's animated
+//        if (position > lastPosition)
+//        {
+//            Animation animation = AnimationUtils.loadAnimation(context, R.anim.scale);
+//            vacancyDetailsLayout.startAnimation(animation);
+//            lastPosition = position;
+//        }
+//    }
 }

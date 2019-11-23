@@ -1,15 +1,17 @@
 package com.example.jobs;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
+
 import com.example.jobs.fragments.VacancyListFragment;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 public class CompanyProfileActivity extends AppCompatActivity {
 
@@ -26,8 +28,7 @@ public class CompanyProfileActivity extends AppCompatActivity {
         String companyName = intent.getStringExtra("companyName");
 
         setTitle(companyName);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
 
@@ -56,6 +57,6 @@ public class CompanyProfileActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

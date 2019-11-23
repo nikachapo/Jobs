@@ -30,7 +30,7 @@
 
 
         <activity
-            android:name=".UserProfile"
+            android:name=".UserProfileActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
 

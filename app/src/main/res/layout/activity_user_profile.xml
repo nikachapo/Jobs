@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#5007CE"
     android:orientation="vertical"
-    tools:context=".UserProfile"
+    tools:context=".UserProfileActivity"
     android:padding="15dp">
 
     <Button

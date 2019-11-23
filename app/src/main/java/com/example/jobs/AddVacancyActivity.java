@@ -1,11 +1,9 @@
 package com.example.jobs;
 
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +25,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.spark.submitbutton.SubmitButton;
 
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class AddVacancyActivity extends AppCompatActivity {
@@ -51,7 +52,8 @@ public class AddVacancyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_vacancy);
-
+        setTitle("Add Vacancy");
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         vacancyNameLayout = findViewById(R.id.vacancy_name_textInputEditText);
         vacancyBodyLayput = findViewById(R.id.vacancy_body_textInputEditText);
         vacancyCityLayout = findViewById(R.id.vacancy_city_textInputEditText);
@@ -120,10 +122,27 @@ public class AddVacancyActivity extends AppCompatActivity {
                         salaryFromEditText.getText().toString().trim() + "-" +
                                 salaryToEditText.getText().toString().trim(),
 
-                        vacancyCategorySpinner.getSelectedItem().toString(),
+                         vacancyCategorySpinner.getSelectedItem().toString(),
                         requirementsTextView.getText().toString(),account.getDisplayName(), getApplicationContext()
                         , v);
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+        }
+        return true;
+    }
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 }

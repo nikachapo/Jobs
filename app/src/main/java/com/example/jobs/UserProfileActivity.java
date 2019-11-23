@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfileActivity extends AppCompatActivity {
     private Button addVacancyAcivityButton;
     private static final String COMPANIES_TABLE_NAME = "Companies";
     GoogleSignInClient mGoogleSignInClient;
@@ -48,7 +48,7 @@ public class UserProfile extends AppCompatActivity {
         addVacancyAcivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(UserProfile.this, AddVacancyActivity.class));
+                startActivity(new Intent(UserProfileActivity.this, AddVacancyActivity.class));
             }
         });
 
@@ -99,7 +99,7 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 signOut();
-                startActivity(new Intent(UserProfile.this, LogInActivity.class));
+                startActivity(new Intent(UserProfileActivity.this, LogInActivity.class));
 
             }
         });

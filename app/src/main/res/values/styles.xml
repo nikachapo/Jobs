@@ -3,11 +3,6 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-
-        <item name="icon">@drawable/find_job_main_icon</item>
-        <item name="colorPrimary">#1793E6</item>
-        <item name="colorPrimaryDark">#1793E6</item>
-        <item name="colorAccent">#5E0BB3</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
         <item name="android:windowActivityTransitions">true</item>
     </style>

@@ -17,6 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CompanyUser extends User {
     private static final String COMPANY_USERS_TABLE_NAME = "Companies";
@@ -42,7 +43,7 @@ public class CompanyUser extends User {
 
     }
 
-    public ArrayList<Vacancy> getAllCompanyVacancies(final ListView listView, String ownerID, final ProgressBar bar, final Context context){
+    public ArrayList<Vacancy> getAllCompanyVacancies(final RecyclerView recyclerView, String ownerID, final ProgressBar bar, final Context context){
         final ArrayList<Vacancy> vacancies = new ArrayList<>();
         companiesRef.child(COMPANY_USERS_TABLE_NAME).child(ownerID)
                 .child(COMPANY_USERS_VACANCIES_KEY_NAME)
@@ -59,8 +60,8 @@ public class CompanyUser extends User {
                         vacancies.add(vacancy);
                     }
 
-                    vacancyAdapter = new VacancyAdapter(context,R.layout.custom_list_item,vacancies);
-                    listView.setAdapter(vacancyAdapter);
+                    vacancyAdapter = new VacancyAdapter(context,vacancies);
+                    recyclerView.setAdapter(vacancyAdapter);
                     bar.setVisibility(View.INVISIBLE);
 
                 }

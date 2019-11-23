@@ -1,14 +1,13 @@
 package com.example.jobs;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.transition.Fade;
+import android.transition.Slide;
+import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import android.widget.PopupMenu;
 
 import com.example.jobs.fragments.CompanyProfileFragment;
 import com.example.jobs.fragments.UserProfileFragment;
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         break;
                     case R.id.nav_menu:
-                        startActivity(new Intent(MainActivity.this, UserProfile.class));
+                        startActivity(new Intent(MainActivity.this, UserProfileActivity.class));
                         break;
                 }
 
@@ -123,11 +122,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_add_vacancy:
                 //Code to run when the settings item is clicked
                 startActivity(new Intent(MainActivity.this, AddVacancyActivity.class));
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
 }

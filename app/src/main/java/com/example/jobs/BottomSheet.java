@@ -83,10 +83,9 @@ public class BottomSheet extends BottomSheetDialogFragment {
                 bottomSheetToCompanyProfile.putExtra("companyName", companyName);
 
                 ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(
-                        getActivity(), Pair.create(v.findViewById(R.id.sheet_profile_image),"imagetrans"));
+                        getActivity(), Pair.create(v.findViewById(R.id.sheet_profile_image), "imagetrans"));
                 startActivity(bottomSheetToCompanyProfile, activityOptions.toBundle());
                 dismiss();
-
             }
         });
 
