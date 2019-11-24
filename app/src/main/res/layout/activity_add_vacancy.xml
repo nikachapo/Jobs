@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     tools:context=".AddVacancyActivity"
     android:padding="15dp"
-    android:background="#6B90DA">
+    android:background="#E6D752">
 
     <ScrollView
         android:layout_width="match_parent"

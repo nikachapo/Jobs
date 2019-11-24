@@ -38,7 +38,7 @@ public class CompanyProfileActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_company_profile);
         collapsingToolbarLayout.setTitle(companyName);
-        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#E73B05"));
+        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#E6D752"));
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

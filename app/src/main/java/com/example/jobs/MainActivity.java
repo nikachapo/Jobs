@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitleEnabled(false);
 
 
+
         Fragment vacancyListFragment = new VacancyListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_frame, vacancyListFragment).commit();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
