@@ -140,9 +140,5 @@ public class AddVacancyActivity extends AppCompatActivity {
     public void onBackPressed() {
         finish();
     }
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
+
 }

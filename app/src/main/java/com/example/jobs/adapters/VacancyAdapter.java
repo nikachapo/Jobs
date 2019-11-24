@@ -1,23 +1,20 @@
 package com.example.jobs.adapters;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jobs.BottomSheet;
 import com.example.jobs.CompanyProfileActivity;
-import com.example.jobs.MainActivity;
 import com.example.jobs.R;
 import com.example.jobs.vacancy.Vacancy;
 import com.squareup.picasso.Callback;
@@ -28,20 +25,18 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-
-public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.VacanciesViewHolder>{
+public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.VacanciesViewHolder> {
 
 
     private ArrayList<Vacancy> vacancies;
     private Context context;
-//    private int lastPosition = -1;
+    private int lastPosition = -1;
+
     public VacancyAdapter(Context context, ArrayList<Vacancy> vacancies) {
         this.context = context;
         this.vacancies = vacancies;
@@ -51,12 +46,12 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
     @NonNull
     @Override
     public VacancyAdapter.VacanciesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.custom_list_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.custom_list_item, parent, false);
         TextView vacancyNameTextView = view.findViewById(R.id.company_name);
-        TextView vacancyBodyTextView =  view.findViewById(R.id.vacancy_name);
-        TextView vacancyDateRangeTextView =view.findViewById(R.id.date_range);
-        ImageView vacancyOwnerLogoImageView =view.findViewById(R.id.company_image);
+        TextView vacancyBodyTextView = view.findViewById(R.id.vacancy_name);
+        TextView vacancyDateRangeTextView = view.findViewById(R.id.date_range);
+        ImageView vacancyOwnerLogoImageView = view.findViewById(R.id.company_image);
         ConstraintLayout vacancyDetailsLayout = view.findViewById(R.id.vacancy_details_layout);
 
         return new VacanciesViewHolder(view, vacancyNameTextView,
@@ -69,8 +64,11 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
         final Vacancy vacancy = vacancies.get(position);
 
         //Item Animation
-        holder.vacancyOwnerLogoImageView.setAnimation(AnimationUtils.loadAnimation(context,R.anim.scale));
-        holder.vacancyDetailLayout.setAnimation(AnimationUtils.loadAnimation(context,R.anim.fade_animation));
+        if (position > lastPosition) {
+            lastPosition = position;
+            holder.vacancyOwnerLogoImageView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.user_image_slide_animation));
+            holder.vacancyDetailLayout.setAnimation(AnimationUtils.loadAnimation(context, R.anim.vacancy_details_scale_animation));
+        }
 
 
         Picasso.with(context).load(vacancy.ownerProfileURL)
@@ -84,6 +82,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
                         imageDrawable.setCornerRadius(Math.max(imageBitmap.getWidth(), imageBitmap.getHeight()) / 2.0f);
                         holder.vacancyOwnerLogoImageView.setImageDrawable(imageDrawable);
                     }
+
                     @Override
                     public void onError() {
                         holder.vacancyOwnerLogoImageView.setImageResource(R.drawable.ic_default_company_image);
@@ -101,14 +100,13 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
         holder.vacancyOwnerLogoImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context.getApplicationContext(),CompanyProfileActivity.class);
+                Intent intent = new Intent(context.getApplicationContext(), CompanyProfileActivity.class);
                 intent.putExtra("imageurl", vacancy.ownerProfileURL);
                 intent.putExtra("ownerID", vacancy.ownerID);
                 intent.putExtra("companyName", vacancy.companyName);
 
                 context.startActivity(intent);
-                Activity activity = (Activity) context;
-                activity.overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+
             }
         });
 
@@ -133,12 +131,13 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
         return vacancies.size();
     }
 
-    static class VacanciesViewHolder extends RecyclerView.ViewHolder{
-        TextView vacancyNameTextView ;
+    static class VacanciesViewHolder extends RecyclerView.ViewHolder {
+        TextView vacancyNameTextView;
         TextView vacancyBodyTextView;
         TextView vacancyDateRangeTextView;
         ImageView vacancyOwnerLogoImageView;
         ConstraintLayout vacancyDetailLayout;
+
         VacanciesViewHolder(View itemView, TextView vacancyNameTextView,
                             TextView vacancyBodyTextView,
                             TextView vacancyDateRangeTextView,
@@ -157,7 +156,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
 //        // If the bound view wasn't previously displayed on screen, it's animated
 //        if (position > lastPosition)
 //        {
-//            Animation animation = AnimationUtils.loadAnimation(context, R.anim.scale);
+//            Animation animation = AnimationUtils.loadAnimation(context, R.anim.user_image_slide_animation);
 //            vacancyDetailsLayout.startAnimation(animation);
 //            lastPosition = position;
 //        }

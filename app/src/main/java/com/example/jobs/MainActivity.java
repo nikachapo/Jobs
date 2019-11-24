@@ -1,10 +1,11 @@
 package com.example.jobs;
 
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.AppBarLayout;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.transition.Fade;
-import android.transition.Slide;
-import android.transition.TransitionInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,6 +42,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("JOBS");
+
+        setSupportActionBar(toolbar);
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitleEnabled(false);
+
+        collapsingToolbarLayout.setTitle("klkl");
 
         Fragment vacancyListFragment = new VacancyListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_frame, vacancyListFragment).commit();
@@ -122,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_add_vacancy:
                 //Code to run when the settings item is clicked
                 startActivity(new Intent(MainActivity.this, AddVacancyActivity.class));
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_right);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
