@@ -20,7 +20,8 @@
         <activity android:name=".profile_configuration_activities.UserProfileConfigurationActivity" />
 
 
-        <activity android:name=".CompanyProfileActivity" />
+        <activity android:name=".CompanyProfileActivity"
+            android:theme="@style/AppThemeCustomActionBar"/>
 
         <activity
             android:name=".AddVacancyActivity"
