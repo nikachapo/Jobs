@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.jobs.profile_configuration_activities.CompanyProfileConfigurationActivity;
+import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
 import com.example.jobs.users.CompanyUser;
 import com.example.jobs.users.PersonUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -37,9 +39,6 @@ import java.util.Objects;
 
 public class LogInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 0;
-    private static final String USERS_TABLE_NAME = "Users";
-    private static final String COMPANIES_TABLE_NAME = "Companies";
-
     private GoogleSignInClient mGoogleSignInClient;
     private DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
     private FirebaseAuth mAuth;
@@ -110,7 +109,7 @@ public class LogInActivity extends AppCompatActivity {
                 final GoogleSignInAccount account = task.getResult(ApiException.class);
                 assert account != null;
                 firebaseAuthWithGoogle(account);
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
                 switch (checkedRadioButtonId) {
                     case R.id.radio_person:
                         //person radio is selected
@@ -128,10 +127,19 @@ public class LogInActivity extends AppCompatActivity {
                                     personUser.writePersonUser(mRef,
                                             account.getEmail(), account.getDisplayName(),
                                             Objects.requireNonNull(account.getPhotoUrl()).toString(),
-                                            account.getId(), USERS_TABLE_NAME);
+                                            account.getId(), "Users");
                                     makeToast("New User Added");
-                                }else
+
+                                    //move to configure user profile Activity
+                                    startActivity(new Intent(LogInActivity.this
+                                            , UserProfileConfigurationActivity.class));
+                                } else {
                                     makeToast("Email already exists");
+                                    //move to configure Main Activity
+                                    startActivity(new Intent(LogInActivity.this
+                                            , MainActivity.class));
+                                }
+
                             }
 
                             @Override
@@ -152,14 +160,22 @@ public class LogInActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (!dataSnapshot.exists()) {
                                     //create new user
-                                    CompanyUser companyUser= new CompanyUser();
+                                    CompanyUser companyUser = new CompanyUser();
                                     companyUser.writeCompanyUser(mRef, account.getEmail(),
                                             account.getDisplayName(),
                                             Objects.requireNonNull(account.getPhotoUrl()).toString(),
-                                            account.getId(), COMPANIES_TABLE_NAME);
+                                            account.getId(),"Companies");
+
                                     makeToast("New Company Added");
-                                }else
+                                    //move to configure company profile Activity
+                                    startActivity(new Intent(LogInActivity.this
+                                            , CompanyProfileConfigurationActivity.class));
+                                } else {
                                     makeToast("Email already exists");
+                                    //move to configure Main Activity
+                                    startActivity(new Intent(LogInActivity.this
+                                            , MainActivity.class));
+                                }
                             }
 
                             @Override
@@ -170,18 +186,15 @@ public class LogInActivity extends AppCompatActivity {
 
                         break;
                 }
-                startActivity(intent);
+
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("MAin", "Google sign in failed", e);
-
             }
         }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d("authwith google", "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -189,29 +202,23 @@ public class LogInActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("Main", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("Main", "signInWithCredential:failure", task.getException());
                             Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.",
                                     Snackbar.LENGTH_SHORT).show();
 
                         }
 
-                        // ...
                     }
                 });
     }
 
 
-    private void makeToast(String text){
+    private void makeToast(String text) {
         Toast.makeText(LogInActivity.this, text, Toast.LENGTH_SHORT).show();
     }
 
-//    private boolean checkIfEmailExists(String uID){
-//
-//    }
 
 }

@@ -20,10 +20,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CompanyUser extends User {
-    private static final String COMPANY_USERS_TABLE_NAME = "Companies";
-    private static final String COMPANY_USERS_VACANCIES_KEY_NAME = "Vacancies";
+    private  String COMPANY_USERS_TABLE_NAME = "Companies";
+    private String COMPANY_USERS_VACANCIES_KEY_NAME = "Vacancies";
     private DatabaseReference companiesRef = FirebaseDatabase.getInstance().getReference();
     private VacancyAdapter vacancyAdapter;
+
+
     public CompanyUser() {
 
     }
