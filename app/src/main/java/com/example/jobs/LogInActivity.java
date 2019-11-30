@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.jobs.profile_configuration_activities.CompanyProfileConfigurationActivity;
 import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
-import com.example.jobs.users.CurrentUserInformation;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;

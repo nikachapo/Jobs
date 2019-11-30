@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jobs.users.SignedInUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,7 +34,7 @@ import java.util.Objects;
 public class UserProfileActivity extends AppCompatActivity {
     private Button addVacancyAcivityButton;
     private static final String COMPANIES_TABLE_NAME = "Companies";
-    private GoogleSignInClient mGoogleSignInClient;
+    //    private GoogleSignInClient mGoogleSignInClient;
     private DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
 
     @SuppressLint("SetTextI18n")
@@ -57,7 +60,7 @@ public class UserProfileActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
@@ -95,6 +98,8 @@ public class UserProfileActivity extends AppCompatActivity {
             }
         });
 
+
+
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,14 +111,8 @@ public class UserProfileActivity extends AppCompatActivity {
 
     }
 
-    private void signOut() {
-        mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
 
+    private void signOut() {
+        SignedInUser.signOut(this);
     }
 }

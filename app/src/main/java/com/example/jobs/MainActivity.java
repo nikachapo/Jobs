@@ -1,9 +1,5 @@
 package com.example.jobs;
 
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.appbar.AppBarLayout;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +11,6 @@ import com.example.jobs.fragments.UserProfileFragment;
 import com.example.jobs.fragments.VacancyListFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -29,15 +23,12 @@ import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
-    GoogleSignInClient mGoogleSignInClient;
-    private DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference companiesUidRef;
     private boolean userIsCompany = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,17 +46,16 @@ public class MainActivity extends AppCompatActivity {
         Fragment vacancyListFragment = new VacancyListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_frame, vacancyListFragment).commit();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
+
         final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
-//      Check if current user is CompanyUser.
-//      If it is addVacancy button will become visible.
+
+        //      Check if current user is CompanyUser.
+        //      If it is addVacancy button will become visible.
         assert account != null;
-        companiesUidRef = mRef
+        DatabaseReference companiesUidRef = FirebaseDatabase.getInstance().getReference()
                 .child("Companies")
                 .child(Objects.requireNonNull(account.getId()));
         companiesUidRef.addValueEventListener(new ValueEventListener() {

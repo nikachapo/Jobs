@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import com.example.jobs.MainActivity;
 import com.example.jobs.R;
+import com.example.jobs.UserProfileActivity;
 import com.example.jobs.users.CompanyUser;
+import com.example.jobs.users.SignedInUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -67,6 +69,7 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(),"Company added",Toast.LENGTH_LONG).show();
 
                 startActivity(new Intent(CompanyProfileConfigurationActivity.this, MainActivity.class));
+                finish();
             }
         });
     }
@@ -87,12 +90,6 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-        mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
+        SignedInUser.signOut(this);
     }
 }

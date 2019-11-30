@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import com.example.jobs.MainActivity;
 import com.example.jobs.R;
+import com.example.jobs.UserProfileActivity;
 import com.example.jobs.users.PersonUser;
+import com.example.jobs.users.SignedInUser;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -25,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class UserProfileConfigurationActivity extends AppCompatActivity {
 
     private EditText age, city, username;
-    private GoogleSignInClient mGoogleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +40,6 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
         city = findViewById(R.id.person_city_conf);
         username = findViewById(R.id.person_username_conf);
         Button register = findViewById(R.id.person_register);
-
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
 
 
         Intent intent = getIntent();
@@ -70,6 +61,8 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
 
                 startActivity(new Intent(UserProfileConfigurationActivity.this,
                         MainActivity.class));
+
+                finish();
             }
         });
     }
@@ -89,12 +82,7 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-        mGoogleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(getApplicationContext(), "Signed out", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
+        SignedInUser.signOut(this);
+
     }
 }
