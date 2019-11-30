@@ -19,64 +19,59 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CompanyUser extends User {
-    private  String COMPANY_USERS_TABLE_NAME = "Companies";
-    private String COMPANY_USERS_VACANCIES_KEY_NAME = "Vacancies";
-    private DatabaseReference companiesRef = FirebaseDatabase.getInstance().getReference();
+public class CompanyUser extends User{
     private VacancyAdapter vacancyAdapter;
 
+    public String description;
 
     public CompanyUser() {
 
     }
 
-    public CompanyUser(String username, String userProfilePictureURL, String uID, String userEmail) {
-        super(username, userProfilePictureURL, uID, userEmail);
+    public CompanyUser(String uID, String username,  String userProfilePictureURL,String userEmail,
+                       String desctiption) {
+
+        super(username,userProfilePictureURL,uID,userEmail);
+        this.description = desctiption;
 
     }
 
-    public void writeCompanyUser(DatabaseReference mDatabase,
-                                 String userEmail, String name,
-                                 String userProfilePictureURL, String uID,
-                                 String usersTableName){
-        writeNewUser(mDatabase, userEmail, name, userProfilePictureURL, uID, usersTableName);
-        mDatabase.child(COMPANY_USERS_TABLE_NAME).child(uID)
-                .child(COMPANY_USERS_VACANCIES_KEY_NAME).setValue("");
-
+    public void writeCompanyUser(){
+        writeNewUser(databaseReference,this);
     }
+
+
 
     public ArrayList<Vacancy> getAllCompanyVacancies(final RecyclerView recyclerView, String ownerID, final ProgressBar bar, final Context context){
         final ArrayList<Vacancy> vacancies = new ArrayList<>();
-        companiesRef.child(COMPANY_USERS_TABLE_NAME).child(ownerID)
+        databaseReference.child(COMPANY_USERS_TABLE_NAME).child(ownerID)
                 .child(COMPANY_USERS_VACANCIES_KEY_NAME)
                 .addValueEventListener(new ValueEventListener() {
 
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
-                if (vacancies.size() == 0) {
-                    for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                        Vacancy vacancy = postSnapshot.getValue(Vacancy.class);
-                        assert vacancy != null;
-                        vacancies.add(vacancy);
+                        if (vacancies.size() == 0) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                Vacancy vacancy = postSnapshot.getValue(Vacancy.class);
+                                assert vacancy != null;
+                                vacancies.add(vacancy);
+                            }
+
+                            vacancyAdapter = new VacancyAdapter(context,vacancies);
+                            recyclerView.setAdapter(vacancyAdapter);
+                            bar.setVisibility(View.INVISIBLE);
+
+                        }
                     }
 
-                    vacancyAdapter = new VacancyAdapter(context,vacancies);
-                    recyclerView.setAdapter(vacancyAdapter);
-                    bar.setVisibility(View.INVISIBLE);
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                    }
+                });
         return vacancies;
 
     }
-
-
 }

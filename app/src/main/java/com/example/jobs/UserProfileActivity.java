@@ -31,7 +31,7 @@ import java.util.Objects;
 public class UserProfileActivity extends AppCompatActivity {
     private Button addVacancyAcivityButton;
     private static final String COMPANIES_TABLE_NAME = "Companies";
-    GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
 
     @SuppressLint("SetTextI18n")

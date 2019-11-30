@@ -110,8 +110,7 @@ public class AddVacancyActivity extends AppCompatActivity {
         addVacancy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Vacancy.writeVacancy(String.valueOf(
-                       companyUser[0].userProfilePictureURL), account.getId(),
+                Vacancy.writeVacancy(account.getPhotoUrl().toString(), account.getId(),
                         vacancyNameLayout.getEditText().getText().toString().trim(),
                         vacancyBodyLayput.getEditText().getText().toString().trim(),
                         vacancyCityLayout.getEditText().getText().toString().trim(),

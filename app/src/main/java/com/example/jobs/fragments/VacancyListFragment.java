@@ -1,6 +1,5 @@
 package com.example.jobs.fragments;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +77,8 @@ public class VacancyListFragment extends Fragment {
         vacancyAdapter = new VacancyAdapter(Objects.requireNonNull(getContext()), vacancies);
         recyclerView.setAdapter(vacancyAdapter);
     }
+
+
 
     private ArrayList<Vacancy> getAllVacancies(final RecyclerView listView) {
         final ArrayList<Vacancy> vacancies = new ArrayList<>();

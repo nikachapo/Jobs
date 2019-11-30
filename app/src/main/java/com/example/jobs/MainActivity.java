@@ -104,11 +104,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
 
-                assert selectedFragment != null;
-                getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                        .replace(R.id.fragment_frame, selectedFragment).commit();
-
+                if(selectedFragment!=null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .replace(R.id.fragment_frame, selectedFragment).commit();
+                }
                 return true;
             }
         });

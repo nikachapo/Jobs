@@ -12,8 +12,7 @@ import android.widget.Toast;
 
 import com.example.jobs.profile_configuration_activities.CompanyProfileConfigurationActivity;
 import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
-import com.example.jobs.users.CompanyUser;
-import com.example.jobs.users.PersonUser;
+import com.example.jobs.users.CurrentUserInformation;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -83,7 +82,6 @@ public class LogInActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         GoogleSignInAccount lastSignedInAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (lastSignedInAccount != null) {
             startActivity(new Intent(LogInActivity.this, MainActivity.class));
@@ -107,6 +105,7 @@ public class LogInActivity extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 final GoogleSignInAccount account = task.getResult(ApiException.class);
+
                 assert account != null;
                 firebaseAuthWithGoogle(account);
 
@@ -122,17 +121,14 @@ public class LogInActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (!dataSnapshot.exists()) {
-                                    //create new user
-                                    PersonUser personUser = new PersonUser();
-                                    personUser.writePersonUser(mRef,
-                                            account.getEmail(), account.getDisplayName(),
-                                            Objects.requireNonNull(account.getPhotoUrl()).toString(),
-                                            account.getId(), "Users");
-                                    makeToast("New User Added");
+                                   Intent loginToRegister = new Intent(LogInActivity.this
+                                           , UserProfileConfigurationActivity.class);
+                                    loginToRegister.putExtra("accountID",account.getId());
+                                    loginToRegister.putExtra("accountEmail",account.getEmail());
+                                    loginToRegister.putExtra("profileUrl",account.getPhotoUrl().toString());
 
                                     //move to configure user profile Activity
-                                    startActivity(new Intent(LogInActivity.this
-                                            , UserProfileConfigurationActivity.class));
+                                    startActivity(loginToRegister);
                                 } else {
                                     makeToast("Email already exists");
                                     //move to configure Main Activity
@@ -159,20 +155,17 @@ public class LogInActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (!dataSnapshot.exists()) {
-                                    //create new user
-                                    CompanyUser companyUser = new CompanyUser();
-                                    companyUser.writeCompanyUser(mRef, account.getEmail(),
-                                            account.getDisplayName(),
-                                            Objects.requireNonNull(account.getPhotoUrl()).toString(),
-                                            account.getId(),"Companies");
-
-                                    makeToast("New Company Added");
                                     //move to configure company profile Activity
-                                    startActivity(new Intent(LogInActivity.this
-                                            , CompanyProfileConfigurationActivity.class));
+                                    Intent loginToRegister = new Intent(LogInActivity.this
+                                            , CompanyProfileConfigurationActivity.class);
+
+                                    loginToRegister.putExtra("accountID",account.getId());
+                                    loginToRegister.putExtra("accountEmail",account.getEmail());
+                                    loginToRegister.putExtra("profileUrl",account.getPhotoUrl().toString());
+                                    startActivity(loginToRegister);
                                 } else {
                                     makeToast("Email already exists");
-                                    //move to configure Main Activity
+                                    //move to Main Activity
                                     startActivity(new Intent(LogInActivity.this
                                             , MainActivity.class));
                                 }
