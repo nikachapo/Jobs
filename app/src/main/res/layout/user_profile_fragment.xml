@@ -1,226 +1,279 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:layout_marginTop="?attr/actionBarSize"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/user_image_fragment"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="10dp"/>
+
+
+        <ScrollView
+            android:layout_below="@id/user_image_fragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="?attr/actionBarSize">
 
             <LinearLayout
-                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.7"
-                android:gravity="right"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="Profile Image"
-                    android:textColor="#867F7F"
-                    android:textSize="20sp" />
-
-                <ImageView
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:src="@drawable/find_job_main_icon" />
-
-                <ImageButton
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/close_button_background"
-                    android:src="@drawable/ic_mode_edit_black_24dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="UserName"
-                    android:textColor="#867F7F"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="150dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:text="nika chapidze"
-                    android:textColor="#000"
-                    android:textSize="20sp" />
-
-                <ImageButton
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/close_button_background"
-                    android:src="@drawable/ic_mode_edit_black_24dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
                     android:text="Email"
-                    android:textColor="#867F7F"
                     android:textSize="20sp" />
 
+
                 <TextView
-                    android:layout_width="200dp"
+                    android:id="@+id/user_email_fragment"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:text="nika chapidze@gmail.com"
-                    android:textColor="#000"
-                    android:textSize="20sp" />
-
-                <ImageButton
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/close_button_background"
-                    android:src="@drawable/ic_mode_edit_black_24dp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="horizontal">
+                    android:layout_marginBottom="15dp"
+                    android:gravity="center"
+                    android:text="nikachapidze@gmail"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Username"
+                    android:textSize="20sp" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/user_nametext_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+
+                        android:gravity="center"
+                        android:text="nikachapo"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/user_name_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center"
+                        android:text="nikachapo"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/edit_user_name_fragment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/ic_mode_edit_black_24dp" />
+                    <Button
+                        android:id="@+id/confirm_user_name_fragment"
+                        android:layout_width="30dp"
+                        android:visibility="gone"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/confirm_image" />
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/undo_user_name_fragment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/undo_image" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="City"
-                    android:textColor="#867F7F"
                     android:textSize="20sp" />
 
-                <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:text="Tbilisi"
-                    android:textColor="#000"
-                    android:textSize="20sp" />
-
-                <ImageButton
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/close_button_background"
-                    android:src="@drawable/ic_mode_edit_black_24dp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/user_citytext_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+
+                        android:gravity="center"
+                        android:text="Tbilisi"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/user_city_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:text="Tbilisi"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/edit_user_city_fragment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/ic_mode_edit_black_24dp" />
+                    <Button
+                        android:id="@+id/confirm_user_city_fragment"
+                        android:layout_width="30dp"
+                        android:visibility="gone"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/confirm_image" />
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/undo_user_city_fragment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/undo_image" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="Birth Date"
-                    android:textColor="#867F7F"
                     android:textSize="20sp" />
 
-                <TextView
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:text="2000/03/17"
-                    android:textColor="#000"
-                    android:textSize="20sp" />
-
-                <ImageButton
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/close_button_background"
-                    android:src="@drawable/ic_mode_edit_black_24dp" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:padding="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:orientation="horizontal">
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="CV"
-                    android:textColor="#867F7F"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/user_birthtext_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center"
+                        android:text="2000/03/17"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                    <EditText
+                        android:id="@+id/user_birth_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="15dp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="2000/03/17"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/edit_user_birth_fragment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/ic_mode_edit_black_24dp" />
+
+                    <Button
+                        android:id="@+id/confirm_user_birth_fragment"
+                        android:layout_width="30dp"
+                        android:visibility="gone"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/confirm_image" />
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/undo_user_birth_fragment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/undo_image" />
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="About"
                     android:textSize="20sp" />
 
-
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:src="@drawable/ic_cv_black_24dp" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        android:id="@+id/user_abouttext_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="about me"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                    <EditText
+                        android:id="@+id/user_about_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        android:text="about me"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-                <ImageButton
-                    android:layout_marginLeft="20dp"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/close_button_background"
-                    android:src="@drawable/ic_mode_edit_black_24dp" />
+                    <Button
+                        android:id="@+id/edit_user_about_fragment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/ic_mode_edit_black_24dp" />
+
+                    <Button
+                        android:id="@+id/confirm_user_about_fragment"
+                        android:layout_width="30dp"
+                        android:visibility="gone"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/confirm_image" />
+                    <Button
+                        android:visibility="gone"
+                        android:id="@+id/undo_user_about_fragment"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginStart="20dp"
+                        android:background="@drawable/undo_image" />
+                </LinearLayout>
 
             </LinearLayout>
-        </LinearLayout>
-
-    </ScrollView>
-
-
-
-</LinearLayout>
+        </ScrollView>
+</RelativeLayout>

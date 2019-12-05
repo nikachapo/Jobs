@@ -5,14 +5,16 @@
     <corners
 
         android:topLeftRadius="16dp"
-        android:topRightRadius="16dp" />
+        android:topRightRadius="16dp"
+        android:bottomLeftRadius="16dp"
+        android:bottomRightRadius="16dp"/>
 
     <gradient
         android:angle="90"
         android:centerX="35%"
-        android:centerColor="#A1429DC2"
-        android:startColor="#AE8E7FB8"
-        android:endColor="#B2788BEB"
+        android:centerColor="#BCFF9800"
+        android:startColor="#C1FF5722"
+        android:endColor="#C1FF5722"
         android:type="linear"
         />
 </shape>

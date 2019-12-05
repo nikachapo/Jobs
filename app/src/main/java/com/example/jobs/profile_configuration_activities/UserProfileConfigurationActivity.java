@@ -11,22 +11,24 @@ import android.widget.Toast;
 
 import com.example.jobs.MainActivity;
 import com.example.jobs.R;
-import com.example.jobs.UserProfileActivity;
 import com.example.jobs.users.PersonUser;
-import com.example.jobs.users.SignedInUser;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.example.jobs.FirebaseDbHelper;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class UserProfileConfigurationActivity extends AppCompatActivity {
 
-    private EditText age, city, username;
+    private EditText age, city, username, about;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
         age = findViewById(R.id.person_age_conf);
         city = findViewById(R.id.person_city_conf);
         username = findViewById(R.id.person_username_conf);
+        about = findViewById(R.id.person_about_conf);
         Button register = findViewById(R.id.person_register);
 
 
@@ -52,17 +55,33 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //create new user
-                PersonUser personUser = new PersonUser(username.getText().toString(),
-                        accountProfileURL, accountID, accountEmail, age.getText().toString(),
-                        city.getText().toString());
-                personUser.writePersonUser();
-                Toast.makeText(getApplicationContext(),"User added",Toast.LENGTH_LONG).show();
 
-                startActivity(new Intent(UserProfileConfigurationActivity.this,
-                        MainActivity.class));
+                firebaseAuthWithGoogle(FirebaseDbHelper.getCurentAccount(getApplicationContext()));
 
-                finish();
+                //if writeNewUserCompleted returns true move to MainActivity
+
+                //creating new user
+                PersonUser personUser = new PersonUser(username.getText().toString(),accountProfileURL,accountID,
+                        accountEmail,age.getText().toString(),city.getText().toString(),
+                        about.getText().toString());
+
+                personUser.writeNewUserCompleted(getApplicationContext()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(getApplicationContext(), "User added", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(UserProfileConfigurationActivity.this,
+                                MainActivity.class));
+                        finish();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getApplicationContext(), "Connection problem", Toast.LENGTH_LONG).show();
+                    }
+                });
+
+
+
             }
         });
     }
@@ -82,7 +101,28 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-        SignedInUser.signOut(this);
-
+        FirebaseDbHelper.signOut(this);
     }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        final FirebaseAuth mAuth;
+        mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(getApplicationContext(), "Sign in failed", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
+    }
+
 }

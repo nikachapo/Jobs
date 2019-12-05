@@ -18,7 +18,7 @@
         android:id="@+id/person_age_conf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="age"
+        android:hint="Birth Date"
         android:gravity="center"
         android:textSize="20sp" />
     <EditText
@@ -33,6 +33,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="username"
+        android:gravity="center"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/person_about_conf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="About"
         android:gravity="center"
         android:textSize="20sp" />
 

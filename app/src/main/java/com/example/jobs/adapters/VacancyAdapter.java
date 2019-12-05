@@ -118,7 +118,10 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
                         vacancy.requiredAge, vacancy.requirements, vacancy.vacancySalary, vacancy.companyName);
                 bottomSheet.show(((AppCompatActivity) context).getSupportFragmentManager(), vacancy.vacancyHeader);
 
+
             }
+
+
         });
 
 

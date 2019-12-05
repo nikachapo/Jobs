@@ -63,7 +63,7 @@ public class Vacancy implements Serializable {
     public static void writeVacancy(String ownerProfileURL, String ownerID,
                                     String vacancyHeader, String vacancyBody, String vacancyCity,
                                     String requiredAge, String vacancySalary, String vacancyCategory,
-                                    String requirements,String companyName, final Context context, final View view) {
+                                    String requirements,String companyName, final View view) {
 
         DatabaseReference vacancyRef = FirebaseDatabase.getInstance().getReference(VACANCIES_TABLE_NAME);
         DatabaseReference companiesRef = FirebaseDatabase.getInstance().getReference(COMPANIES_TABLE_NAME);

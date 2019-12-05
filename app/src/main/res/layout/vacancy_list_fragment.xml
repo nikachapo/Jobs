@@ -6,12 +6,16 @@
     android:layout_height="match_parent"
     android:background="#00FFFFFF"
     android:elevation="5dp"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:layout_marginTop="2dp"
+    android:layout_marginLeft="3dp"
+    android:layout_marginRight="3dp"
+    android:clipToPadding="false">
 
     <ProgressBar
         android:id="@+id/fragment_m_progressbar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_centerInParent="true"
         app:layout_constraintBottom_toBottomOf="@+id/fragment_vacancy_listview"
         app:layout_constraintEnd_toEndOf="@+id/fragment_vacancy_listview"
@@ -19,6 +23,7 @@
         app:layout_constraintTop_toTopOf="@+id/fragment_vacancy_listview" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:elevation="5dp"
         android:id="@+id/fragment_vacancy_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

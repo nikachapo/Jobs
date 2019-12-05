@@ -68,7 +68,6 @@ public class AddVacancyActivity extends AppCompatActivity {
         SubmitButton addVacancy = findViewById(R.id.add_vacancy);
 
 
-
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -97,7 +96,7 @@ public class AddVacancyActivity extends AppCompatActivity {
         usersUidRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                 companyUser[0] = dataSnapshot.getValue(CompanyUser.class);
+                companyUser[0] = dataSnapshot.getValue(CompanyUser.class);
             }
 
             @Override
@@ -121,9 +120,8 @@ public class AddVacancyActivity extends AppCompatActivity {
                         salaryFromEditText.getText().toString().trim() + "-" +
                                 salaryToEditText.getText().toString().trim(),
 
-                         vacancyCategorySpinner.getSelectedItem().toString(),
-                        requirementsTextView.getText().toString(),account.getDisplayName(), getApplicationContext()
-                        , v);
+                        vacancyCategorySpinner.getSelectedItem().toString(),
+                        requirementsTextView.getText().toString(), account.getDisplayName(), v);
             }
         });
     }
@@ -135,6 +133,7 @@ public class AddVacancyActivity extends AppCompatActivity {
         }
         return true;
     }
+
     @Override
     public void onBackPressed() {
         finish();

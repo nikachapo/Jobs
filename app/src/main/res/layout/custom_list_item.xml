@@ -5,7 +5,6 @@
     android:id="@+id/list_item_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:elevation="5dp"
     android:orientation="horizontal"
     >
 
@@ -30,7 +29,8 @@
         android:layout_width="match_parent"
         android:layout_marginBottom="8dp"
         android:layout_height="100dp"
-        android:background="@drawable/list_item_background">
+        android:background="@drawable/list_item_background"
+        android:outlineProvider="paddedBounds">
 
         <TextView
             android:id="@+id/company_name"

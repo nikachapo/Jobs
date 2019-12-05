@@ -33,7 +33,7 @@ public class VacancyListFragment extends Fragment {
 
 
     public VacancyListFragment() {
-        //empty constructor is needed
+        //empty constructor will run if User ID is not passed as argument
     }
 
     public VacancyListFragment(String uID) {
@@ -45,6 +45,7 @@ public class VacancyListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.vacancy_list_fragment, container, false);
+
         progressBar = view.findViewById(R.id.fragment_m_progressbar);
 
         RecyclerView vacanciesListRecycler = view.findViewById(R.id.fragment_vacancy_listview);
@@ -52,7 +53,6 @@ public class VacancyListFragment extends Fragment {
         vacanciesListRecycler.setItemViewCacheSize(20);
         vacanciesListRecycler.setDrawingCacheEnabled(true);
         vacanciesListRecycler.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         vacanciesListRecycler.setLayoutManager(layoutManager);
 

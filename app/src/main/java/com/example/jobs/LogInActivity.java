@@ -1,8 +1,5 @@
 package com.example.jobs;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,32 +11,22 @@ import com.example.jobs.profile_configuration_activities.CompanyProfileConfigura
 import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 
 public class LogInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 0;
-    private GoogleSignInClient mGoogleSignInClient;
-    private DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-    private FirebaseAuth mAuth;
     private int checkedRadioButtonId;
     private RadioGroup radioGroup;
 
@@ -48,19 +35,9 @@ public class LogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-
         radioGroup = findViewById(R.id.radio_group);
-
-
-        mAuth = FirebaseAuth.getInstance();
         SignInButton signInButton = findViewById(R.id.sign_in_button);
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -90,7 +67,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        Intent signInIntent = FirebaseDbHelper.getCurrentClient(this).getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -102,17 +79,16 @@ public class LogInActivity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
+
                 // Google Sign In was successful, authenticate with Firebase
                 final GoogleSignInAccount account = task.getResult(ApiException.class);
-
                 assert account != null;
-                firebaseAuthWithGoogle(account);
 
                 switch (checkedRadioButtonId) {
                     case R.id.radio_person:
                         //person radio is selected
 
-                        DatabaseReference usersUidRef = mRef
+                        DatabaseReference usersUidRef = FirebaseDbHelper.getDatabaseReference()
                                 .child("Emails")
                                 .child(Objects.requireNonNull(account.getId()));
 
@@ -146,7 +122,7 @@ public class LogInActivity extends AppCompatActivity {
 
                     case R.id.radio_company:
                         //Company radio is selected
-                        DatabaseReference companiesUidRef = mRef
+                        DatabaseReference companiesUidRef = FirebaseDbHelper.getDatabaseReference()
                                 .child("Emails")
                                 .child(Objects.requireNonNull(account.getId()));
 
@@ -185,28 +161,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         }
     }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.",
-                                    Snackbar.LENGTH_SHORT).show();
-
-                        }
-
-                    }
-                });
-    }
-
 
     private void makeToast(String text) {
         Toast.makeText(LogInActivity.this, text, Toast.LENGTH_SHORT).show();

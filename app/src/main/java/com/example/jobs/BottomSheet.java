@@ -66,12 +66,15 @@ public class BottomSheet extends BottomSheetDialogFragment {
         TextView requirementsTextView = v.findViewById(R.id.sheet_vacancy_requirements);
         TextView salaryTextView = v.findViewById(R.id.sheet_vacancy_salary);
 
+
+
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
             }
         });
+
 
 
         profilePicture.setOnClickListener(new View.OnClickListener() {

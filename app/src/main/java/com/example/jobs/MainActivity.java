@@ -35,44 +35,29 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-
+        // customize Toolbar
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitleEnabled(false);
+        //###############################################
 
 
-
+        //replace Frame with custom Fragments
         Fragment vacancyListFragment = new VacancyListFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_frame, vacancyListFragment).commit();
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        //###############################################
 
-
-
+        //get current user Google account
         final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-
-
         //      Check if current user is CompanyUser.
         //      If it is addVacancy button will become visible.
         assert account != null;
-        DatabaseReference companiesUidRef = FirebaseDatabase.getInstance().getReference()
-                .child("Companies")
-                .child(Objects.requireNonNull(account.getId()));
-        companiesUidRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    userIsCompany = true;
-                    invalidateOptionsMenu();
-                }
-            }
+        checkUser(account);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
+        //set BottomNavigationItem Listeners
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -83,10 +68,11 @@ public class MainActivity extends AppCompatActivity {
                         selectedFragment = new VacancyListFragment();
                         break;
                     case R.id.nav_profile:
+                        setTitle("Profile");
                         if (userIsCompany) {
-                            selectedFragment = new CompanyProfileFragment();
+                            selectedFragment = new CompanyProfileFragment(account.getId(),getApplicationContext());
                         } else {
-                            selectedFragment = new UserProfileFragment();
+                            selectedFragment = new UserProfileFragment(account.getId(),getApplicationContext());
                         }
                         break;
                     case R.id.nav_menu:
@@ -97,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 if(selectedFragment!=null) {
                     getSupportFragmentManager().beginTransaction()
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .replace(R.id.fragment_frame, selectedFragment).commit();
+                            .replace(R.id.fragment_frame, selectedFragment).addToBackStack(null).commit();
                 }
                 return true;
             }
         });
-
+        //########################################################################
     }
 
 
@@ -121,13 +107,37 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_vacancy:
-                //Code to run when the settings item is clicked
+                //Code to run when the Settings item is clicked
                 startActivity(new Intent(MainActivity.this, AddVacancyActivity.class));
-
                 return true;
+            case R.id.action_bar_search:
+                //Code to run when the Search item is clicked
+                startActivity(new Intent(MainActivity.this,SearchActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    private void checkUser(GoogleSignInAccount account){
+        DatabaseReference companiesUidRef = FirebaseDatabase.getInstance().getReference()
+                .child("Companies")
+                .child(Objects.requireNonNull(account.getId()));
+        companiesUidRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    //if data in Companies key exists userIsCompany variable will become true
+                    userIsCompany = true;
+                    invalidateOptionsMenu();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 }
