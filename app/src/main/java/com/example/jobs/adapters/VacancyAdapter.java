@@ -39,7 +39,6 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
     public VacancyAdapter(Context context, ArrayList<Vacancy> vacancies) {
         this.context = context;
         this.vacancies = vacancies;
-
     }
 
     @NonNull

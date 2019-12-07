@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jobs.FirebaseDbHelper;
 import com.example.jobs.R;
 import com.example.jobs.users.CompanyUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,8 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class CompanyProfileFragment extends Fragment {
-
-    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private String uID;
     private Context context;
 
@@ -43,7 +42,7 @@ public class CompanyProfileFragment extends Fragment {
         final TextView aboutCompany = view.findViewById(R.id.company_about_fragment);
 
 
-        databaseReference.child("Companies").child(uID)
+        FirebaseDbHelper.getCurrentCompanyUserReference(getContext()).child(uID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
