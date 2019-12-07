@@ -7,6 +7,9 @@
         როგორც:</string>
     <string name="add_vacancy">Add vacancy</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string-array name="vacancy_category_spinner_array">
         <item>ყველა კატეგორია</item>
         <item>ადმინისტრაცია/მენეჯმენტი</item>

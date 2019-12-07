@@ -6,12 +6,13 @@
 
         />
     <gradient
-        android:angle="90"
+        android:angle="45"
         android:centerX="35%"
-        android:centerColor="#FCFCFC"
-        android:startColor="#FCFCFC"
-        android:endColor="#FCFCFC"
+        android:centerColor="#FF9800"
+        android:startColor="#FF0000"
+        android:endColor="#BE5739"
         android:type="linear"
+
         />
 
 

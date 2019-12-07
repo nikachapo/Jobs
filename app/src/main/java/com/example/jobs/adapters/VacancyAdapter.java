@@ -102,7 +102,6 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
                 intent.putExtra("imageurl", vacancy.ownerProfileURL);
                 intent.putExtra("ownerID", vacancy.ownerID);
                 intent.putExtra("companyName", vacancy.companyName);
-
                 context.startActivity(intent);
 
             }
@@ -112,9 +111,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
         holder.vacancyDetailLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                BottomSheet bottomSheet = new BottomSheet(vacancy.ownerID, vacancy.ownerProfileURL,
-                        vacancy.vacancyCity, vacancy.vacancyCategory, vacancy.vacancyHeader, vacancy.vacancyBody,
-                        vacancy.requiredAge, vacancy.requirements, vacancy.vacancySalary, vacancy.companyName);
+                BottomSheet bottomSheet = new BottomSheet(vacancy);
                 bottomSheet.show(((AppCompatActivity) context).getSupportFragmentManager(), vacancy.vacancyHeader);
 
 
@@ -123,8 +120,6 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
 
         });
 
-
-//        setAnimation(holder.itemView,position);
     }
 
     @Override
@@ -152,14 +147,5 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
             this.vacancyDetailLayout = vacancyDetailLayout;
         }
     }
-//    private void setAnimation(ConstraintLayout vacancyDetailsLayout, int position)
-//    {
-//        // If the bound view wasn't previously displayed on screen, it's animated
-//        if (position > lastPosition)
-//        {
-//            Animation animation = AnimationUtils.loadAnimation(context, R.anim.user_image_slide_animation);
-//            vacancyDetailsLayout.startAnimation(animation);
-//            lastPosition = position;
-//        }
-//    }
+
 }

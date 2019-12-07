@@ -17,5 +17,8 @@
         android:type="linear"
         />
 
-
+    <stroke
+        android:width="2dp"
+        android:color="#878787"
+        />
 </shape>

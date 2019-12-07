@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.jobs.FirebaseDbHelper;
 import com.example.jobs.R;
 import com.example.jobs.users.PersonUser;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,7 +29,6 @@ import androidx.fragment.app.Fragment;
 
 
 public class UserProfileFragment extends Fragment implements View.OnClickListener {
-    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private String uID;
     private Context context;
     private ImageView userImage;
@@ -116,7 +116,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         undoAboutButton.setOnClickListener(this);
 
 
-        databaseReference.child("Users").child(uID)
+        FirebaseDbHelper.getCurrentPersonUserReference(getContext())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -163,7 +163,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 setViewsForUserName();
                 break;
             case R.id.confirm_user_name_fragment:
-//                setUserInformation("username", userNameEditText.getText().toString());
                 personUser.setUsername(uID,userNameEditText.getText().toString(),getContext());
                 setViewsForUserName();
                 break;
@@ -176,7 +175,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 setViewsForUserCity();
                 break;
             case R.id.confirm_user_city_fragment:
-//                setUserInformation("city", userCityEditText.getText().toString());
+
                 personUser.setCity(uID,userCityEditText.getText().toString(),getContext());
                 setViewsForUserCity();
                 break;
@@ -189,7 +188,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 setViewsForUserBirth();
                 break;
             case R.id.confirm_user_birth_fragment:
-//                setUserInformation("birthDate", userBirthEditText.getText().toString());
+
                 personUser.setBirthDate(uID,userBirthEditText.getText().toString(),getContext());
                 setViewsForUserBirth();
                 break;
@@ -201,7 +200,7 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
                 setViewsForUserAbout();
                 break;
             case R.id.confirm_user_about_fragment:
-//                setUserInformation("about", aboutUserEditText.getText().toString());
+
                 personUser.setAbout(uID,aboutUserEditText.getText().toString(),getContext());
                 setViewsForUserAbout();
                 break;
@@ -213,20 +212,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         }
     }
 
-//    private void setUserInformation(final String key, final String value) {
-//        databaseReference.child("Users").child(this.uID)
-//                .child(key).setValue(value).addOnCompleteListener(new OnCompleteListener<Void>() {
-//            @Override
-//            public void onComplete(@NonNull Task<Void> task) {
-//                makeText("Success");
-//            }
-//        });
-//    }
-
-    private void makeText(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
-    }
-
 
     private void setViewsAfterEditButtonTouch(Button edit, TextView text, EditText editText,
                                               Button confirm, Button undo) {
@@ -234,7 +219,6 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             edit.setVisibility(View.GONE);
             text.setVisibility(View.GONE);
             editText.setVisibility(View.VISIBLE);
-            editText.setText(editText.getText());
             confirm.setVisibility(View.VISIBLE);
             undo.setVisibility(View.VISIBLE);
         } else {

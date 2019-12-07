@@ -3,12 +3,10 @@ package com.example.jobs.users;
 import android.content.Context;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
+import com.example.jobs.FirebaseDbHelper;
 import com.example.jobs.adapters.VacancyAdapter;
 import com.example.jobs.vacancy.Vacancy;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,10 +28,10 @@ public class CompanyUser extends User{
 
     @Override
     public Task<Void> writeNewUserCompleted(final Context context) {
-        DATABASE_REFERENCE.child(COMPANY_USERS_TABLE_NAME).child(uID).setValue(this);
+        FirebaseDbHelper.getDatabaseReference().child(COMPANY_USERS_KEY_NAME).child(uID).setValue(this);
 
-        DATABASE_REFERENCE.child("Emails").child(uID).setValue(this.userEmail);
-        return DATABASE_REFERENCE.child(COMPANY_USERS_TABLE_NAME).child(uID)
+        FirebaseDbHelper.getDatabaseReference().child("Emails").child(uID).setValue(this.userEmail);
+        return FirebaseDbHelper.getDatabaseReference().child(COMPANY_USERS_KEY_NAME).child(uID)
                 .child(COMPANY_USERS_VACANCIES_KEY_NAME).setValue("");
 
 
@@ -57,7 +55,7 @@ public class CompanyUser extends User{
                                                      final ProgressBar bar,
                                                      final Context context){
         final ArrayList<Vacancy> vacancies = new ArrayList<>();
-        DATABASE_REFERENCE.child(COMPANY_USERS_TABLE_NAME).child(ownerID)
+        FirebaseDbHelper.getDatabaseReference().child(COMPANY_USERS_KEY_NAME).child(ownerID)
                 .child(COMPANY_USERS_VACANCIES_KEY_NAME)
                 .addValueEventListener(new ValueEventListener() {
 

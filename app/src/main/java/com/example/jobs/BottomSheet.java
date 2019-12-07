@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jobs.vacancy.Vacancy;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -35,19 +36,17 @@ public class BottomSheet extends BottomSheetDialogFragment {
             ownerID,
             companyName;
 
-    public BottomSheet(String ownerID, String profilePictureURL, String city, String vacancyCategory,
-                       String vacancyName, String vacancyBody, String age,
-                       String requirements, String salary, String companyName) {
-        this.ownerID = ownerID;
-        this.profilePictureURL = profilePictureURL;
-        this.city = city;
-        this.vacancyCategory = vacancyCategory;
-        this.vacancyName = vacancyName;
-        this.vacancyBody = vacancyBody;
-        this.age = age;
-        this.requirements = requirements;
-        this.salary = salary;
-        this.companyName = companyName;
+    public BottomSheet(Vacancy vacancy) {
+        this.ownerID = vacancy.ownerID;
+        this.profilePictureURL = vacancy.ownerProfileURL;
+        this.city = vacancy.vacancyCity;
+        this.vacancyCategory = vacancy.vacancyCategory;
+        this.vacancyName = vacancy.vacancyHeader;
+        this.vacancyBody = vacancy.vacancyBody;
+        this.age = vacancy.requiredAge;
+        this.requirements = vacancy.requirements;
+        this.salary = vacancy.vacancySalary;
+        this.companyName = vacancy.companyName;
     }
 
     @Nullable

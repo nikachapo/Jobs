@@ -13,8 +13,6 @@ import com.example.jobs.R;
 import com.example.jobs.users.CompanyUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -23,17 +21,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class CompanyProfileFragment extends Fragment {
-    private String uID;
+
     private Context context;
 
-    public CompanyProfileFragment(String uID, Context context) {
-        this.uID = uID;
+    public CompanyProfileFragment(Context context) {
+
         this.context = context;
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.company_profile_fragment, container, false);
 
         final ImageView companyImage = view.findViewById(R.id.company_image_fragment);
@@ -42,7 +41,7 @@ public class CompanyProfileFragment extends Fragment {
         final TextView aboutCompany = view.findViewById(R.id.company_about_fragment);
 
 
-        FirebaseDbHelper.getCurrentCompanyUserReference(getContext()).child(uID)
+        FirebaseDbHelper.getCurrentCompanyUserReference(getContext())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -67,5 +66,17 @@ public class CompanyProfileFragment extends Fragment {
                 });
 
         return view;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().setTitle(R.string.app_name);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getActivity().setTitle("Profile");
     }
 }

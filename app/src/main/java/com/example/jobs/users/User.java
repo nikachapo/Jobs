@@ -9,10 +9,9 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
 abstract class User {
-    protected final String COMPANY_USERS_TABLE_NAME = "Companies";
+    protected final String COMPANY_USERS_KEY_NAME = "Companies";
     protected final String COMPANY_USERS_VACANCIES_KEY_NAME = "Vacancies";
-    protected final String PERSON_USERS_TABLE_NAME = "Users";
-    protected final DatabaseReference DATABASE_REFERENCE = FirebaseDatabase.getInstance().getReference();
+    protected final String PERSON_USERS_KEY_NAME = "Users";
 
     public String uID;
     public String username;

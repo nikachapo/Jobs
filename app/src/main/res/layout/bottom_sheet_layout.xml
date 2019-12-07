@@ -12,11 +12,8 @@
         android:id="@+id/close_bottom_sheet"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/close_button_background"
-        android:text="X"
-        android:layout_marginTop="5dp"
-        android:textColor="#B30B0B"
-        android:textSize="30sp" />
+        android:background="@drawable/undo_image"
+        android:layout_marginTop="10dp" />
 
     <ScrollView
         android:padding="10dp"

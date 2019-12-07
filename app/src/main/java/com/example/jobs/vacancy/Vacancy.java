@@ -1,9 +1,7 @@
 package com.example.jobs.vacancy;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,8 +16,8 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 
 public class Vacancy implements Serializable {
-    private static final String VACANCIES_TABLE_NAME = "Vacancies";
-    private static final String COMPANIES_TABLE_NAME = "Companies";
+    private static final String VACANCIES_KEY_NAME = "Vacancies";
+    private static final String COMPANIES_KEY_NAME = "Companies";
     public String
             ownerProfileURL,
             vacancyID,
@@ -65,13 +63,15 @@ public class Vacancy implements Serializable {
                                     String requiredAge, String vacancySalary, String vacancyCategory,
                                     String requirements,String companyName, final View view) {
 
-        DatabaseReference vacancyRef = FirebaseDatabase.getInstance().getReference(VACANCIES_TABLE_NAME);
-        DatabaseReference companiesRef = FirebaseDatabase.getInstance().getReference(COMPANIES_TABLE_NAME);
+        DatabaseReference vacancyRef = FirebaseDatabase.getInstance().getReference(VACANCIES_KEY_NAME);
+        DatabaseReference companiesRef = FirebaseDatabase.getInstance().getReference(COMPANIES_KEY_NAME);
 
         String vacancyID = vacancyRef.push().getKey();
         assert vacancyID != null;
 
-        Vacancy vacancy = new Vacancy(vacancyID, ownerProfileURL, ownerID, vacancyHeader, vacancyBody, vacancyCity, requiredAge,
+        Vacancy vacancy = new Vacancy(
+                vacancyID, ownerProfileURL, ownerID, vacancyHeader,
+                vacancyBody, vacancyCity, requiredAge,
                 vacancySalary, vacancyCategory, requirements,companyName);
 
         vacancyRef.child(vacancyID).setValue(vacancy);

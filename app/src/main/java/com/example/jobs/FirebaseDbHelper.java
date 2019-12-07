@@ -2,6 +2,7 @@ package com.example.jobs;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -25,7 +26,9 @@ public class FirebaseDbHelper {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "Signed out", Toast.LENGTH_LONG).show();
+                context.startActivity(new Intent(context,LogInActivity.class));
                 ((Activity) context).finish();
+
             }
         });
     }

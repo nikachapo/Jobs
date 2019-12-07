@@ -10,30 +10,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.jobs.users.CompanyUser;
 import com.example.jobs.vacancy.Vacancy;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.spark.submitbutton.SubmitButton;
 
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 public class AddVacancyActivity extends AppCompatActivity {
 
-    GoogleSignInClient mGoogleSignInClient;
-    private DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
     private TextInputLayout vacancyNameLayout,
             vacancyBodyLayput,
             vacancyCityLayout;
@@ -68,13 +56,6 @@ public class AddVacancyActivity extends AppCompatActivity {
         SubmitButton addVacancy = findViewById(R.id.add_vacancy);
 
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        final GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-
 
         addRequirementsToTextView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
@@ -88,28 +69,14 @@ public class AddVacancyActivity extends AppCompatActivity {
         });
 
 
-        final CompanyUser[] companyUser = new CompanyUser[1];
-        assert account != null;
-        DatabaseReference usersUidRef = mRef
-                .child("Companies")
-                .child(Objects.requireNonNull(account.getId()));
-        usersUidRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                companyUser[0] = dataSnapshot.getValue(CompanyUser.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
         addVacancy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Vacancy.writeVacancy(account.getPhotoUrl().toString(), account.getId(),
+                GoogleSignInAccount account = FirebaseDbHelper.getCurentAccount(getApplicationContext());
+
+                Vacancy.writeVacancy(
+                        account.getPhotoUrl().toString(),
+                        account.getId(),
                         vacancyNameLayout.getEditText().getText().toString().trim(),
                         vacancyBodyLayput.getEditText().getText().toString().trim(),
                         vacancyCityLayout.getEditText().getText().toString().trim(),

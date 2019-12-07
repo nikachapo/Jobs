@@ -3,6 +3,7 @@ package com.example.jobs.users;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.jobs.FirebaseDbHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -28,8 +29,10 @@ public class PersonUser extends User {
     @Override
     public Task<Void> writeNewUserCompleted(final Context context) {
 
-        DATABASE_REFERENCE.child(PERSON_USERS_TABLE_NAME).child(uID).setValue(this);
-        return DATABASE_REFERENCE.child("Emails").child(uID).setValue(this.userEmail);
+        FirebaseDbHelper.getDatabaseReference()
+                .child(PERSON_USERS_KEY_NAME).child(uID).setValue(this);
+        return FirebaseDbHelper.getDatabaseReference()
+                .child("Emails").child(uID).setValue(this.userEmail);
 
     }
 
@@ -56,7 +59,7 @@ public class PersonUser extends User {
                                     final String message,
                                     final Context context) {
 
-        DATABASE_REFERENCE.child("Users").child(uID)
+        FirebaseDbHelper.getDatabaseReference().child("Users").child(uID)
                 .child(key).setValue(value).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
