@@ -1,15 +1,19 @@
 package com.example.jobs.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.jobs.FirebaseDbHelper;
 import com.example.jobs.R;
+import com.example.jobs.profile_configuration_activities.CompanyProfileConfigurationActivity;
+import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
 import com.example.jobs.users.CompanyUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +43,15 @@ public class CompanyProfileFragment extends Fragment {
         final TextView companyEmail = view.findViewById(R.id.company_email_fragment);
         final TextView companyName = view.findViewById(R.id.company_name_fragment);
         final TextView aboutCompany = view.findViewById(R.id.company_about_fragment);
+
+
+        Button editButton = view.findViewById(R.id.company_edit_fragment);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), CompanyProfileConfigurationActivity.class));
+            }
+        });
 
 
         FirebaseDbHelper.getCurrentCompanyUserReference(getContext())

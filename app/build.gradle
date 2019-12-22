@@ -22,6 +22,9 @@ repositories {
     maven {
         url 'https://dl.bintray.com/spark/maven'
     }
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -50,5 +53,10 @@ dependencies {
 
     //Palette
     implementation 'com.android.support:palette-v7:28.0.0'
+
+    //Refresh animation
+    implementation 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.6'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

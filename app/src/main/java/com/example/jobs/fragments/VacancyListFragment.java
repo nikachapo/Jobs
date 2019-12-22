@@ -24,13 +24,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
 public class VacancyListFragment extends Fragment {
     private ProgressBar progressBar;
     private DatabaseReference vacanciesRef = FirebaseDatabase.getInstance().getReference();
     private String uID = null;
     private RecyclerView.Adapter vacancyAdapter;
+    private RecyclerView vacanciesListRecycler;
 
+    private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
 
     public VacancyListFragment() {
         //empty constructor will run if User ID is not passed as argument
@@ -48,7 +51,30 @@ public class VacancyListFragment extends Fragment {
 
         progressBar = view.findViewById(R.id.fragment_m_progressbar);
 
-        RecyclerView vacanciesListRecycler = view.findViewById(R.id.fragment_vacancy_listview);
+
+        mWaveSwipeRefreshLayout = view.findViewById(R.id.main_swipe);
+        if (uID == null) {
+            vacanciesListRecycler = view.findViewById(R.id.fragment_vacancy_listview_with_refresh);
+            mWaveSwipeRefreshLayout.setOnRefreshListener(new WaveSwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    // Do work to refresh the list here.
+                    updateListViewData(vacanciesListRecycler);
+
+                    // Call setRefreshing(false) when the list has been refreshed.
+                    mWaveSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
+        } else {
+            mWaveSwipeRefreshLayout.setVisibility(View.GONE);
+            vacanciesListRecycler = view.findViewById(R.id.fragment_vacancy_listview);
+        }
+
+
+
+
+
         vacanciesListRecycler.setHasFixedSize(true);
         vacanciesListRecycler.setItemViewCacheSize(20);
         vacanciesListRecycler.setDrawingCacheEnabled(true);
@@ -77,6 +103,7 @@ public class VacancyListFragment extends Fragment {
         vacancyAdapter = new VacancyAdapter(Objects.requireNonNull(getContext()), vacancies);
         recyclerView.setAdapter(vacancyAdapter);
     }
+
 
 
 

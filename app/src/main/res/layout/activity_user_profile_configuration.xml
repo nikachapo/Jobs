@@ -1,52 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/main_activity_background"
     android:orientation="vertical"
     tools:context=".profile_configuration_activities.UserProfileConfigurationActivity">
+
+
     <TextView
         android:id="@+id/person_email_conf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Email"
         android:gravity="center"
+        android:text="Email"
         android:textSize="20sp" />
 
     <EditText
         android:id="@+id/person_age_conf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Birth Date"
         android:gravity="center"
+        android:hint="Birth Date"
         android:textSize="20sp" />
+
     <EditText
         android:id="@+id/person_city_conf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="city"
         android:gravity="center"
+        android:hint="city"
         android:textSize="20sp" />
+
     <EditText
         android:id="@+id/person_username_conf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="username"
         android:gravity="center"
+        android:hint="username"
         android:textSize="20sp" />
 
     <EditText
         android:id="@+id/person_about_conf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="About"
         android:gravity="center"
+        android:hint="About"
         android:textSize="20sp" />
 
     <Button
+        android:id="@+id/person_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="register"
-        android:id="@+id/person_register"/>
+        android:text="register" />
 </LinearLayout>

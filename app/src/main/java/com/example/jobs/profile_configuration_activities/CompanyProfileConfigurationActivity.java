@@ -22,6 +22,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,8 +41,8 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_company_profile_configuration);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Registration");
+
+        getSupportActionBar().setTitle("Profile configuration");
 
         companyName = findViewById(R.id.company_name_conf);
         description = findViewById(R.id.company_history_conf);
@@ -84,7 +90,25 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        signOut();
+
+        DatabaseReference companiesUidRef = FirebaseDbHelper.getDatabaseReference()
+                .child("Emails")
+                .child(Objects
+                        .requireNonNull(FirebaseDbHelper
+                                .getCurentAccount(getApplicationContext()).getId()));
+        companiesUidRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    signOut();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         finish();
     }
 

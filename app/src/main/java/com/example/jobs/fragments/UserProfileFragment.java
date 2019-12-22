@@ -1,25 +1,21 @@
 package com.example.jobs.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.jobs.FirebaseDbHelper;
 import com.example.jobs.R;
+import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
 import com.example.jobs.users.PersonUser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -28,8 +24,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-public class UserProfileFragment extends Fragment implements View.OnClickListener {
-    private String uID;
+public class UserProfileFragment extends Fragment {
+
     private Context context;
     private ImageView userImage;
     private TextView userEmailText,
@@ -37,28 +33,9 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
             userCityText,
             userBirthText,
             aboutUserText;
-    private EditText
-            userNameEditText,
-            userCityEditText,
-            userBirthEditText,
-            aboutUserEditText;
-    private Button
-            editUserNameButton,
-            editUserCityButton,
-            editUserBirthButton,
-            editUserAboutButton,
-            confirmUsernameButton,
-            undoUsernameButton,
-            confirmCityButton,
-            undoCityButton,
-            confirmBirthButton,
-            undoBirthButton,
-            confirmAboutButton,
-            undoAboutButton;
 
-    private PersonUser personUser;
-    public UserProfileFragment(String uID, Context context) {
-        this.uID = uID;
+
+    public UserProfileFragment(Context context) {
         this.context = context;
     }
 
@@ -66,54 +43,25 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        personUser = new PersonUser();
+
         View view = inflater.inflate(R.layout.user_profile_fragment, container, false);
+
 
         userImage = view.findViewById(R.id.user_image_fragment);
         userEmailText = view.findViewById(R.id.user_email_fragment);
+
         userNameText = view.findViewById(R.id.user_nametext_fragment);
         userCityText = view.findViewById(R.id.user_citytext_fragment);
         userBirthText = view.findViewById(R.id.user_birthtext_fragment);
         aboutUserText = view.findViewById(R.id.user_abouttext_fragment);
 
-        userNameEditText = view.findViewById(R.id.user_name_fragment);
-        userCityEditText = view.findViewById(R.id.user_city_fragment);
-        userBirthEditText = view.findViewById(R.id.user_birth_fragment);
-        aboutUserEditText = view.findViewById(R.id.user_about_fragment);
-
-
-        editUserNameButton = view.findViewById(R.id.edit_user_name_fragment);
-        confirmUsernameButton = view.findViewById(R.id.confirm_user_name_fragment);
-        undoUsernameButton = view.findViewById(R.id.undo_user_name_fragment);
-
-        editUserCityButton = view.findViewById(R.id.edit_user_city_fragment);
-        confirmCityButton = view.findViewById(R.id.confirm_user_city_fragment);
-        undoCityButton = view.findViewById(R.id.undo_user_city_fragment);
-
-        editUserBirthButton = view.findViewById(R.id.edit_user_birth_fragment);
-        confirmBirthButton = view.findViewById(R.id.confirm_user_birth_fragment);
-        undoBirthButton = view.findViewById(R.id.undo_user_birth_fragment);
-
-        editUserAboutButton = view.findViewById(R.id.edit_user_about_fragment);
-        confirmAboutButton = view.findViewById(R.id.confirm_user_about_fragment);
-        undoAboutButton = view.findViewById(R.id.undo_user_about_fragment);
-
-
-        editUserNameButton.setOnClickListener(this);
-        confirmUsernameButton.setOnClickListener(this);
-        undoUsernameButton.setOnClickListener(this);
-
-        editUserCityButton.setOnClickListener(this);
-        confirmCityButton.setOnClickListener(this);
-        undoCityButton.setOnClickListener(this);
-
-        editUserBirthButton.setOnClickListener(this);
-        confirmBirthButton.setOnClickListener(this);
-        undoBirthButton.setOnClickListener(this);
-
-        editUserAboutButton.setOnClickListener(this);
-        confirmAboutButton.setOnClickListener(this);
-        undoAboutButton.setOnClickListener(this);
+        Button editButton = view.findViewById(R.id.user_edit_fragment);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    startActivity(new Intent(getContext(), UserProfileConfigurationActivity.class));
+            }
+        });
 
 
         FirebaseDbHelper.getCurrentPersonUserReference(getContext())
@@ -144,11 +92,13 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
 
     }
 
+
     @Override
     public void onStop() {
         super.onStop();
         getActivity().setTitle(R.string.app_name);
     }
+
 
     @Override
     public void onStart() {
@@ -156,98 +106,4 @@ public class UserProfileFragment extends Fragment implements View.OnClickListene
         getActivity().setTitle("Profile");
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.edit_user_name_fragment:
-                setViewsForUserName();
-                break;
-            case R.id.confirm_user_name_fragment:
-                personUser.setUsername(uID,userNameEditText.getText().toString(),getContext());
-                setViewsForUserName();
-                break;
-            case R.id.undo_user_name_fragment:
-                setViewsForUserName();
-                break;
-
-
-            case R.id.edit_user_city_fragment:
-                setViewsForUserCity();
-                break;
-            case R.id.confirm_user_city_fragment:
-
-                personUser.setCity(uID,userCityEditText.getText().toString(),getContext());
-                setViewsForUserCity();
-                break;
-            case R.id.undo_user_city_fragment:
-                setViewsForUserCity();
-                break;
-
-
-            case R.id.edit_user_birth_fragment:
-                setViewsForUserBirth();
-                break;
-            case R.id.confirm_user_birth_fragment:
-
-                personUser.setBirthDate(uID,userBirthEditText.getText().toString(),getContext());
-                setViewsForUserBirth();
-                break;
-            case R.id.undo_user_birth_fragment:
-                setViewsForUserBirth();
-                break;
-
-            case R.id.edit_user_about_fragment:
-                setViewsForUserAbout();
-                break;
-            case R.id.confirm_user_about_fragment:
-
-                personUser.setAbout(uID,aboutUserEditText.getText().toString(),getContext());
-                setViewsForUserAbout();
-                break;
-            case R.id.undo_user_about_fragment:
-                setViewsForUserAbout();
-                break;
-
-
-        }
-    }
-
-
-    private void setViewsAfterEditButtonTouch(Button edit, TextView text, EditText editText,
-                                              Button confirm, Button undo) {
-        if (edit.getVisibility() == View.VISIBLE) {
-            edit.setVisibility(View.GONE);
-            text.setVisibility(View.GONE);
-            editText.setVisibility(View.VISIBLE);
-            confirm.setVisibility(View.VISIBLE);
-            undo.setVisibility(View.VISIBLE);
-        } else {
-            edit.setVisibility(View.VISIBLE);
-            text.setVisibility(View.VISIBLE);
-            editText.setVisibility(View.GONE);
-            confirm.setVisibility(View.GONE);
-            undo.setVisibility(View.GONE);
-        }
-    }
-
-
-    private void setViewsForUserName() {
-        setViewsAfterEditButtonTouch(editUserNameButton, userNameText, userNameEditText,
-                confirmUsernameButton, undoUsernameButton);
-    }
-
-    private void setViewsForUserCity() {
-        setViewsAfterEditButtonTouch(editUserCityButton, userCityText, userCityEditText,
-                confirmCityButton, undoCityButton);
-    }
-
-    private void setViewsForUserBirth() {
-        setViewsAfterEditButtonTouch(editUserBirthButton, userBirthText, userBirthEditText,
-                confirmBirthButton, undoBirthButton);
-    }
-
-    private void setViewsForUserAbout() {
-        setViewsAfterEditButtonTouch(editUserAboutButton, aboutUserText, aboutUserEditText,
-                confirmAboutButton, undoAboutButton);
-    }
 }

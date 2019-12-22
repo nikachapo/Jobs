@@ -1,37 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00FFFFFF"
-    android:elevation="5dp"
     tools:context=".MainActivity"
-    android:layout_marginTop="2dp"
     android:layout_marginLeft="3dp"
-    android:layout_marginRight="3dp"
-    android:clipToPadding="false">
+    android:layout_marginRight="3dp">
 
     <ProgressBar
         android:id="@+id/fragment_m_progressbar"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_centerInParent="true"
-        app:layout_constraintBottom_toBottomOf="@+id/fragment_vacancy_listview"
-        app:layout_constraintEnd_toEndOf="@+id/fragment_vacancy_listview"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/fragment_vacancy_listview" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:elevation="5dp"
-        android:id="@+id/fragment_vacancy_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/main_swipe"
+        >
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_vacancy_listview_with_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+
+    </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_vacancy_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

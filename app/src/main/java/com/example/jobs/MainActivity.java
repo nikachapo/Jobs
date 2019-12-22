@@ -2,16 +2,15 @@ package com.example.jobs;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.jobs.fragments.CompanyProfileFragment;
 import com.example.jobs.fragments.UserProfileFragment;
 import com.example.jobs.fragments.VacancyListFragment;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,20 +29,44 @@ public class MainActivity extends AppCompatActivity {
     private boolean userIsCompany = false;
     private DrawerLayout drawerLayout;
     private Fragment selectedFragment = null;
-    private GoogleSignInAccount account;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //      Check if current user is CompanyUser.
+        //      If it is addVacancy button will become visible.
+        checkUser();
 
         // customize Toolbar
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitleEnabled(false);
         //###############################################
+
+        LinearLayout toolbarLinearLayout = findViewById(R.id.toolbar_linear_layout);
+        toolbarLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+            }
+        });
+
+
+        FloatingActionButton addVacancyFloatingButton = findViewById(R.id.floating_button);
+
+        addVacancyFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                startActivity(new Intent(MainActivity.this, AddVacancyActivity.class));
+            }
+        });
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
@@ -62,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         if (userIsCompany) {
                             selectedFragment = new CompanyProfileFragment(getApplicationContext());
                         } else {
-                            selectedFragment = new UserProfileFragment(account.getId(), getApplicationContext());
+                            selectedFragment = new UserProfileFragment(getApplicationContext());
                         }
                         break;
 
@@ -82,48 +105,17 @@ public class MainActivity extends AppCompatActivity {
 
 
         //replace Frame with custom Fragments
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             selectedFragment = new VacancyListFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_frame, selectedFragment).commit();
             //###############################################
         }
-        //get current user Google account
-        account = FirebaseDbHelper.getCurentAccount(this);
-
-        //      Check if current user is CompanyUser.
-        //      If it is addVacancy button will become visible.
-        checkUser();
-
-        //set BottomNavigationItem Listeners
-        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-                switch (menuItem.getItemId()) {
-                    case R.id.bottom_nav_home:
-                        selectedFragment = new VacancyListFragment();
-                        break;
-                    case R.id.nav_profile:
-                        if (userIsCompany) {
-                            selectedFragment = new CompanyProfileFragment(getApplicationContext());
-                        } else {
-                            selectedFragment = new UserProfileFragment(account.getId(), getApplicationContext());
-                        }
-                        break;
 
 
-                }
 
-                if (selectedFragment != null) {
-                    getSupportFragmentManager().beginTransaction()
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .replace(R.id.fragment_frame, selectedFragment).commit();
-                }
-                return true;
-            }
-        });
+
+
         //########################################################################
     }
 
@@ -138,32 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(final Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_bar_menu, menu);
-        MenuItem addVacancy = menu.findItem(R.id.action_add_vacancy);
-        if (!userIsCompany) {
-            addVacancy.setVisible(false);
-        }
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_vacancy:
-                //Code to run when the Settings item is clicked
-                startActivity(new Intent(MainActivity.this, AddVacancyActivity.class));
-                break;
-            case R.id.action_bar_search:
-                //Code to run when the Search item is clicked
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                break;
-        }
-        return true;
-    }
-
+    //check if current user is company
     private void checkUser() {
         FirebaseDbHelper.getCurrentCompanyUserReference(this)
                 .addValueEventListener(new ValueEventListener() {
@@ -172,7 +140,6 @@ public class MainActivity extends AppCompatActivity {
                         if (dataSnapshot.exists()) {
                             //if data in Companies key exists userIsCompany variable will become true
                             userIsCompany = true;
-                            invalidateOptionsMenu();
                         }
                     }
 
@@ -185,7 +152,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void signOut(){
+    //signing out from profile
+    private void signOut() {
         FirebaseDbHelper.signOut(this);
+    }
+
+
+    public void changeFragment(View view) {
+        switch (view.getId()) {
+            case R.id.home_button:
+                selectedFragment = new VacancyListFragment();
+                break;
+            case R.id.favourites_button:
+                break;
+        }
+
+        if (selectedFragment != null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    .replace(R.id.fragment_frame, selectedFragment).commit();
+        }
     }
 }

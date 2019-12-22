@@ -13,9 +13,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SearchActivity"></activity>
-        <activity android:name=".profile_configuration_activities.CompanyProfileConfigurationActivity"></activity>
-        <activity android:name=".profile_configuration_activities.UserProfileConfigurationActivity" />
+        <activity
+            android:name=".SearchActivity">
+
+        </activity>
+
+        <activity
+            android:name=".profile_configuration_activities.CompanyProfileConfigurationActivity">
+
+        </activity>
+
+        <activity
+            android:name=".profile_configuration_activities.UserProfileConfigurationActivity" />
         <activity
             android:name=".CompanyProfileActivity"
             android:theme="@style/AppThemeCustomActionBar" />

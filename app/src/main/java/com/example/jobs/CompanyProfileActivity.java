@@ -11,6 +11,8 @@ import com.example.jobs.fragments.VacancyListFragment;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -38,7 +40,7 @@ public class CompanyProfileActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitle(companyName);
         collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#E6D752"));
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
 
         Picasso.with(this).load(imageURL).fit().centerCrop().into(imageView);

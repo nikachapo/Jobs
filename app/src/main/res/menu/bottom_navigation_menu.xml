@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/bottom_nav_home"
-        android:icon="@drawable/ic_home_24dp"
-        android:title="Home" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/bottom_nav_favourites"
-        android:icon="@drawable/ic_star_black_24dp"
-        android:title="Favourites" />
+
 
 </menu>

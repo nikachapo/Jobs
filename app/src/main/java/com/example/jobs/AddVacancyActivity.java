@@ -1,10 +1,13 @@
 package com.example.jobs;
 
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,8 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AddVacancyActivity extends AppCompatActivity {
 
+    private View rootLayout;
+
     private TextInputLayout vacancyNameLayout,
-            vacancyBodyLayput,
+            vacancyBodyLayout,
             vacancyCityLayout;
 
     private EditText ageFromEditText,
@@ -39,11 +44,13 @@ public class AddVacancyActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.do_not_move, R.anim.do_not_move);
+
         setContentView(R.layout.activity_add_vacancy);
         setTitle("Add Vacancy");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         vacancyNameLayout = findViewById(R.id.vacancy_name_textInputEditText);
-        vacancyBodyLayput = findViewById(R.id.vacancy_body_textInputEditText);
+        vacancyBodyLayout = findViewById(R.id.vacancy_body_textInputEditText);
         vacancyCityLayout = findViewById(R.id.vacancy_city_textInputEditText);
         ageFromEditText = findViewById(R.id.age_from_edittext);
         ageToEditText = findViewById(R.id.age_to_edittext);
@@ -54,6 +61,40 @@ public class AddVacancyActivity extends AppCompatActivity {
         vacancyCategorySpinner = findViewById(R.id.vacancy_category_spinner);
         Button addRequirementsToTextView = findViewById(R.id.add_requirements_to_textview_button);
         SubmitButton addVacancy = findViewById(R.id.add_vacancy);
+
+        rootLayout = findViewById(R.id.root_layout);
+
+
+
+
+
+
+
+        if (savedInstanceState == null) {
+            rootLayout.setVisibility(View.INVISIBLE);
+
+            ViewTreeObserver viewTreeObserver = rootLayout.getViewTreeObserver();
+            if (viewTreeObserver.isAlive()) {
+                viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        circularRevealActivity();
+                        rootLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                });
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -78,7 +119,7 @@ public class AddVacancyActivity extends AppCompatActivity {
                         account.getPhotoUrl().toString(),
                         account.getId(),
                         vacancyNameLayout.getEditText().getText().toString().trim(),
-                        vacancyBodyLayput.getEditText().getText().toString().trim(),
+                        vacancyBodyLayout.getEditText().getText().toString().trim(),
                         vacancyCityLayout.getEditText().getText().toString().trim(),
 
                         ageFromEditText.getText().toString().trim() + "-" +
@@ -106,4 +147,20 @@ public class AddVacancyActivity extends AppCompatActivity {
         finish();
     }
 
+    private void circularRevealActivity() {
+
+        int cx = rootLayout.getWidth() / 2;
+        int cy = rootLayout.getHeight()-50;
+
+        float finalRadius = Math.max(rootLayout.getWidth(), rootLayout.getHeight());
+
+        // create the animator for this view (the start radius is zero)
+        Animator circularReveal = ViewAnimationUtils
+                        .createCircularReveal(rootLayout, cx, cy, 0, finalRadius);
+        circularReveal.setDuration(1000);
+
+        // make the view visible and start the animation
+        rootLayout.setVisibility(View.VISIBLE);
+        circularReveal.start();
+    }
 }
