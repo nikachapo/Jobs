@@ -36,13 +36,14 @@
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                     >
-                    <LinearLayout
+                    <RelativeLayout
                         android:id="@+id/toolbar_linear_layout"
-                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:gravity="right"
                         android:background="@drawable/toolbar_background">
                         <TextView
+                            android:id="@+id/search_bar_text"
                             android:layout_width="200dp"
                             android:layout_height="match_parent"
                             android:text="Search vacancies"
@@ -50,12 +51,13 @@
                             android:layout_marginStart="10dp"
                             android:textColor="#686666"/>
                         <ImageView
+                            android:layout_marginTop="3dp"
+                            android:layout_toEndOf="@id/search_bar_text"
                             android:src="@drawable/search_icon"
-                            android:layout_gravity="end"
                             android:layout_width="50dp"
                             android:clickable="false"
                             android:layout_height="match_parent"/>
-                    </LinearLayout>
+                    </RelativeLayout>
                 </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>

@@ -62,7 +62,7 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                firebaseAuthWithGoogle(FirebaseDbHelper.getCurentAccount(getApplicationContext()));
+//                firebaseAuthWithGoogle(FirebaseDbHelper.getCurentAccount(getApplicationContext()));
 
                 //if writeNewUserCompleted returns true move to MainActivity
 
@@ -129,25 +129,25 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
         FirebaseDbHelper.signOut(this);
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        final FirebaseAuth mAuth;
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(getApplicationContext(), "Sign in failed", Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });
-    }
+//    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+//        final FirebaseAuth mAuth;
+//        mAuth = FirebaseAuth.getInstance();
+//        mAuth.signInWithCredential(credential)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Toast.makeText(getApplicationContext(), "Sign in failed", Toast.LENGTH_LONG).show();
+//                        }
+//
+//                    }
+//                });
+//    }
 
 }

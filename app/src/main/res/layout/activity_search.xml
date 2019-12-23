@@ -9,4 +9,43 @@
     tools:context=".SearchActivity"
     android:orientation="horizontal">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <androidx.appcompat.widget.Toolbar
+            android:layout_margin="5dp"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            >
+            <LinearLayout
+                android:id="@+id/toolbar_linear_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:background="@drawable/toolbar_background">
+                <EditText
+                    android:layout_weight="1"
+                    android:id="@+id/search_activity_edit_text"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:hint="Search vacancies"
+                    android:textColorHint="#444343"
+                    android:layout_marginStart="10dp"
+                    android:textColor="#000000"/>
+                <ImageButton
+                    android:id="@+id/search_activity_image_button"
+                    android:layout_marginTop="3dp"
+                    android:src="@drawable/search_icon"
+                    android:layout_width="50dp"
+                    android:background="#00FFFFFF"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
 </LinearLayout>

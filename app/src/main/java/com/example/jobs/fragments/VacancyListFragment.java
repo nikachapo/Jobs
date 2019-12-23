@@ -1,13 +1,17 @@
 package com.example.jobs.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.example.jobs.LogInActivity;
 import com.example.jobs.R;
 import com.example.jobs.adapters.VacancyAdapter;
+import com.example.jobs.splash_screen.SplashScreenActivity;
 import com.example.jobs.users.CompanyUser;
 import com.example.jobs.vacancy.Vacancy;
 import com.google.firebase.database.DataSnapshot;
@@ -61,8 +65,14 @@ public class VacancyListFragment extends Fragment {
                     // Do work to refresh the list here.
                     updateListViewData(vacanciesListRecycler);
 
-                    // Call setRefreshing(false) when the list has been refreshed.
-                    mWaveSwipeRefreshLayout.setRefreshing(false);
+                    new Handler().postDelayed(new Runnable(){
+                        @Override
+                        public void run() {
+                            // Call setRefreshing(false) when the list has been refreshed.
+                            mWaveSwipeRefreshLayout.setRefreshing(false);
+                        }
+                    }, 700);
+
                 }
             });
 
