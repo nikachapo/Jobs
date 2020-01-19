@@ -3,7 +3,8 @@ package com.example.jobs.users;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.jobs.FirebaseDbHelper;
+import com.example.jobs.firebase.FireBaseDbHelper;
+import com.example.jobs.vacancy.Vacancy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -27,12 +28,15 @@ public class PersonUser extends User {
     }
 
     @Override
-    public Task<Void> writeNewUserCompleted(final Context context) {
+    public Task<Void> writeNewUserTask(final Context context) {
 
-        FirebaseDbHelper.getDatabaseReference()
+        FireBaseDbHelper.getDatabaseReference()
                 .child(PERSON_USERS_KEY_NAME).child(uID).setValue(this);
-        return FirebaseDbHelper.getDatabaseReference()
+        FireBaseDbHelper.getDatabaseReference()
                 .child("Emails").child(uID).setValue(this.userEmail);
+
+        return FireBaseDbHelper.getCurrentPersonUserReference(context)
+                .child("Favourites").setValue("");
 
     }
 
@@ -52,6 +56,10 @@ public class PersonUser extends User {
         setUserInformation(uID,"username", newUsername, "Username Changed Successfully", context);
     }
 
+    public void addFavouriteVacancy(Context context, Vacancy vacancy){
+        FireBaseDbHelper.getCurrentPersonUserReference(context)
+                .child("Favourites").child(vacancy.vacancyID).setValue(vacancy);
+    }
 
     private void setUserInformation(String uID,
                                     final String key,
@@ -59,7 +67,7 @@ public class PersonUser extends User {
                                     final String message,
                                     final Context context) {
 
-        FirebaseDbHelper.getDatabaseReference().child("Users").child(uID)
+        FireBaseDbHelper.getDatabaseReference().child("Users").child(uID)
                 .child(key).setValue(value).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {

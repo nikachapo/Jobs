@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.example.jobs.FirebaseDbHelper;
+import com.example.jobs.firebase.FireBaseDbHelper;
 import com.example.jobs.adapters.VacancyAdapter;
 import com.example.jobs.vacancy.Vacancy;
 import com.google.android.gms.tasks.Task;
@@ -16,22 +16,24 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class CompanyUser extends User{
     private VacancyAdapter vacancyAdapter;
 
     public String description;
 
+
     public CompanyUser() {
 
     }
 
     @Override
-    public Task<Void> writeNewUserCompleted(final Context context) {
-        FirebaseDbHelper.getDatabaseReference().child(COMPANY_USERS_KEY_NAME).child(uID).setValue(this);
+    public Task<Void> writeNewUserTask(final Context context) {
+        FireBaseDbHelper.getDatabaseReference().child(COMPANY_USERS_KEY_NAME).child(uID).setValue(this);
+        FireBaseDbHelper.getDatabaseReference().child("Emails").child(uID).setValue(this.userEmail);
 
-        FirebaseDbHelper.getDatabaseReference().child("Emails").child(uID).setValue(this.userEmail);
-        return FirebaseDbHelper.getDatabaseReference().child(COMPANY_USERS_KEY_NAME).child(uID)
+        return FireBaseDbHelper.getCompanyUserReference(context)
                 .child(COMPANY_USERS_VACANCIES_KEY_NAME).setValue("");
 
 
@@ -39,10 +41,10 @@ public class CompanyUser extends User{
     }
 
     public CompanyUser(String uID, String username,  String userProfilePictureURL,String userEmail,
-                       String desctiption) {
+                       String description) {
 
         super(username,userProfilePictureURL,uID,userEmail);
-        this.description = desctiption;
+        this.description = description;
 
     }
 
@@ -53,9 +55,10 @@ public class CompanyUser extends User{
     public ArrayList<Vacancy> getAllCompanyVacancies(final RecyclerView recyclerView,
                                                      String ownerID,
                                                      final ProgressBar bar,
-                                                     final Context context){
+                                                     final Context context,
+                                                     final SwipeRefreshLayout swipeRefreshLayout){
         final ArrayList<Vacancy> vacancies = new ArrayList<>();
-        FirebaseDbHelper.getDatabaseReference().child(COMPANY_USERS_KEY_NAME).child(ownerID)
+        FireBaseDbHelper.getDatabaseReference().child(COMPANY_USERS_KEY_NAME).child(ownerID)
                 .child(COMPANY_USERS_VACANCIES_KEY_NAME)
                 .addValueEventListener(new ValueEventListener() {
 
@@ -73,6 +76,9 @@ public class CompanyUser extends User{
                             vacancyAdapter = new VacancyAdapter(context,vacancies);
                             recyclerView.setAdapter(vacancyAdapter);
                             bar.setVisibility(View.INVISIBLE);
+                            if(swipeRefreshLayout.isRefreshing()) {
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
 
                         }
                     }

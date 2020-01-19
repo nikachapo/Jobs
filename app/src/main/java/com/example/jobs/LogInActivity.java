@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
+import com.example.jobs.firebase.FireBaseDbHelper;
 import com.example.jobs.profile_configuration_activities.CompanyProfileConfigurationActivity;
 import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -36,15 +37,19 @@ public class LogInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 0;
     private int checkedRadioButtonId;
     private RadioGroup radioGroup;
+    private ProgressBar signInProgressBar;
     private FirebaseAuth mAuth;
+    private SignInButton signInButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
         radioGroup = findViewById(R.id.radio_group);
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton = findViewById(R.id.google_sign_in_button);
 
+        signInProgressBar = findViewById(R.id.sign_in_progress_bar);
         mAuth = FirebaseAuth.getInstance();
 
 
@@ -54,8 +59,10 @@ public class LogInActivity extends AppCompatActivity {
                 checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
                 if (checkedRadioButtonId == -1) {
                     //no item selected
-                    makeToast("Choose one");
+                    makeSnackBarMessage("Choose one");
                 } else {
+                    signInButton.setVisibility(View.GONE);
+                    signInProgressBar.setVisibility(View.VISIBLE);
                     signIn();
                 }
             }
@@ -75,7 +82,7 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        Intent signInIntent = FirebaseDbHelper.getCurrentClient(this).getSignInIntent();
+        Intent signInIntent = FireBaseDbHelper.getCurrentClient(this).getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
@@ -91,13 +98,13 @@ public class LogInActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 final GoogleSignInAccount account = task.getResult(ApiException.class);
                 assert account != null;
+
                 firebaseAuthWithGoogle(account);
-                
                 switch (checkedRadioButtonId) {
                     case R.id.radio_person:
                         //person radio is selected
 
-                        DatabaseReference usersUidRef = FirebaseDbHelper.getDatabaseReference()
+                        DatabaseReference usersUidRef = FireBaseDbHelper.getDatabaseReference()
                                 .child("Emails")
                                 .child(Objects.requireNonNull(account.getId()));
 
@@ -105,16 +112,12 @@ public class LogInActivity extends AppCompatActivity {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (!dataSnapshot.exists()) {
-                                   Intent loginToRegister = new Intent(LogInActivity.this
-                                           , UserProfileConfigurationActivity.class);
-                                    loginToRegister.putExtra("accountID",account.getId());
-                                    loginToRegister.putExtra("accountEmail",account.getEmail());
-                                    loginToRegister.putExtra("profileUrl",account.getPhotoUrl().toString());
-
+                                    Intent loginToRegister = new Intent(LogInActivity.this
+                                            , UserProfileConfigurationActivity.class);
                                     //move to configure user profile Activity
                                     startActivity(loginToRegister);
                                 } else {
-                                    makeToast("Email already exists");
+                                    makeSnackBarMessage("Logging in");
                                     //move to configure Main Activity
                                     startActivity(new Intent(LogInActivity.this
                                             , MainActivity.class));
@@ -131,7 +134,7 @@ public class LogInActivity extends AppCompatActivity {
 
                     case R.id.radio_company:
                         //Company radio is selected
-                        DatabaseReference companiesUidRef = FirebaseDbHelper.getDatabaseReference()
+                        DatabaseReference companiesUidRef = FireBaseDbHelper.getDatabaseReference()
                                 .child("Emails")
                                 .child(Objects.requireNonNull(account.getId()));
 
@@ -142,13 +145,10 @@ public class LogInActivity extends AppCompatActivity {
                                     //move to configure company profile Activity
                                     Intent loginToRegister = new Intent(LogInActivity.this
                                             , CompanyProfileConfigurationActivity.class);
-
-                                    loginToRegister.putExtra("accountID",account.getId());
-                                    loginToRegister.putExtra("accountEmail",account.getEmail());
-                                    loginToRegister.putExtra("profileUrl",account.getPhotoUrl().toString());
+                                    loginToRegister.putExtra("userIsRegistered",false);
                                     startActivity(loginToRegister);
                                 } else {
-                                    makeToast("Email already exists");
+                                    makeSnackBarMessage("Logging in");
                                     //move to Main Activity
                                     startActivity(new Intent(LogInActivity.this
                                             , MainActivity.class));
@@ -167,6 +167,12 @@ public class LogInActivity extends AppCompatActivity {
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("MAin", "Google sign in failed", e);
+
+                //if Google Sign In fails progressBar will be GONE
+                // and signInButton will be set to VISIBLE
+                signInButton.setVisibility(View.VISIBLE);
+                signInProgressBar.setVisibility(View.GONE);
+                makeSnackBarMessage("check internet connection");
             }
         }
     }
@@ -184,8 +190,12 @@ public class LogInActivity extends AppCompatActivity {
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.",
-                                    Snackbar.LENGTH_SHORT).show();
+                            makeSnackBarMessage("Authentication Failed.");
+
+                            //if authentication fails progressBar will be GONE
+                            // and signInButton will be set to VISIBLE
+                            signInButton.setVisibility(View.VISIBLE);
+                            signInProgressBar.setVisibility(View.GONE);
 
                         }
 
@@ -193,9 +203,9 @@ public class LogInActivity extends AppCompatActivity {
                 });
     }
 
-    private void makeToast(String text) {
-        Toast.makeText(LogInActivity.this, text, Toast.LENGTH_SHORT).show();
+    private void makeSnackBarMessage(String message){
+        Snackbar.make(findViewById(R.id.main_layout), message,
+                Snackbar.LENGTH_SHORT).show();
     }
-
 
 }

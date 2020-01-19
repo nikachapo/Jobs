@@ -5,23 +5,17 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.jobs.FirebaseDbHelper;
+import com.example.jobs.firebase.FireBaseDbHelper;
 import com.example.jobs.MainActivity;
 import com.example.jobs.R;
 import com.example.jobs.users.CompanyUser;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class CompanyProfileConfigurationActivity extends AppCompatActivity {
 
-    private EditText companyName, description;
+    private TextInputLayout companyName, description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,31 +36,44 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company_profile_configuration);
 
 
-        getSupportActionBar().setTitle("Profile configuration");
+
 
         companyName = findViewById(R.id.company_name_conf);
         description = findViewById(R.id.company_history_conf);
         Button registerUser = findViewById(R.id.register_conf);
         TextView emailText = findViewById(R.id.email_conf);
+
         Intent intent = getIntent();
 
+        boolean userIsRegistered = intent.getBooleanExtra("userIsRegistered",true);
+        if(userIsRegistered){
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Edit Profile");
+        }else {
+            Objects.requireNonNull(getSupportActionBar()).setTitle("Registration");
+        }
 
-        final String accountID = intent.getStringExtra("accountID");
-        final String accountEmail = intent.getStringExtra("accountEmail");
-        final String accountProfileURL = intent.getStringExtra("profileUrl");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        companyName.getEditText().setText(intent.getStringExtra("companyName"));
+        description.getEditText().setText(intent.getStringExtra("companyAbout"));
+
+        final String accountID = FireBaseDbHelper.getCurrentAccount(this).getId();
+        final String accountEmail = FireBaseDbHelper.getCurrentAccount(this).getEmail();
+        final String accountProfileURL = FireBaseDbHelper.getCurrentAccount(this).getPhotoUrl().toString();
+
         emailText.setText(accountEmail);
 
         registerUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                //Firebase authentication
-//                firebaseAuthWithGoogle(FirebaseDbHelper.getCurentAccount(getApplicationContext()));
+//                firebaseAuthWithGoogle(FireBaseDbHelper.getCurrentAccount(getApplicationContext()));
 
                 //create new user
-                CompanyUser companyUser = new CompanyUser(accountID, companyName.getText().toString()
-                        , accountProfileURL, accountEmail, description.getText().toString());
+                CompanyUser companyUser = new CompanyUser(accountID, companyName.getEditText().getText().toString()
+                        , accountProfileURL, accountEmail, description.getEditText().getText().toString());
 
-                companyUser.writeNewUserCompleted(getApplicationContext()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                companyUser.writeNewUserTask(getApplicationContext()).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(getApplicationContext(), "User added", Toast.LENGTH_LONG).show();
@@ -91,11 +98,11 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        DatabaseReference companiesUidRef = FirebaseDbHelper.getDatabaseReference()
+        DatabaseReference companiesUidRef = FireBaseDbHelper.getDatabaseReference()
                 .child("Emails")
                 .child(Objects
-                        .requireNonNull(FirebaseDbHelper
-                                .getCurentAccount(getApplicationContext()).getId()));
+                        .requireNonNull(FireBaseDbHelper
+                                .getCurrentAccount(getApplicationContext()).getId()));
         companiesUidRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -121,7 +128,7 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-        FirebaseDbHelper.signOut(this);
+        FireBaseDbHelper.signOut(this);
     }
 
 //    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {

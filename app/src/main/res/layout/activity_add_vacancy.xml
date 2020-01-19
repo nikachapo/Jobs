@@ -9,19 +9,21 @@
     android:layout_height="match_parent"
     tools:context=".AddVacancyActivity"
     android:padding="15dp"
-    android:background="#E6D752">
+    android:background="@color/colorAccent">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
+                app:counterEnabled="true"
+                app:counterMaxLength="20"
                 android:padding="5dp"
                 android:id="@+id/vacancy_name_textInputEditText"
                 >
@@ -35,6 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
+                app:counterEnabled="true"
+                app:counterMaxLength="300"
                 android:padding="5dp"
                 android:id="@+id/vacancy_body_textInputEditText"
                 >
@@ -50,6 +54,8 @@
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
                 android:padding="5dp"
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
                 android:id="@+id/vacancy_city_textInputEditText"
                 >
                 <com.google.android.material.textfield.TextInputEditText
@@ -92,7 +98,7 @@
                     android:id="@+id/age_to_edittext"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:hint="30"
                     android:inputType="numberDecimal"
                     android:linksClickable="false"
@@ -124,7 +130,7 @@
                     android:id="@+id/salaty_from_edittext"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
-                    android:hint="0"
+                    android:hint="100"
                     android:inputType="numberDecimal"
                     android:maxEms="5"
                     android:textSize="15sp" />
@@ -192,29 +198,85 @@
                     android:layout_height="50dp"
                     android:id="@+id/vacancy_requirements_edittext"
                     android:hint="მოთხოვნები"
-                    android:layout_weight="1"
+                    android:layout_weight="10"
                     />
                 <Button
                     android:id="@+id/add_requirements_to_textview_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:text="+"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_add_circle_black_24dp"
                     android:textSize="20sp"/>
             </LinearLayout>
 
-            <com.spark.submitbutton.SubmitButton
-                android:id="@+id/add_vacancy"
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Starts"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="Ends"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+               <TextView
+                   android:id="@+id/add_vacancy_activity_start_date"
+                   android:layout_width="match_parent"
+                   android:layout_height="50dp"
+                   android:layout_marginStart="10dp"
+                   android:layout_marginEnd="10dp"
+                   android:layout_weight="1"
+                   android:gravity="center"
+                   android:background="@drawable/sheet_dialog_background"
+                   android:text="15 Dec"
+                   android:textStyle="bold"
+                   android:textColor="@android:color/holo_green_light"
+                   />
+                <TextView
+                    android:id="@+id/add_vacancy_activity_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:background="@drawable/sheet_dialog_background"
+                    android:text="არჩევა"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/holo_red_dark"
+                    />
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/add_vacancy"
+                android:layout_width="100dp"
                 android:layout_height="50dp"
-                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:onClick="addVacancy"
                 android:text="ატვირთვა"
-                android:textColor="#47FF02"
-                app:sub_btn_background="#032AAC"
-                app:sub_btn_duration="2000"
-                app:sub_btn_line_color="#07F566"
-                app:sub_btn_ripple_color="#092ADA"
-                app:sub_btn_tick_color="#3F51B5" />
+                android:background="@drawable/sheet_dialog_background"
+                android:textColor="#202020" />
+
+
         </LinearLayout>
 
 

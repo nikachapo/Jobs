@@ -1,7 +1,8 @@
-package com.example.jobs;
+package com.example.jobs.fragments;
 
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.jobs.CompanyProfileActivity;
+import com.example.jobs.R;
 import com.example.jobs.vacancy.Vacancy;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.squareup.picasso.Callback;
@@ -25,6 +28,8 @@ import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 public class BottomSheet extends BottomSheetDialogFragment {
+    private Context mContext;
+
     private String profilePictureURL,
             city,
             vacancyCategory,
@@ -48,6 +53,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
         this.salary = vacancy.vacancySalary;
         this.companyName = vacancy.companyName;
     }
+
 
     @Nullable
     @Override
@@ -91,7 +97,7 @@ public class BottomSheet extends BottomSheetDialogFragment {
             }
         });
 
-        Picasso.with(getContext()).load(this.profilePictureURL)
+        Picasso.with(mContext).load(this.profilePictureURL)
 
                 .resize(150, 150)
                 .into(profilePicture, new Callback() {
@@ -121,6 +127,10 @@ public class BottomSheet extends BottomSheetDialogFragment {
         return v;
     }
 
-
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 }
 

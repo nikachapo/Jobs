@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_activity_background"
     tools:context=".CompanyProfileActivity">
 
 
@@ -12,6 +11,7 @@
         android:id="@+id/appbar_layout_company_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/nav_header_background"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -21,7 +21,7 @@
             app:contentScrim="@color/colorAccent"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
 
             <LinearLayout
@@ -42,10 +42,10 @@
                     app:layout_collapseMode="parallax" />
 
                 <TextView
+                    android:id="@+id/activity_company_about_company_textView"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="barooooooooosssssssssssssssssssssssssssssssssssssssssssssssssssssoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
                     android:textColor="#ffff"
                     android:textSize="20sp"
                     app:layout_collapseMode="parallax"
@@ -65,15 +65,30 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:layout_marginTop="5dp"
+    <LinearLayout
+        android:gravity=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Vacancies"
-        android:textStyle="bold"
-        android:textColor="#fff"
-        android:textSize="30sp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:orientation="horizontal"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vacancies"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="#474545"
+            android:textSize="30sp"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/vacancies_list_icon" />
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/vacancy_listview_fragment_frame"

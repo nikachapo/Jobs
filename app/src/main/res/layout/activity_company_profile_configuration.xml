@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/main_activity_background"
     android:orientation="vertical"
+    android:padding="16dp"
     tools:context=".profile_configuration_activities.CompanyProfileConfigurationActivity">
 
 
@@ -26,13 +27,24 @@
         android:text="Company Name"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/company_name_conf"
+
+
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Type Company name"
-        android:textSize="20sp" />
+        app:errorEnabled="true"
+        android:padding="5dp"
+        android:id="@+id/company_name_conf"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Company name"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
     <TextView
         android:layout_width="match_parent"
@@ -41,18 +53,29 @@
         android:text="Company History"
         android:textSize="20sp" />
 
-    <EditText
-        android:id="@+id/company_history_conf"
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:hint="Tyoe Company History"
-        android:textSize="20sp" />
+        app:errorEnabled="true"
+        android:padding="5dp"
+        android:id="@+id/company_history_conf"
+        >
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="History"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
     <Button
         android:id="@+id/register_conf"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:text="Save"
+        android:textColor="@android:color/black"
+        android:background="@drawable/sheet_dialog_background"/>
 
 </LinearLayout>

@@ -1,50 +1,53 @@
 package com.example.jobs.profile_configuration_activities;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jobs.MainActivity;
 import com.example.jobs.R;
+import com.example.jobs.fragments.DatePickerFragment;
 import com.example.jobs.users.PersonUser;
-import com.example.jobs.FirebaseDbHelper;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.example.jobs.firebase.FireBaseDbHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
-public class UserProfileConfigurationActivity extends AppCompatActivity {
+public class UserProfileConfigurationActivity extends AppCompatActivity
+implements DatePickerDialog.OnDateSetListener {
 
-    private EditText age, city, username, about;
+    private TextView birthDate;
+    private TextInputLayout city, username, about;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_configuration);
 
-        getSupportActionBar().setTitle("Registration");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Edit intro");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView email = findViewById(R.id.person_email_conf);
-        age = findViewById(R.id.person_age_conf);
+        birthDate = findViewById(R.id.person_age_conf);
         city = findViewById(R.id.person_city_conf);
         username = findViewById(R.id.person_username_conf);
         about = findViewById(R.id.person_about_conf);
@@ -52,29 +55,53 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
+        birthDate.setText(intent.getStringExtra("userBirth"));
 
-        final String accountID = intent.getStringExtra("accountID");
-        final String accountEmail = intent.getStringExtra("accountEmail");
-        final String accountProfileURL = intent.getStringExtra("profileUrl");
+
+        birthDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(),"date picker");
+
+            }
+        });
+
+        Objects.requireNonNull(city.getEditText()).setText(intent.getStringExtra("userCity"));
+        Objects.requireNonNull(username.getEditText()).setText(intent.getStringExtra("userName"));
+        Objects.requireNonNull(about.getEditText()).setText(intent.getStringExtra("aboutUser"));
+
+
+        final String accountID = FireBaseDbHelper.getCurrentAccount(this).getId();
+        final String accountEmail = FireBaseDbHelper.getCurrentAccount(this).getEmail();
+        final String accountProfileURL = Objects.requireNonNull(FireBaseDbHelper.getCurrentAccount(this)
+                .getPhotoUrl()).toString();
+
 
         email.setText(accountEmail);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-//                firebaseAuthWithGoogle(FirebaseDbHelper.getCurentAccount(getApplicationContext()));
+//                firebaseAuthWithGoogle(FireBaseDbHelper.getCurrentAccount(getApplicationContext()));
 
-                //if writeNewUserCompleted returns true move to MainActivity
+                //if writeNewUserTask returns true move to MainActivity
 
                 //creating new user
-                PersonUser personUser = new PersonUser(username.getText().toString(),accountProfileURL,accountID,
-                        accountEmail,age.getText().toString(),city.getText().toString(),
-                        about.getText().toString());
+                PersonUser personUser = new PersonUser(
+                        username.getEditText().getText().toString(),
+                        accountProfileURL,
+                        accountID,
+                        accountEmail,
+                        birthDate.getText().toString(),
+                        city.getEditText().getText().toString(),
+                        about.getEditText().getText().toString());
 
-                personUser.writeNewUserCompleted(getApplicationContext()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                personUser.writeNewUserTask(getApplicationContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "User added", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Welcome to Find Job", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(UserProfileConfigurationActivity.this,
                                 MainActivity.class));
                         finish();
@@ -95,11 +122,11 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        DatabaseReference companiesUidRef = FirebaseDbHelper.getDatabaseReference()
+        DatabaseReference companiesUidRef = FireBaseDbHelper.getDatabaseReference()
                 .child("Emails")
                 .child(Objects
-                        .requireNonNull(FirebaseDbHelper
-                                .getCurentAccount(getApplicationContext()).getId()));
+                        .requireNonNull(FireBaseDbHelper
+                                .getCurrentAccount(getApplicationContext()).getId()));
         companiesUidRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -126,28 +153,20 @@ public class UserProfileConfigurationActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-        FirebaseDbHelper.signOut(this);
+        FireBaseDbHelper.signOut(this);
     }
 
-//    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-//        final FirebaseAuth mAuth;
-//        mAuth = FirebaseAuth.getInstance();
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Toast.makeText(getApplicationContext(), "Sign in failed", Toast.LENGTH_LONG).show();
-//                        }
-//
-//                    }
-//                });
-//    }
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR,year);
+        calendar.set(Calendar.MONTH,month);
+        calendar.set(Calendar.DAY_OF_MONTH,day);
+
+        String currentDateString = DateFormat.getDateInstance().format(calendar.getTime());
+        birthDate.setText(currentDateString);
+
+    }
+
 
 }

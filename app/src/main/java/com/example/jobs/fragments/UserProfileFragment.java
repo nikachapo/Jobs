@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.jobs.FirebaseDbHelper;
+import com.example.jobs.firebase.FireBaseDbHelper;
 import com.example.jobs.R;
 import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
 import com.example.jobs.users.PersonUser;
@@ -19,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,7 +28,7 @@ import androidx.fragment.app.Fragment;
 
 public class UserProfileFragment extends Fragment {
 
-    private Context context;
+    private Context mContext;
     private ImageView userImage;
     private TextView userEmailText,
             userNameText,
@@ -35,8 +37,14 @@ public class UserProfileFragment extends Fragment {
             aboutUserText;
 
 
-    public UserProfileFragment(Context context) {
-        this.context = context;
+    public UserProfileFragment() {
+
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
     @Override
@@ -55,22 +63,15 @@ public class UserProfileFragment extends Fragment {
         userBirthText = view.findViewById(R.id.user_birthtext_fragment);
         aboutUserText = view.findViewById(R.id.user_abouttext_fragment);
 
-        Button editButton = view.findViewById(R.id.user_edit_fragment);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                    startActivity(new Intent(getContext(), UserProfileConfigurationActivity.class));
-            }
-        });
 
 
-        FirebaseDbHelper.getCurrentPersonUserReference(getContext())
+        FireBaseDbHelper.getCurrentPersonUserReference(getContext())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         PersonUser personUser = dataSnapshot.getValue(PersonUser.class);
                         assert personUser != null;
-                        Picasso.with(context)
+                        Picasso.with(mContext)
                                 .load(personUser.userProfilePictureURL)
                                 .centerInside()
                                 .fit()
@@ -87,23 +88,25 @@ public class UserProfileFragment extends Fragment {
 
                     }
                 });
+        Button editButton = view.findViewById(R.id.user_edit_fragment);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getContext(), UserProfileConfigurationActivity.class);
+                intent.putExtra("userName",userNameText.getText().toString());
+                intent.putExtra("userCity",userCityText.getText().toString());
+                intent.putExtra("userBirth",userBirthText.getText().toString());
+                intent.putExtra("aboutUser",aboutUserText.getText().toString());
+
+                startActivity(intent);
+
+                       }
+        });
         return view;
 
 
     }
 
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().setTitle(R.string.app_name);
-    }
-
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getActivity().setTitle("Profile");
-    }
 
 }

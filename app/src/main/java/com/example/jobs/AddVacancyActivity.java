@@ -3,27 +3,34 @@ package com.example.jobs;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.jobs.firebase.FireBaseDbHelper;
+import com.example.jobs.fragments.DatePickerFragment;
 import com.example.jobs.vacancy.Vacancy;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.textfield.TextInputLayout;
-import com.spark.submitbutton.SubmitButton;
 
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Objects;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 
-public class AddVacancyActivity extends AppCompatActivity {
+public class AddVacancyActivity extends AppCompatActivity
+        implements DatePickerDialog.OnDateSetListener {
 
     private View rootLayout;
 
@@ -37,7 +44,9 @@ public class AddVacancyActivity extends AppCompatActivity {
             salaryToEditText,
             requirementsEditText;
 
-    private TextView requirementsTextView;
+    private TextView requirementsTextView,
+            currentDateTextView,
+            endDateTextView;
 
     private Spinner vacancyCategorySpinner;
 
@@ -45,10 +54,10 @@ public class AddVacancyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.do_not_move, R.anim.do_not_move);
-
         setContentView(R.layout.activity_add_vacancy);
         setTitle("Add Vacancy");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         vacancyNameLayout = findViewById(R.id.vacancy_name_textInputEditText);
         vacancyBodyLayout = findViewById(R.id.vacancy_body_textInputEditText);
         vacancyCityLayout = findViewById(R.id.vacancy_city_textInputEditText);
@@ -58,16 +67,23 @@ public class AddVacancyActivity extends AppCompatActivity {
         salaryToEditText = findViewById(R.id.salaty_to_edittext);
         requirementsEditText = findViewById(R.id.vacancy_requirements_edittext);
         requirementsTextView = findViewById(R.id.vacancy_requirements_textview);
+        currentDateTextView = findViewById(R.id.add_vacancy_activity_start_date);
+        endDateTextView = findViewById(R.id.add_vacancy_activity_end_date);
         vacancyCategorySpinner = findViewById(R.id.vacancy_category_spinner);
         Button addRequirementsToTextView = findViewById(R.id.add_requirements_to_textview_button);
-        SubmitButton addVacancy = findViewById(R.id.add_vacancy);
+
+
+        setCurrentDate();
+
+        endDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment datePicker = new DatePickerFragment();
+                datePicker.show(getSupportFragmentManager(), "date picker");
+            }
+        });
 
         rootLayout = findViewById(R.id.root_layout);
-
-
-
-
-
 
 
         if (savedInstanceState == null) {
@@ -86,18 +102,6 @@ public class AddVacancyActivity extends AppCompatActivity {
         }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         addRequirementsToTextView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -110,28 +114,7 @@ public class AddVacancyActivity extends AppCompatActivity {
         });
 
 
-        addVacancy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GoogleSignInAccount account = FirebaseDbHelper.getCurentAccount(getApplicationContext());
 
-                Vacancy.writeVacancy(
-                        account.getPhotoUrl().toString(),
-                        account.getId(),
-                        vacancyNameLayout.getEditText().getText().toString().trim(),
-                        vacancyBodyLayout.getEditText().getText().toString().trim(),
-                        vacancyCityLayout.getEditText().getText().toString().trim(),
-
-                        ageFromEditText.getText().toString().trim() + "-" +
-                                ageToEditText.getText().toString().trim(),
-
-                        salaryFromEditText.getText().toString().trim() + "-" +
-                                salaryToEditText.getText().toString().trim(),
-
-                        vacancyCategorySpinner.getSelectedItem().toString(),
-                        requirementsTextView.getText().toString(), account.getDisplayName(), v);
-            }
-        });
     }
 
     @Override
@@ -150,17 +133,116 @@ public class AddVacancyActivity extends AppCompatActivity {
     private void circularRevealActivity() {
 
         int cx = rootLayout.getWidth() / 2;
-        int cy = rootLayout.getHeight()-50;
+        int cy = rootLayout.getHeight() - 50;
 
         float finalRadius = Math.max(rootLayout.getWidth(), rootLayout.getHeight());
 
         // create the animator for this view (the start radius is zero)
         Animator circularReveal = ViewAnimationUtils
-                        .createCircularReveal(rootLayout, cx, cy, 0, finalRadius);
+                .createCircularReveal(rootLayout, cx, cy, 0, finalRadius);
         circularReveal.setDuration(1000);
 
         // make the view visible and start the animation
         rootLayout.setVisibility(View.VISIBLE);
         circularReveal.start();
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+
+        String currentDateString = DateFormat.getDateInstance().format(calendar.getTime());
+        endDateTextView.setText(currentDateString);
+
+    }
+
+    private void setCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        String currentDateString = DateFormat.getDateInstance().format(calendar.getTime());
+        currentDateTextView.setText(currentDateString);
+    }
+
+
+
+
+
+
+    private boolean validateVacancyName(){
+        String vacancyNameInput = Objects.requireNonNull(vacancyNameLayout.getEditText()).getText().toString().trim();
+
+        if(vacancyNameInput.isEmpty()){
+            vacancyNameLayout.setError("Name is required");
+            return  false;
+        }else if(vacancyNameInput.length() > 20){
+            vacancyNameLayout.setError("Name is too long");
+            return  false;
+        }
+        else {
+            vacancyNameLayout.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateVacancyBody(){
+        String vacancyBodyInput = Objects.requireNonNull(vacancyBodyLayout.getEditText()).getText().toString().trim();
+
+        if(vacancyBodyInput.isEmpty()){
+            vacancyBodyLayout.setError("Description is required");
+            return  false;
+        }else if(vacancyBodyInput.length() > 300){
+            vacancyBodyLayout.setError("Description is too long");
+            return  false;
+        }
+        else {
+            vacancyBodyLayout.setError(null);
+            return true;
+        }
+    }
+
+    private boolean validateVacancyCity(){
+        String vacancyCityInput = Objects.requireNonNull(vacancyCityLayout.getEditText()).getText().toString().trim();
+
+        if(vacancyCityInput.isEmpty()){
+            vacancyCityLayout.setError("City is required");
+            return  false;
+        }else if(vacancyCityInput.length() > 15){
+            vacancyCityLayout.setError("City is too long");
+            return  false;
+        }
+        else {
+            vacancyCityLayout.setError(null);
+            return true;
+        }
+    }
+
+
+    public void addVacancy(View view) {
+
+        if(!validateVacancyName() | !validateVacancyBody() | !validateVacancyCity()){
+            return;
+        }
+
+        GoogleSignInAccount account = FireBaseDbHelper.getCurrentAccount(getApplicationContext());
+
+        Vacancy.writeVacancy(
+                Objects.requireNonNull(account.getPhotoUrl()).toString(),
+                account.getId(),
+                Objects.requireNonNull(vacancyNameLayout.getEditText()).getText().toString().trim(),
+                Objects.requireNonNull(vacancyBodyLayout.getEditText()).getText().toString().trim(),
+                Objects.requireNonNull(vacancyCityLayout.getEditText()).getText().toString().trim(),
+
+                ageFromEditText.getText().toString().trim() + "-" +
+                        ageToEditText.getText().toString().trim(),
+
+                salaryFromEditText.getText().toString().trim() + "-" +
+                        salaryToEditText.getText().toString().trim() + "$",
+
+                vacancyCategorySpinner.getSelectedItem().toString(),
+                requirementsTextView.getText().toString(), account.getDisplayName(),
+                currentDateTextView.getText().toString(),
+                endDateTextView.getText().toString(), view);
     }
 }

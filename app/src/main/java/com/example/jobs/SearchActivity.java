@@ -14,6 +14,5 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
 
         overridePendingTransition(R.anim.do_not_move, R.anim.do_not_move);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 }

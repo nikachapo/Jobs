@@ -29,15 +29,21 @@ public class Vacancy implements Serializable {
             vacancySalary,
             vacancyCategory,
             requirements,
-            companyName;
-    public String currentTimeStamp = getCurrentTimeStamp();
+            companyName,
+            startDate,
+            endDate;
+
 
     public Vacancy() {
         //non argument constructor is required for Firebase
     }
 
-    public Vacancy(String vacancyID, String ownerProfileURL, String ownerID, String vacancyHeader, String vacancyBody, String vacancyCity
-            , String requiredAge, String vacancySalary, String vacancyCategory, String requirements, String companyName) {
+    public Vacancy(String vacancyID, String ownerProfileURL,
+                   String ownerID, String vacancyHeader,
+                   String vacancyBody, String vacancyCity,
+                   String requiredAge, String vacancySalary,
+                   String vacancyCategory, String requirements,
+                   String companyName, String startDate, String endDate) {
 
         this.vacancyID = vacancyID;
         this.ownerProfileURL = ownerProfileURL;
@@ -50,18 +56,16 @@ public class Vacancy implements Serializable {
         this.vacancyCategory = vacancyCategory;
         this.requirements = requirements;
         this.companyName = companyName;
-
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private String getCurrentTimeStamp() {
-        return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-    }
 
     public static void writeVacancy(String ownerProfileURL, String ownerID,
                                     String vacancyHeader, String vacancyBody, String vacancyCity,
                                     String requiredAge, String vacancySalary, String vacancyCategory,
-                                    String requirements,String companyName, final View view) {
+                                    String requirements, String companyName,String startDate,
+                                    String endDate,final View view) {
 
         DatabaseReference vacancyRef = FirebaseDatabase.getInstance().getReference(VACANCIES_KEY_NAME);
         DatabaseReference companiesRef = FirebaseDatabase.getInstance().getReference(COMPANIES_KEY_NAME);
@@ -72,7 +76,8 @@ public class Vacancy implements Serializable {
         Vacancy vacancy = new Vacancy(
                 vacancyID, ownerProfileURL, ownerID, vacancyHeader,
                 vacancyBody, vacancyCity, requiredAge,
-                vacancySalary, vacancyCategory, requirements,companyName);
+                vacancySalary, vacancyCategory, requirements, companyName,
+                startDate,endDate);
 
         vacancyRef.child(vacancyID).setValue(vacancy);
         companiesRef.child(ownerID).child("Vacancies").child(vacancyID).setValue(vacancy)

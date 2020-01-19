@@ -32,18 +32,21 @@
         </activity>
 
         <activity
-            android:name=".profile_configuration_activities.CompanyProfileConfigurationActivity">
+            android:name=".profile_configuration_activities.CompanyProfileConfigurationActivity"
+            android:theme="@style/Theme.AppCompat.Light">
 
         </activity>
 
         <activity
-            android:name=".profile_configuration_activities.UserProfileConfigurationActivity" />
+            android:name=".profile_configuration_activities.UserProfileConfigurationActivity"
+            android:theme="@style/Theme.AppCompat.Light"/>
         <activity
             android:name=".CompanyProfileActivity"
             android:theme="@style/AppThemeCustomActionBar" />
         <activity
             android:name=".AddVacancyActivity"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.AppCompat.Light"/>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppThemeCustomActionBar" />

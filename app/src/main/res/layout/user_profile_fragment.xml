@@ -17,12 +17,16 @@
 
     <Button
         android:id="@+id/user_edit_fragment"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="45dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_toEndOf="@id/user_image_fragment"
-        android:drawableTop="@drawable/ic_mode_edit_black_24dp" />
+        android:background="@android:color/transparent"
+        android:drawableTop="@drawable/ic_mode_edit_black_24dp"
+        android:text="Edit profile"
+        android:textColor="@color/colorAccent"
+        android:textAllCaps="false" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -35,6 +39,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:textSize="30sp"/>
 
             <TextView
                 android:layout_width="match_parent"

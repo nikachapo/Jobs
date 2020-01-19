@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#00FFFFFF"
     tools:context=".MainActivity"
     android:layout_marginLeft="3dp"
     android:layout_marginRight="3dp">
@@ -20,29 +19,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/main_swipe"
-        >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_vacancy_listview_with_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
+        android:id="@+id/swipe_refresh_layout">
 
-    </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_vacancy_listview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        />
+          <TextView
+              android:id="@+id/favourites_textView"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="16dp"
+              android:text="Favourites"
+              android:textColor="#FF6D00"
+              android:textSize="20sp"
+              android:textStyle="bold"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintHorizontal_bias="0.938"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent" />
+
+          <ImageView
+              android:id="@+id/favourites_icon"
+              android:layout_width="50dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="8dp"
+              android:src="@drawable/ic_star_black_24dp"
+              app:layout_constraintBottom_toTopOf="@+id/fragment_vacancy_listview_with_refresh"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintHorizontal_bias="0.498"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              app:layout_constraintVertical_bias="1.0" />
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/fragment_vacancy_listview_with_refresh"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:scrollbars="vertical"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintHorizontal_bias="0.0"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toBottomOf="@+id/favourites_textView"
+              tools:listitem="@layout/custom_list_item" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,8 +15,9 @@
         android:background="@drawable/undo_image"
         android:layout_marginTop="10dp" />
 
-    <ScrollView
-        android:padding="10dp"
+    <androidx.core.widget.NestedScrollView
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/sheet_dialog_background">
@@ -27,6 +28,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:layout_marginTop="3dp"
                 android:transitionName="imagetrans"
                 android:id="@+id/sheet_profile_image"
                 android:layout_width="150dp"
@@ -38,15 +40,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="თბილისი"
-
+                android:gravity="end"
                 android:textColor="#043472"
                 android:textSize="20sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="კატეგორია"/>
+            <TextView
                 android:id="@+id/sheet_vacancy_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:padding="10dp"
                 android:text="ინფორმაციული ტექნოლოგიები"
                 android:textColor="#000"
@@ -62,15 +67,24 @@
                 android:textSize="30sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="აღწერა"/>
+            <TextView
                 android:id="@+id/sheet_vacancy_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:padding="15dp"
                 android:text="ჯავა დეველოპერი"
                 android:textColor="#000"
                 android:textSize="20sp" />
 
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ასაკი"/>
 
             <TextView
                 android:id="@+id/sheet_vacancy_age"
@@ -83,28 +97,35 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="მოთხოვნები"/>
+            <TextView
                 android:id="@+id/sheet_vacancy_requirements"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:padding="10dp"
                 android:text="ჯავა დეველოპერად მუშაობის დიდი გამოცდილება"
                 android:textColor="#000"
                 android:textSize="20sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ხელფასი"/>
+            <TextView
                 android:id="@+id/sheet_vacancy_salary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
+                android:gravity="start"
                 android:padding="10dp"
                 android:text="500-1000$"
-                android:textColor="#000"
+                android:textColor="#291883"
                 android:textSize="20sp" />
 
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 </RelativeLayout>

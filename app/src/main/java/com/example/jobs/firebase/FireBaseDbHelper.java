@@ -1,4 +1,4 @@
-package com.example.jobs;
+package com.example.jobs.firebase;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.jobs.LogInActivity;
+import com.example.jobs.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,15 +28,16 @@ import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
-public class FirebaseDbHelper {
+public class FireBaseDbHelper {
 
+    private static FirebaseDatabase mDatabase;
 
     public static void signOut(final Context context) {
         getCurrentClient(context).signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(context, "Signed out", Toast.LENGTH_LONG).show();
-                context.startActivity(new Intent(context,LogInActivity.class));
+                context.startActivity(new Intent(context, LogInActivity.class));
                 ((Activity) context).finish();
 
             }
@@ -48,20 +51,35 @@ public class FirebaseDbHelper {
     }
 
 
-    public static DatabaseReference getDatabaseReference() {
-        return FirebaseDatabase.getInstance().getReference();
+    private static FirebaseDatabase getDatabase() {
+        if (mDatabase == null) {
+            mDatabase = FirebaseDatabase.getInstance();
+            mDatabase.setPersistenceEnabled(true);
+        }
+        return mDatabase;
+    }
+
+
+    public static DatabaseReference getDatabaseReference(){
+        return getDatabase().getReference();
     }
 
 
     public static DatabaseReference getCurrentPersonUserReference(Context context) {
-        return getDatabaseReference().child("Users").child(Objects.requireNonNull(getCurentAccount(context).getId()));
+        return getDatabaseReference().child("Users").child(Objects.requireNonNull(getCurrentAccount(context).getId()));
     }
 
-    public static DatabaseReference getCurrentCompanyUserReference(Context context) {
-        return getDatabaseReference().child("Companies").child(Objects.requireNonNull(getCurentAccount(context).getId()));
+    //if uID is not passed method will get current company reference
+    public static DatabaseReference getCompanyUserReference(Context context) {
+        return getDatabaseReference().child("Companies").child(Objects.requireNonNull(getCurrentAccount(context).getId()));
     }
 
-    public static GoogleSignInAccount getCurentAccount(Context context) {
+    //if uID passed method will get company reference with ID
+    public static DatabaseReference getCompanyUserReference(String uID) {
+        return getDatabaseReference().child("Companies").child(Objects.requireNonNull(uID));
+    }
+
+    public static GoogleSignInAccount getCurrentAccount(Context context) {
         return GoogleSignIn.getLastSignedInAccount(context);
     }
 
@@ -91,6 +109,9 @@ public class FirebaseDbHelper {
                     }
                 });
     }
+
+
+
 
 }
 

@@ -17,7 +17,6 @@ abstract class User {
     public String username;
     public String userProfilePictureURL;
     public String userEmail;
-
     public User() {
         // Default constructor required for calls to DataSnapshot.getValue(User.class)
     }
@@ -30,7 +29,7 @@ abstract class User {
 
     }
 
-    abstract Task<Void> writeNewUserCompleted(Context context);
+    protected abstract Task<Void> writeNewUserTask(Context context);
 
 
 }

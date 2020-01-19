@@ -10,15 +10,16 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.jobs.FirebaseDbHelper;
+import com.example.jobs.firebase.FireBaseDbHelper;
 import com.example.jobs.R;
 import com.example.jobs.profile_configuration_activities.CompanyProfileConfigurationActivity;
-import com.example.jobs.profile_configuration_activities.UserProfileConfigurationActivity;
 import com.example.jobs.users.CompanyUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,11 +27,10 @@ import androidx.fragment.app.Fragment;
 
 public class CompanyProfileFragment extends Fragment {
 
-    private Context context;
+    private Context mContext;
 
-    public CompanyProfileFragment(Context context) {
+    public CompanyProfileFragment() {
 
-        this.context = context;
     }
 
     @Nullable
@@ -45,23 +45,16 @@ public class CompanyProfileFragment extends Fragment {
         final TextView aboutCompany = view.findViewById(R.id.company_about_fragment);
 
 
-        Button editButton = view.findViewById(R.id.company_edit_fragment);
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getContext(), CompanyProfileConfigurationActivity.class));
-            }
-        });
 
 
-        FirebaseDbHelper.getCurrentCompanyUserReference(getContext())
+        FireBaseDbHelper.getCompanyUserReference(getContext())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         CompanyUser companyUser = dataSnapshot.getValue(CompanyUser.class);
 
                         assert companyUser != null;
-                        Picasso.with(context)
+                        Picasso.with(mContext)
                                 .load(companyUser.userProfilePictureURL)
                                 .centerInside()
                                 .fit()
@@ -77,19 +70,25 @@ public class CompanyProfileFragment extends Fragment {
 
                     }
                 });
+        Button editButton = view.findViewById(R.id.company_edit_fragment);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), CompanyProfileConfigurationActivity.class);
+                intent.putExtra("companyName",companyName.getText().toString());
+                intent.putExtra("companyAbout",aboutCompany.getText().toString());
+
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        getActivity().setTitle(R.string.app_name);
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        getActivity().setTitle("Profile");
-    }
 }

@@ -4,20 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_activity_background"
     tools:context=".splash_screen.SplashScreenActivity">
 
     <ImageView
-        android:id="@+id/splash_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:id="@+id/splash_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/find_job_main_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.311" />
+        app:layout_constraintVertical_bias="0.404" />
 
     <TextView
         android:id="@+id/splash_text"
@@ -25,26 +24,13 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textColor="@android:color/black"
-        android:textSize="50sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.669" />
+        app:layout_constraintVertical_bias="0.607" />
 
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="nika chapo"
-        android:drawableLeft="@drawable/ic_copyright_black_24dp"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.936" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
