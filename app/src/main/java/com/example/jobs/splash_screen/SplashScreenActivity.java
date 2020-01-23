@@ -22,7 +22,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
 
-        splashIcon = findViewById(R.id.splash_logo);
+        splashIcon = findViewById(R.id.activity_splash_logo);
         /* New Handler to start the LoginActivity
          * and close this Splash-Screen after some seconds.*/
 

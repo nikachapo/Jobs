@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="Email"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#0625F0"
+        android:textColor="#FFFFFF"
         android:textSize="15sp" />
 
 

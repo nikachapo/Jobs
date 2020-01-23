@@ -25,6 +25,38 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="vacancy_body">განცხადება</string>
+    <string name="vacancy_name">ვაკანსიის დასახელება</string>
+    <string name="vacancy_city">ქალაქი</string>
+    <string name="vacancy_category">კატეგორია</string>
+    <string name="vacancy_requirements_header">მოთხოვნები</string>
+    <string name="starts">დასაწყისი</string>
+    <string name="ends">დასასრული</string>
+    <string name="upload">ატვირთვა</string>
+    <string name="choose">არჩევა</string>
+    <string name="from">-დან</string>
+    <string name="to">-მდე</string>
+    <string name="age">ასაკი</string>
+    <string name="vacancies">Vacancies</string>
+    <string name="about">შესახებ</string>
+    <string name="save">შენახვა</string>
+    <string name="category">კატეგორია</string>
+    <string name="description">აღწერა</string>
+    <string name="requirements">მოთხოვნები</string>
+    <string name="salary">ხელფასი</string>
+    <string name="edit_profile">შესწორება</string>
+    <string name="username">კომპანიის სახელი</string>
+    <string name="about_company">კომპანიის შესახებ</string>
+    <string name="profile">პროფილი</string>
+    <string name="person_username">მომხმარებლის სახელი</string>
+    <string name="city">ქალაქი</string>
+    <string name="birth_date">დაბადების თარიღი</string>
+    <string name="log_out">გასვლა</string>
+    <string name="help">დახმარება</string>
+    <string name="settings">პარამეტრები</string>
+    <string name="about_us">ჩვენს შესახებ</string>
+    <string name="companies">კომპანიები</string>
+    <string name="search">Search</string>
 
 
 </resources>

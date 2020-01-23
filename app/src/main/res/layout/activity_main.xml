@@ -2,7 +2,7 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/drawer_layout"
+    android:id="@+id/activity_main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_activity_background"
@@ -21,7 +21,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
+                android:id="@+id/activity_main_collapsing_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/main_activity_background"
@@ -29,10 +29,10 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:layout_scrollInterpolator="@android:anim/decelerate_interpolator"
                 app:titleEnabled="false"
-                app:toolbarId="@+id/toolbar">
+                app:toolbarId="@+id/activity_main_toolbar">
 
                 <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+                    android:id="@+id/activity_main_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -46,19 +46,19 @@
 
 
         <FrameLayout
-            android:id="@+id/fragment_frame"
+            android:id="@+id/activity_main_fragment_frame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/bottom_appBar"
+            android:layout_above="@id/activity_main_bottom_appBar"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
         <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottom_appBar"
+            android:id="@+id/activity_main_bottom_appBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="bottom"
-            android:backgroundTint="#9C6200EA"
+            android:backgroundTint="#C16200EA"
             android:gravity="center"
             app:fabAlignmentMode="center"
             app:hideOnScroll="true"
@@ -70,7 +70,7 @@
                 android:weightSum="5">
 
                 <ImageButton
-                    android:id="@+id/home_button"
+                    android:id="@+id/activity_main_home_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -79,7 +79,7 @@
                     app:srcCompat="@drawable/ic_home_black_24dp" />
 
                 <ImageButton
-                    android:id="@+id/favourites_button"
+                    android:id="@+id/activity_main_favourites_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -99,14 +99,19 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent" />
 
-                <ImageButton
-                    android:id="@+id/view_companies_button"
+                <Button
+                    android:id="@+id/activity_main_companies_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="changeFragment"
                     android:background="@android:color/transparent"
-                    app:srcCompat="@drawable/ic_default_company_image" />
+                    android:drawableTop="@drawable/ic_default_company_image"
+                    android:text="@string/companies"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="10sp"
+                    android:textAllCaps="false"
+                    tools:ignore="SmallSp" />
 
 
             </LinearLayout>
@@ -114,18 +119,18 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_button"
+            android:id="@+id/activity_main_floating_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="4dp"
             android:src="@drawable/ic_add_circle_black_24dp"
-            app:layout_anchor="@id/bottom_appBar"
+            app:layout_anchor="@id/activity_main_bottom_appBar"
             app:layout_anchorGravity="left" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/activity_main_navigationView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"

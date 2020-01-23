@@ -19,8 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -55,13 +53,13 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.user_profile_fragment, container, false);
 
 
-        userImage = view.findViewById(R.id.user_image_fragment);
-        userEmailText = view.findViewById(R.id.user_email_fragment);
+        userImage = view.findViewById(R.id.user_profile_fragment_user_imageView);
+        userEmailText = view.findViewById(R.id.user_profile_fragment_user_email_textView);
 
-        userNameText = view.findViewById(R.id.user_nametext_fragment);
-        userCityText = view.findViewById(R.id.user_citytext_fragment);
-        userBirthText = view.findViewById(R.id.user_birthtext_fragment);
-        aboutUserText = view.findViewById(R.id.user_abouttext_fragment);
+        userNameText = view.findViewById(R.id.user_profile_fragment_user_name_textView);
+        userCityText = view.findViewById(R.id.user_profile_fragment_user_city_textView);
+        userBirthText = view.findViewById(R.id.user_profile_fragment_user_birth_textView);
+        aboutUserText = view.findViewById(R.id.user_profile_fragment_about_user_textView);
 
 
 
@@ -88,7 +86,7 @@ public class UserProfileFragment extends Fragment {
 
                     }
                 });
-        Button editButton = view.findViewById(R.id.user_edit_fragment);
+        Button editButton = view.findViewById(R.id.user_profile_fragment_edit_button);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

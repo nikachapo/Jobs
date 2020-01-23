@@ -18,9 +18,9 @@
 
     <Button
         android:id="@+id/company_edit_fragment"
-        android:layout_width="70dp"
+        android:layout_width="100dp"
         android:layout_height="45dp"
-        android:text="Edit profile"
+        android:text="@string/edit_profile"
         android:background="@android:color/transparent"
         android:textAllCaps="false"
         android:textColor="@color/colorAccent"
@@ -44,7 +44,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Profile"
+                android:text="@string/profile"
                 android:textStyle="bold"
                 android:layout_marginStart="10dp"
                 android:textSize="30sp"/>
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Username"
+                android:text="@string/username"
                 android:textSize="20sp" />
 
             <TextView
@@ -86,7 +86,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="About company"
+                android:text="@string/about_company"
                 android:textSize="20sp" />
 
             <TextView

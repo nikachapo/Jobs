@@ -8,14 +8,14 @@
 
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appbar_layout_company_profile"
+        android:id="@+id/activity_company_appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/nav_header_background"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar_company_profile"
+            android:id="@+id/activity_company_collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="@color/colorAccent"
@@ -31,29 +31,29 @@
                 app:layout_collapseMode="parallax">
 
                 <ImageView
-                    android:layout_marginTop="3dp"
-                    android:id="@+id/img"
+                    android:id="@+id/activity_company_image_imageView"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
                     android:contentDescription="@null"
                     android:scaleType="centerCrop"
-                    android:transitionName="imagetrans"
+                    android:transitionName="imageTransition"
                     app:layout_collapseMode="parallax" />
 
                 <TextView
-                    android:id="@+id/activity_company_about_company_textView"
+                    android:id="@+id/activity_company_about_textView"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="70dp"
                     android:textColor="#ffff"
                     android:textSize="20sp"
-                    app:layout_collapseMode="parallax"
-                    android:layout_marginBottom="70dp"/>
+                    app:layout_collapseMode="parallax" />
             </LinearLayout>
 
             <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_company_profile"
+                android:id="@+id/activity_company_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_gravity="top"
@@ -66,7 +66,6 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
-        android:gravity=""
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -74,15 +73,16 @@
 
 
         <TextView
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vacancies"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
-            android:textStyle="bold"
+            android:text="@string/vacancies"
             android:textColor="#474545"
-            android:textSize="30sp"/>
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
         <ImageView
             android:layout_width="50dp"
             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/vacancy_listview_fragment_frame"
+        android:id="@+id/activity_company_vacancy_list_fragment_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="45dp"

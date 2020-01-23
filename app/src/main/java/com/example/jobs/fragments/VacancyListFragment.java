@@ -17,6 +17,7 @@ import com.example.jobs.vacancy.Vacancy;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -36,17 +37,21 @@ public class VacancyListFragment extends Fragment {
     private RecyclerView.Adapter vacancyAdapter;
     private RecyclerView vacanciesListRecycler;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private TextView favouritesTextView;
-    private ImageView favouritesIcon;
-
     private String uID = null;
     private boolean gettingFavourites;
     private boolean userIsCompany;
-
+    private boolean searching;
+    private String searchText;
     private Context mContext;
+
 
     public VacancyListFragment() {
         //empty constructor will run if User ID is not passed as argument
+    }
+
+    public VacancyListFragment(boolean searching, String searchText) {
+        this.searching = searching;
+        this.searchText = searchText;
     }
 
     public VacancyListFragment(String uID) {
@@ -69,19 +74,17 @@ public class VacancyListFragment extends Fragment {
         //store data locally
         vacanciesRef.keepSynced(true);
 
-        progressBar = view.findViewById(R.id.fragment_m_progressbar);
-        vacanciesListRecycler = view.findViewById(R.id.fragment_vacancy_listview_with_refresh);
-        favouritesTextView = view.findViewById(R.id.favourites_textView);
-        favouritesIcon = view.findViewById(R.id.favourites_icon);
+        progressBar = view.findViewById(R.id.vacancy_list_fragment_progressBar);
+        vacanciesListRecycler = view.findViewById(R.id.vacancy_list_fragment_recyclerView);
 
-        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+
+        swipeRefreshLayout = view.findViewById(R.id.vacancy_list_fragment_swipe_refresh_layout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 updateRecyclerViewViewData(vacanciesListRecycler);
             }
         });
-
 
 
         //set RecyclerView quality
@@ -93,7 +96,8 @@ public class VacancyListFragment extends Fragment {
         vacanciesListRecycler.setLayoutManager(layoutManager);
 
         vacancyAdapter = new VacancyAdapter(getContext(), getAllVacancies(vacanciesListRecycler));
-
+        vacanciesListRecycler.setAdapter(vacancyAdapter);
+        vacancyAdapter.notifyDataSetChanged();
         updateRecyclerViewViewData(vacanciesListRecycler);
 
         return view;
@@ -105,17 +109,11 @@ public class VacancyListFragment extends Fragment {
     private void updateRecyclerViewViewData(final RecyclerView recyclerView) {
         ArrayList<Vacancy> vacancies;
         if (uID == null) {
-            favouritesTextView.setText("All vacancies");
-            favouritesIcon.setImageResource(R.drawable.vacancies_list_icon);
             vacancies = getAllVacancies(recyclerView);
         } else {
             if (gettingFavourites) {
                 vacancies = getFavourites(recyclerView);
-                favouritesTextView.setText("Favourites");
-                favouritesIcon.setImageResource(R.drawable.ic_star_black_24dp);
             } else {
-                favouritesTextView.setText("Vacancies");
-                favouritesIcon.setImageResource(R.drawable.company_icon);
                 CompanyUser companyUser = new CompanyUser();
                 vacancies = companyUser.getAllCompanyVacancies(recyclerView, uID,
                         progressBar, mContext, swipeRefreshLayout);
@@ -185,7 +183,15 @@ public class VacancyListFragment extends Fragment {
 
     private ArrayList<Vacancy> getAllVacancies(final RecyclerView recyclerView) {
         final ArrayList<Vacancy> vacancies = new ArrayList<>();
-        vacanciesRef.addValueEventListener(new ValueEventListener() {
+
+        Query query;
+        if (searching) {
+            query = vacanciesRef.orderByChild("vacancyHeader").startAt(searchText)
+                    .endAt(searchText+"\uf8ff");
+        } else
+            query = vacanciesRef;
+
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (vacancies.size() == 0) {
@@ -213,6 +219,7 @@ public class VacancyListFragment extends Fragment {
         });
         return vacancies;
     }
+
 
     @Override
     public void onAttach(@NonNull Context context) {

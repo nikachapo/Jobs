@@ -2,6 +2,8 @@ package com.example.jobs;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,16 +18,13 @@ import com.example.jobs.fragments.VacancyListFragment;
 import com.example.jobs.users.CompanyUser;
 import com.example.jobs.users.PersonUser;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
+import java.util.zip.Inflater;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,19 +61,19 @@ public class MainActivity extends AppCompatActivity {
         checkUser();
 
 
-        addVacancyFloatingButton = findViewById(R.id.floating_button);
+        addVacancyFloatingButton = findViewById(R.id.activity_main_floating_button);
 
         // customize toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
         //###############################################
 
 
-        drawerLayout = findViewById(R.id.drawer_layout);
+        drawerLayout = findViewById(R.id.activity_main_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.activity_main_navigationView);
         View headerView = navigationView.getHeaderView(0);
         //set drawer item values
         drawerEmail = headerView.findViewById(R.id.drawer_user_email);
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                             .beginTransaction()
                             .addToBackStack("profile")
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                            .replace(R.id.fragment_frame, selectedFragment).commit();
+                            .replace(R.id.activity_main_fragment_frame, selectedFragment).commit();
                 }
                 return true;
             }
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             selectedFragment = new VacancyListFragment();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_frame, selectedFragment).commit();
+                    .replace(R.id.activity_main_fragment_frame, selectedFragment).commit();
             //###############################################
         }
 
@@ -220,20 +219,37 @@ public class MainActivity extends AppCompatActivity {
     public void changeFragment(View view) {
         GoogleSignInAccount account = FireBaseDbHelper.getCurrentAccount(this);
         switch (view.getId()) {
-            case R.id.home_button:
+            case R.id.activity_main_home_button:
                 selectedFragment = new VacancyListFragment();
                 break;
-            case R.id.favourites_button:
+            case R.id.activity_main_favourites_button:
                 selectedFragment = new VacancyListFragment(account.getId(), true);
                 break;
-            case R.id.view_companies_button:
+            case R.id.activity_main_companies_button:
                 selectedFragment = new CompaniesListFragment();
         }
 
         if (selectedFragment != null) {
             getSupportFragmentManager().beginTransaction().addToBackStack("fragment")
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                    .replace(R.id.fragment_frame, selectedFragment).commit();
+                    .replace(R.id.activity_main_fragment_frame, selectedFragment).commit();
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_menu,menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.app_bar_search) {
+            startActivity(new Intent(MainActivity.this, SearchActivity.class));
+        }
+        return true;
     }
 }

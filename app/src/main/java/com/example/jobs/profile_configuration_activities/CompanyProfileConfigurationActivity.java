@@ -14,6 +14,7 @@ import com.example.jobs.R;
 import com.example.jobs.users.CompanyUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -38,59 +39,81 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
 
 
 
-        companyName = findViewById(R.id.company_name_conf);
-        description = findViewById(R.id.company_history_conf);
-        Button registerUser = findViewById(R.id.register_conf);
+        companyName = findViewById(R.id.company_configuration_activity_name_textInputLayput);
+        description = findViewById(R.id.company_configuration_activity_history_textInputLayput);
+        Button registerUser = findViewById(R.id.company_configuration_activity_register_button);
         TextView emailText = findViewById(R.id.email_conf);
 
         Intent intent = getIntent();
 
-        boolean userIsRegistered = intent.getBooleanExtra("userIsRegistered",true);
+        final boolean userIsRegistered = intent.getBooleanExtra("userIsRegistered",true);
         if(userIsRegistered){
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Edit Profile");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("შესწორება");
         }else {
-            Objects.requireNonNull(getSupportActionBar()).setTitle("Registration");
+            Objects.requireNonNull(getSupportActionBar()).setTitle("რეგისტრაცია");
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        companyName.getEditText().setText(intent.getStringExtra("companyName"));
-        description.getEditText().setText(intent.getStringExtra("companyAbout"));
+        Objects.requireNonNull(companyName.getEditText())
+                .setText(intent.getStringExtra("companyName"));
+        Objects.requireNonNull(description.getEditText())
+                .setText(intent.getStringExtra("companyAbout"));
 
         final String accountID = FireBaseDbHelper.getCurrentAccount(this).getId();
         final String accountEmail = FireBaseDbHelper.getCurrentAccount(this).getEmail();
-        final String accountProfileURL = FireBaseDbHelper.getCurrentAccount(this).getPhotoUrl().toString();
+        final String accountProfileURL = Objects.requireNonNull(FireBaseDbHelper.getCurrentAccount(this)
+                .getPhotoUrl()).toString();
 
         emailText.setText(accountEmail);
 
         registerUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                //Firebase authentication
-//                firebaseAuthWithGoogle(FireBaseDbHelper.getCurrentAccount(getApplicationContext()));
+                if (userIsRegistered) {
+                    FireBaseDbHelper.getCompanyUserReference(getApplicationContext())
+                            .child("username")
+                            .setValue(companyName.getEditText().getText().toString());
+                    FireBaseDbHelper.getCompanyUserReference(getApplicationContext())
+                            .child("description")
+                            .setValue(description.getEditText().getText().toString())
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(getApplicationContext(), "ინფორმაცია შეიცვალა"
+                                            , Toast.LENGTH_LONG).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "კავშირის პრობლემა", Toast.LENGTH_LONG).show();
+                        }
+                    });
 
-                //create new user
-                CompanyUser companyUser = new CompanyUser(accountID, companyName.getEditText().getText().toString()
-                        , accountProfileURL, accountEmail, description.getEditText().getText().toString());
+                } else {
 
-                companyUser.writeNewUserTask(getApplicationContext()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "User added", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(CompanyProfileConfigurationActivity.this,
-                                MainActivity.class));
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Connection problem", Toast.LENGTH_LONG).show();
-                    }
-                });
+                    //create new user
+                    CompanyUser companyUser = new CompanyUser(accountID, companyName.getEditText().getText().toString()
+                            , accountProfileURL, accountEmail, description.getEditText().getText().toString());
+
+                    companyUser.writeNewUserTask(getApplicationContext()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getApplicationContext(), "მომხმარებელი დამატებულია", Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(CompanyProfileConfigurationActivity.this,
+                                    MainActivity.class));
+                            finish();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "კავშირის პრობლემა", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
 
             }
-
-
         });
     }
 
@@ -130,27 +153,5 @@ public class CompanyProfileConfigurationActivity extends AppCompatActivity {
     private void signOut() {
         FireBaseDbHelper.signOut(this);
     }
-
-//    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-//        final FirebaseAuth mAuth;
-//        mAuth = FirebaseAuth.getInstance();
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Toast.makeText(getApplicationContext(), "Sign in failed", Toast.LENGTH_LONG).show();
-//                        }
-//
-//                    }
-//                });
-//    }
-
 
 }

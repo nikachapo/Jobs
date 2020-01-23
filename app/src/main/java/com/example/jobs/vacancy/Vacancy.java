@@ -74,7 +74,7 @@ public class Vacancy implements Serializable {
         assert vacancyID != null;
 
         Vacancy vacancy = new Vacancy(
-                vacancyID, ownerProfileURL, ownerID, vacancyHeader,
+                vacancyID, ownerProfileURL, ownerID, vacancyHeader.toLowerCase(),
                 vacancyBody, vacancyCity, requiredAge,
                 vacancySalary, vacancyCategory, requirements, companyName,
                 startDate,endDate);

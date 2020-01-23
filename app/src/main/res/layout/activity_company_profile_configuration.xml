@@ -11,7 +11,6 @@
     tools:context=".profile_configuration_activities.CompanyProfileConfigurationActivity">
 
 
-
     <TextView
         android:id="@+id/email_conf"
         android:layout_width="match_parent"
@@ -20,62 +19,42 @@
         android:text="Email"
         android:textSize="20sp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Company Name"
-        android:textSize="20sp" />
-
-
-
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/company_configuration_activity_name_textInputLayput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:errorEnabled="true"
         android:padding="5dp"
-        android:id="@+id/company_name_conf"
-        >
+        app:errorEnabled="true">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Company name"/>
+            android:hint="@string/company" />
     </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Company History"
-        android:textSize="20sp" />
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/company_configuration_activity_history_textInputLayput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:errorEnabled="true"
         android:padding="5dp"
-        android:id="@+id/company_history_conf"
-        >
+        app:errorEnabled="true">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="History"/>
+            android:hint="@string/about" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
 
     <Button
-        android:id="@+id/register_conf"
+        android:id="@+id/company_configuration_activity_register_button"
         android:layout_width="200dp"
-        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:text="Save"
-        android:textColor="@android:color/black"
-        android:background="@drawable/sheet_dialog_background"/>
+        android:layout_gravity="center"
+        android:background="@drawable/sheet_dialog_background"
+        android:text="@string/save"
+        android:textColor="@android:color/black" />
 
 </LinearLayout>

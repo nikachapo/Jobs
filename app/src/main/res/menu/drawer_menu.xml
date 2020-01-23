@@ -5,24 +5,24 @@
     <group android:checkableBehavior="single">
 
         <item android:id="@+id/nav_profile"
-            android:title="Profile"
+            android:title="@string/profile"
             android:icon="@drawable/ic_account_black_24dp"
             />
         <item android:id="@+id/nav_settings"
-            android:title="Settings"
+            android:title="@string/settings"
             android:icon="@drawable/ic_settings_black_24dp"
             />
         <item android:id="@+id/nav_logout"
-            android:title="Log Out"
+            android:title="@string/log_out"
             android:icon="@drawable/logout"
             />
     </group>
 
-    <item android:title="Help">
+    <item android:title="@string/help">
         <menu>
             <item android:id="@+id/nav_about"
                 android:icon="@drawable/ic_copyright_black_24dp"
-                android:title="About"/>
+                android:title="@string/about_us"/>
         </menu>
     </item>
 </menu>

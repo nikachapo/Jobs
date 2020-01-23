@@ -7,7 +7,7 @@
     tools:context=".splash_screen.SplashScreenActivity">
 
     <ImageView
-        android:id="@+id/splash_logo"
+        android:id="@+id/activity_splash_logo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/find_job_main_icon"
@@ -19,7 +19,7 @@
         app:layout_constraintVertical_bias="0.404" />
 
     <TextView
-        android:id="@+id/splash_text"
+        android:id="@+id/activity_splash_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"

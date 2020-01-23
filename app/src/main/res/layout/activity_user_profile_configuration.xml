@@ -33,14 +33,18 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"/>
+            android:hint="@string/person_username"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
 
 
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/birth_date"
+        android:layout_gravity="center"/>
     <TextView
         android:id="@+id/person_age_conf"
         android:layout_width="200dp"
@@ -48,7 +52,7 @@
         android:layout_margin="5dp"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="Birth Date"
+        android:text="@string/choose"
         android:background="@drawable/toolbar_background"
         android:textSize="20sp" />
 
@@ -62,7 +66,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="City"/>
+            android:hint="@string/city"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -78,16 +82,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="About"/>
+            android:hint="@string/about"/>
     </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-
-
-
 
     <Button
         android:id="@+id/person_register"
@@ -96,6 +92,6 @@
         android:layout_gravity="center"
         android:layout_margin="5dp"
         android:background="@drawable/sheet_dialog_background"
-        android:text="Save"
+        android:text="@string/save"
         />
 </LinearLayout>

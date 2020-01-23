@@ -33,7 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 public class UserProfileConfigurationActivity extends AppCompatActivity
-implements DatePickerDialog.OnDateSetListener {
+        implements DatePickerDialog.OnDateSetListener {
 
     private TextView birthDate;
     private TextInputLayout city, username, about;
@@ -55,14 +55,19 @@ implements DatePickerDialog.OnDateSetListener {
 
 
         Intent intent = getIntent();
-        birthDate.setText(intent.getStringExtra("userBirth"));
 
+        final boolean userIsRegistered = intent.getBooleanExtra("userIsRegistered", true);
+        if (userIsRegistered) {
+            Objects.requireNonNull(getSupportActionBar()).setTitle("შესწორება");
+        } else {
+            Objects.requireNonNull(getSupportActionBar()).setTitle("რეგისტრაცია");
+        }
 
         birthDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment datePicker = new DatePickerFragment();
-                datePicker.show(getSupportFragmentManager(),"date picker");
+                datePicker.show(getSupportFragmentManager(), "date picker");
 
             }
         });
@@ -74,7 +79,8 @@ implements DatePickerDialog.OnDateSetListener {
 
         final String accountID = FireBaseDbHelper.getCurrentAccount(this).getId();
         final String accountEmail = FireBaseDbHelper.getCurrentAccount(this).getEmail();
-        final String accountProfileURL = Objects.requireNonNull(FireBaseDbHelper.getCurrentAccount(this)
+        final String accountProfileURL = Objects.requireNonNull(
+                FireBaseDbHelper.getCurrentAccount(this)
                 .getPhotoUrl()).toString();
 
 
@@ -82,39 +88,51 @@ implements DatePickerDialog.OnDateSetListener {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (userIsRegistered) {
 
-//                firebaseAuthWithGoogle(FireBaseDbHelper.getCurrentAccount(getApplicationContext()));
-
-                //if writeNewUserTask returns true move to MainActivity
-
-                //creating new user
-                PersonUser personUser = new PersonUser(
-                        username.getEditText().getText().toString(),
-                        accountProfileURL,
-                        accountID,
-                        accountEmail,
-                        birthDate.getText().toString(),
-                        city.getEditText().getText().toString(),
-                        about.getEditText().getText().toString());
-
-                personUser.writeNewUserTask(getApplicationContext())
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "Welcome to Find Job", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(UserProfileConfigurationActivity.this,
-                                MainActivity.class));
-                        finish();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(), "Connection problem", Toast.LENGTH_LONG).show();
-                    }
-                });
+                    FireBaseDbHelper.getCurrentPersonUserReference(getApplicationContext())
+                            .child("username").setValue(username.getEditText().getText().toString());
+                    FireBaseDbHelper.getCurrentPersonUserReference(getApplicationContext())
+                            .child("birthDate").setValue( birthDate.getText().toString());
+                    FireBaseDbHelper.getCurrentPersonUserReference(getApplicationContext())
+                            .child("city").setValue(city.getEditText().getText().toString());
+                    FireBaseDbHelper.getCurrentPersonUserReference(getApplicationContext())
+                            .child("about").setValue(about.getEditText().getText().toString());
 
 
+                } else {
+                    //creating new user
+                    PersonUser personUser = new PersonUser(
+                            username.getEditText().getText().toString(),
+                            accountProfileURL,
+                            accountID,
+                            accountEmail,
+                            birthDate.getText().toString(),
+                            city.getEditText().getText().toString(),
+                            about.getEditText().getText().toString());
 
+                    personUser.writeNewUserTask(getApplicationContext())
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    Toast.makeText(getApplicationContext(),
+                                            "გილოცავთ თქვენ დარეგისტრირდით",
+                                            Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(
+                                            UserProfileConfigurationActivity.this,
+                                            MainActivity.class));
+                                    finish();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "კავშირის პრობლე,ა",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+                }
             }
         });
     }
@@ -130,7 +148,7 @@ implements DatePickerDialog.OnDateSetListener {
         companiesUidRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     signOut();
                 }
             }
@@ -159,9 +177,9 @@ implements DatePickerDialog.OnDateSetListener {
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR,year);
-        calendar.set(Calendar.MONTH,month);
-        calendar.set(Calendar.DAY_OF_MONTH,day);
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
 
         String currentDateString = DateFormat.getDateInstance().format(calendar.getTime());
         birthDate.setText(currentDateString);

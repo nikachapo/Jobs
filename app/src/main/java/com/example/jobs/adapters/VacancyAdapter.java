@@ -42,6 +42,8 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
     private Context context;
     private boolean userIsCompany;
 
+
+
     public VacancyAdapter(Context context, ArrayList<Vacancy> vacancies) {
         this.context = context;
         this.vacancies = vacancies;
@@ -59,9 +61,9 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
         ImageView vacancyOwnerLogoImageView = view.findViewById(R.id.list_item_profilePicture_imageView);
         TextView vacancyOwnerName = view.findViewById(R.id.list_item_company_textView);
         TextView vacancyCity = view.findViewById(R.id.list_item_city_textView);
-
         ConstraintLayout vacancyDetailsLayout = view.findViewById(R.id.vacancy_details_layout);
         SparkButton star = view.findViewById(R.id.list_item_spark_star_button);
+
         return new VacanciesViewHolder(view, vacancyNameTextView,
                 vacancyBodyTextView, vacancyStartDateTextView,vacancyEndDateTextView,
                 vacancyOwnerLogoImageView, vacancyDetailsLayout, star, vacancyOwnerName, vacancyCity);
@@ -72,8 +74,9 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
     public void onBindViewHolder(@NonNull final VacanciesViewHolder holder, int position) {
         final Vacancy vacancy = vacancies.get(position);
 
-
+        //set item animation
         holder.itemView.setAnimation(AnimationUtils.loadAnimation(context, R.anim.fade_animation));
+
 
         Picasso.with(context).load(vacancy.ownerProfileURL)
                 .resize(50, 50)
@@ -113,7 +116,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
         });
 
 
-        holder.vacancyDetailLayout.setOnClickListener(new View.OnClickListener() {
+        holder.rootLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 BottomSheet bottomSheet = new BottomSheet(vacancy);
@@ -234,7 +237,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
                 vacancyOwnerNameTextView,
                 vacancyCityTextView;
         ImageView vacancyOwnerLogoImageView;
-        ConstraintLayout vacancyDetailLayout;
+        ConstraintLayout rootLayout;
         SparkButton starButton;
 
         VacanciesViewHolder(View itemView, TextView vacancyNameTextView,
@@ -242,7 +245,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
                             TextView vacancyStartDateTextView,
                             TextView vacancyEndDateTextView,
                             ImageView vacancyOwnerLogoImageView,
-                            ConstraintLayout vacancyDetailLayout,
+                            ConstraintLayout rootLayout,
                             SparkButton starButton, TextView  vacancyOwnerNameTextView,
                             TextView vacancyCityTextView) {
             super(itemView);
@@ -251,7 +254,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.Vacancie
             this.vacancyStartDateTextView = vacancyStartDateTextView;
             this.vacancyEndDateTextView = vacancyEndDateTextView;
             this.vacancyOwnerLogoImageView = vacancyOwnerLogoImageView;
-            this.vacancyDetailLayout = vacancyDetailLayout;
+            this.rootLayout = rootLayout;
             this.starButton = starButton;
             this.vacancyOwnerNameTextView = vacancyOwnerNameTextView;
             this.vacancyCityTextView = vacancyCityTextView;

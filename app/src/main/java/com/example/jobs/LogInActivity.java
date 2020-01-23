@@ -52,6 +52,7 @@ public class LogInActivity extends AppCompatActivity {
         signInProgressBar = findViewById(R.id.sign_in_progress_bar);
         mAuth = FirebaseAuth.getInstance();
 
+        signInAnonymously();
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +60,7 @@ public class LogInActivity extends AppCompatActivity {
                 checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
                 if (checkedRadioButtonId == -1) {
                     //no item selected
-                    makeSnackBarMessage("Choose one");
+                    makeSnackBarMessage("აირჩიეთ ერთ-ერთი");
                 } else {
                     signInButton.setVisibility(View.GONE);
                     signInProgressBar.setVisibility(View.VISIBLE);
@@ -90,6 +91,9 @@ public class LogInActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        signInButton.setVisibility(View.VISIBLE);
+        signInProgressBar.setVisibility(View.GONE);
+
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -103,7 +107,6 @@ public class LogInActivity extends AppCompatActivity {
                 switch (checkedRadioButtonId) {
                     case R.id.radio_person:
                         //person radio is selected
-
                         DatabaseReference usersUidRef = FireBaseDbHelper.getDatabaseReference()
                                 .child("Emails")
                                 .child(Objects.requireNonNull(account.getId()));
@@ -114,10 +117,11 @@ public class LogInActivity extends AppCompatActivity {
                                 if (!dataSnapshot.exists()) {
                                     Intent loginToRegister = new Intent(LogInActivity.this
                                             , UserProfileConfigurationActivity.class);
+                                    loginToRegister.putExtra("userIsRegistered",false);
                                     //move to configure user profile Activity
                                     startActivity(loginToRegister);
                                 } else {
-                                    makeSnackBarMessage("Logging in");
+                                    makeSnackBarMessage("მიმდინარეობს შესვლა...");
                                     //move to configure Main Activity
                                     startActivity(new Intent(LogInActivity.this
                                             , MainActivity.class));
@@ -148,7 +152,7 @@ public class LogInActivity extends AppCompatActivity {
                                     loginToRegister.putExtra("userIsRegistered",false);
                                     startActivity(loginToRegister);
                                 } else {
-                                    makeSnackBarMessage("Logging in");
+                                    makeSnackBarMessage("მიმდინარეობს შესვლა");
                                     //move to Main Activity
                                     startActivity(new Intent(LogInActivity.this
                                             , MainActivity.class));
@@ -172,13 +176,12 @@ public class LogInActivity extends AppCompatActivity {
                 // and signInButton will be set to VISIBLE
                 signInButton.setVisibility(View.VISIBLE);
                 signInProgressBar.setVisibility(View.GONE);
-                makeSnackBarMessage("check internet connection");
+                makeSnackBarMessage("კავშირის პრობლემა");
             }
         }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -187,18 +190,31 @@ public class LogInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
+                            makeSnackBarMessage("აუთენტიკაცია წარმატებით დასრულდა");
 
                         } else {
                             // If sign in fails, display a message to the user.
-                            makeSnackBarMessage("Authentication Failed.");
+                            makeSnackBarMessage("აუთენტიკაციის პრობლემა");
 
                             //if authentication fails progressBar will be GONE
                             // and signInButton will be set to VISIBLE
                             signInButton.setVisibility(View.VISIBLE);
                             signInProgressBar.setVisibility(View.GONE);
-
                         }
 
+                    }
+                });
+    }
+
+    void signInAnonymously() {
+        FirebaseAuth.getInstance().signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d("Anon", "signInAnonymously:onComplete:" + task.isSuccessful());
+                        if (!task.isSuccessful()) {
+                            Log.w("Anon", "signInAnonymously", task.getException());
+                        }
                     }
                 });
     }

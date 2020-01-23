@@ -48,9 +48,9 @@ public class CompaniesListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_companies_list, container, false);
 
-        companiesRecycler = view.findViewById(R.id.fragment_companies_listview_with_refresh);
+        companiesRecycler = view.findViewById(R.id.fragment_companies_recyclerView);
 
-        companiesProgressBar = view.findViewById(R.id.fragment_companies_m_progressbar);
+        companiesProgressBar = view.findViewById(R.id.fragment_companies_progressbar);
         companiesSwipe = view.findViewById(R.id.fragment_companies_swipe_refresh_layout);
         companiesSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -91,6 +91,7 @@ public class CompaniesListFragment extends Fragment {
                     for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                         CompanyUser companyUser = postSnapshot.getValue(CompanyUser.class);
                         companies.add(companyUser);
+                        assert companyUser != null;
                         Log.d("for loop",companyUser.userEmail);
 
                     }

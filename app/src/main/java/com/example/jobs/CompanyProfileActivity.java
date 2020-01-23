@@ -33,8 +33,8 @@ public class CompanyProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_company_profile);
 
 
-        final ImageView imageView = findViewById(R.id.img);
-        aboutCompany = findViewById(R.id.activity_company_about_company_textView);
+        final ImageView imageView = findViewById(R.id.activity_company_image_imageView);
+        aboutCompany = findViewById(R.id.activity_company_about_textView);
 
 
         Intent intent = getIntent();
@@ -45,11 +45,11 @@ public class CompanyProfileActivity extends AppCompatActivity {
         //set company information
         setCompanyInformation(uID);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_company_profile);
+        Toolbar toolbar = findViewById(R.id.activity_company_toolbar);
 
 
         setSupportActionBar(toolbar);
-        final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_company_profile);
+        final CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.activity_company_collapsing_toolbar);
         collapsingToolbarLayout.setTitle(companyName);
         collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#E6D752"));
 
@@ -59,7 +59,7 @@ public class CompanyProfileActivity extends AppCompatActivity {
         Picasso.with(this).load(imageURL).fit().centerCrop().into(imageView);
 
         Fragment vacancyListFragment = new VacancyListFragment(uID);
-        getSupportFragmentManager().beginTransaction().replace(R.id.vacancy_listview_fragment_frame, vacancyListFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_company_vacancy_list_fragment_frame, vacancyListFragment).commit();
 
 
     }
@@ -86,6 +86,7 @@ public class CompanyProfileActivity extends AppCompatActivity {
                 CompanyUser companyUser = dataSnapshot.getValue(CompanyUser.class);
                 assert companyUser != null;
                 aboutCompany.setText(companyUser.description);
+
             }
 
             @Override

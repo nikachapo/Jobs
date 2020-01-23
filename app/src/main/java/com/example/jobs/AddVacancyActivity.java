@@ -55,22 +55,22 @@ public class AddVacancyActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.do_not_move, R.anim.do_not_move);
         setContentView(R.layout.activity_add_vacancy);
-        setTitle("Add Vacancy");
+        setTitle("ვაკანსიის დამატება");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         vacancyNameLayout = findViewById(R.id.vacancy_name_textInputEditText);
-        vacancyBodyLayout = findViewById(R.id.vacancy_body_textInputEditText);
-        vacancyCityLayout = findViewById(R.id.vacancy_city_textInputEditText);
-        ageFromEditText = findViewById(R.id.age_from_edittext);
-        ageToEditText = findViewById(R.id.age_to_edittext);
-        salaryFromEditText = findViewById(R.id.salaty_from_edittext);
-        salaryToEditText = findViewById(R.id.salaty_to_edittext);
-        requirementsEditText = findViewById(R.id.vacancy_requirements_edittext);
-        requirementsTextView = findViewById(R.id.vacancy_requirements_textview);
-        currentDateTextView = findViewById(R.id.add_vacancy_activity_start_date);
-        endDateTextView = findViewById(R.id.add_vacancy_activity_end_date);
-        vacancyCategorySpinner = findViewById(R.id.vacancy_category_spinner);
-        Button addRequirementsToTextView = findViewById(R.id.add_requirements_to_textview_button);
+        vacancyBodyLayout = findViewById(R.id.activity_add_vacancy_body_textInputEditText);
+        vacancyCityLayout = findViewById(R.id.activity_add_vacancy_city_textInputEditText);
+        ageFromEditText = findViewById(R.id.activity_add_age_from_editText);
+        ageToEditText = findViewById(R.id.activity_add_age_to_editText);
+        salaryFromEditText = findViewById(R.id.activity_add_salary_from_editText);
+        salaryToEditText = findViewById(R.id.activity_add_salary_to_editText);
+        requirementsEditText = findViewById(R.id.activity_add_vacancy_requirements_editText);
+        requirementsTextView = findViewById(R.id.activity_add_vacancy_requirements_textview);
+        currentDateTextView = findViewById(R.id.activity_add_start_date);
+        endDateTextView = findViewById(R.id.activity_add_end_date);
+        vacancyCategorySpinner = findViewById(R.id.activity_add_vacancy_category_spinner);
+        Button addRequirementsToTextView = findViewById(R.id.activity_add_requirements_to_textview_button);
 
 
         setCurrentDate();
@@ -83,7 +83,7 @@ public class AddVacancyActivity extends AppCompatActivity
             }
         });
 
-        rootLayout = findViewById(R.id.root_layout);
+        rootLayout = findViewById(R.id.activity_add_root_layout);
 
 
         if (savedInstanceState == null) {
